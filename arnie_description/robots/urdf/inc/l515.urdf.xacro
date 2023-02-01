@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <xacro:include filename="$(find arnie_description)/robots/urdf/inc/l515_gazebo.urdf.xacro" />
+
+    <xacro:macro name="l515" params="side gazebo:=false">
+
+        <link name="l515${side}_link">
+            <visual>
+                <origin xyz="0.0045 0 0.009" rpy="${pi/2} 0 ${pi/2}"/>
+                <geometry>
+                    <mesh filename="package://arnie_description/robots/meshes/l515.dae" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="-0.0055 0 0.009" rpy="${pi/2} 0 ${pi/2}"/>
+                <geometry>
+                    <cylinder radius="0.0305" length="0.026"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.095" />
+                <origin xyz="0 0 0" />
+                <inertia ixx="0.000044" ixy="0.0" ixz="0.0" iyy="0.000027" iyz="0.0" izz="0.000027" />
+            </inertial>
+        </link>
+
+        <xacro:if value="${gazebo}">
+            <xacro:gazebo_l515 
+                camera_name="l515${side}"
+                reference_link="l515${side}"
+                topics_ns=""
+                depth_optical_frame="l515${side}_depth_optical_frame"
+                color_optical_frame="l515${side}_color_optical_frame"
+                infrared_optical_frame="l515${side}_infrared_optical_frame"
+                publish_pointcloud="true"
+                />
+        </xacro:if>
+
+    </xacro:macro>
+</robot>

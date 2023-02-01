@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot name="amiga_base" xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <xacro:arg name="gazebo"          default="false" />
+    <xacro:arg name="t265_as_parent"  default="false" />
+
+
+    <xacro:include filename="$(find arnie_description)/robots/urdf/inc/amiga_base.urdf.xacro" />
+    <xacro:amiga_base gazebo="$(arg gazebo)" t265_as_parent="$(arg t265_as_parent)" />
+
+
+    <xacro:if value="$(arg gazebo)">
+    <gazebo>
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <!-- <robotNamespace>/</robotNamespace> -->
+      </plugin>
+    </gazebo>
+  </xacro:if>
+
+</robot>

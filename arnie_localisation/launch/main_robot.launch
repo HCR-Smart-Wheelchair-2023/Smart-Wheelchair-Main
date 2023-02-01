@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <arg name="rtabmap_mode"        default="$(optenv RNET_SLAM_MODE localisation)"/>   <!-- "mapping" or "localisation" -->
+  <arg name="run_slam_on"         default="$(optenv RNET_RUN_SLAM_ON external)"/> <!-- "robot" or "external" -->
+  <arg name="rtabmap_db_path"     default="$(optenv RNET_RTABMAP_ARNIE_LOC_DB_PATH '')"/> 
+  <arg name="odom_mode"           default="$(optenv RNET_ODOM visual_jetson)"/>       <!-- "t265", "visual_jetson" or "visual_external" -->
+  
+  <include file="$(find arnie_localisation)/launch/sensor_interface_$(optenv RNET_ROBOT amiga).launch">
+    <arg name="use_camera1"   value="false"  unless="$(eval arg('odom_mode') == 't265')"/>
+    <arg name="use_camera1"   value="true"   if="$(eval arg('odom_mode') == 't265')"/>
+  </include>
+
+  <include file="$(find arnie_localisation)/launch/rtabmap_sensors.launch">
+    <arg name="odom_mode"   value="$(arg odom_mode)" />
+  </include>
+
+  <include file="$(find arnie_localisation)/launch/rtabmap_mapping.launch">
+    <arg name="run_slam"            value="true"    if="$(eval arg('run_slam_on') == 'robot')"/> 
+    <arg name="run_slam"            value="false"   if="$(eval arg('run_slam_on') == 'external')"/>  
+
+    <arg name="run_visual_odom"     value="true"    if="$(eval arg('odom_mode') == 'visual_jetson')"/> 
+    <arg name="run_visual_odom"     value="false"   unless="$(eval arg('odom_mode') == 'visual_jetson')"/>
+
+    <arg name="odom_topic"          value="/rtabmap/visual_odom"  if="$(eval arg('odom_mode') == 'visual_external')"/>
+    <arg name="odom_topic"          value="/rtabmap/visual_odom"  if="$(eval arg('odom_mode') == 'visual_jetson')"/>
+    <arg name="odom_topic"          value="/t265/odom"            if="$(eval arg('odom_mode') == 't265')"/>   
+
+    <arg name="run_relay"           value="false" /> 
+
+    <arg name="manager"             value="jetson_nodelet_manager"/>
+
+    <arg name="rtabmap_mode"        value="$(arg rtabmap_mode)"/>  
+    <arg name="rtabmap_db_path"     value="$(arg rtabmap_db_path)"/> 
+    
+    
+  </include>
+
+
+</launch>

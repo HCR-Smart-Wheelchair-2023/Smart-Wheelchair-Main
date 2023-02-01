@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<launch>
+    <include file="$(find arnie_localisation)/launch/sensor_interface.launch">
+        <arg name="serial_no_camera1"    value="845412111703"/>
+        <arg name="serial_no_camera2"    value="f0231867"/>
+        <arg name="serial_no_camera3"    value="f0232243"/>
+    </include>
+
+</launch>

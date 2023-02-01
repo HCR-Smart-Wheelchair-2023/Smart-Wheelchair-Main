@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<robot name="amiga" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!--Import the base macro -->
+    <xacro:include filename="$(find arnie_description)/robots/urdf/inc/quickie_base.urdf.xacro"/>
+    <!--Import cameras -->
+    <xacro:include filename="$(find arnie_description)/robots/urdf/inc/l515.urdf.xacro"/>
+    <xacro:include filename="$(find arnie_description)/robots/urdf/inc/t265.urdf.xacro"/>
+    
+    <xacro:macro name="amiga_base" params="gazebo:=false t265_as_parent:=false">
+        <xacro:arnie prefix="" gazebo="${gazebo}"/>
+        <xacro:l515 side="_l" gazebo="${gazebo}"/>
+        <xacro:l515 side="_r" gazebo="${gazebo}"/>
+        <xacro:t265/>
+
+        <joint name="l515_r_joint" type="fixed">
+            <!-- Visual Alignment -->
+            <!-- <origin xyz="0.3065 -0.1113 0.201" rpy="0 0 ${-pi/6}" /> -->
+            
+            <!-- Feb 2022 -->
+            <!-- <origin xyz="0.29600000000000004 0.007068965517241383 0.3083793103448276" rpy="-0.03800000000000001 0.04444827586206899 -0.6248620689655173" /> -->
+            
+            <!-- March 2022 -->
+            <!-- <origin xyz="0.357075 -0.035125 0.22597500000000004" rpy="-0.006400000000000001 0.001225 -0.601525" /> -->
+            <origin xyz="0.2870000000000002 -0.13287272727272728 0.1902545454545453" rpy="-0.006000000000000004 -0.014145454545454557 -0.49723636363636364" />
+
+            <axis xyz="0 0 0" />
+            <parent link="base_link" />
+            <child link="l515_r_link" />
+        </joint>
+
+        <joint name="l515_l_joint" type="fixed">
+            <!-- Visual Alignment -->
+            <!-- <origin xyz="0.3065 0.1103 0.201" rpy="0 0 ${pi/6}" />  -->
+            
+            <!-- Feb 2022 -->
+            <!-- <origin xyz="0.3137931034482758 0.16931034482758614 0.2523448275862068" rpy="-0.009482758620689659 -0.01137931034482759 0.47531034482758583" /> -->
+            
+            <!-- March 2022 -->
+            <!-- <origin xyz="0.32282500000000003 0.034624999999999996 0.2552000000000001" rpy="0.004800000000000003 -0.003675 0.601975" /> -->
+            <origin xyz="0.31296491228070187 0.13285964912280704 0.22984210526315776" rpy="0.012175438596491237 0.009491228070175443 0.4976140350877191" />
+            
+            <axis xyz="0 0 0" />
+            <parent link="base_link" />
+            <child link="l515_l_link" />
+        </joint>
+
+        <xacro:unless value="${t265_as_parent}">
+
+            <joint name="t265_joint" type="fixed">
+                <!-- Visual Alignment -->
+                <!-- <origin xyz="0.3336 0.001 0.195" rpy="0 0 0" />  -->
+                
+                <!-- Feb 2022 -->
+                <!--<origin xyz="0.3399999999999999 0.0 0.24000000000000016" rpy="0.0 0.0 0.0" /> -->
+                
+                <!-- March 2022 -->
+                <!-- <origin xyz="0.39000000000000024 0.0 0.13999999999999996" rpy="0.0 0.0 0.0" /> -->
+                <origin xyz="0.34 0.0 0.2" rpy="0.0 0.0 0.0" />
+                
+                <axis xyz="0 0 0" />
+                <parent link="base_link" />
+                <child link="t265_link" />
+            </joint>
+        </xacro:unless>
+
+        <xacro:if value="${t265_as_parent}">
+
+            <joint name="t265_joint" type="fixed">
+                <!-- Visual Alignment -->
+                <!-- <origin xyz="0.3336 0.001 0.195" rpy="0 0 0" />  -->
+                
+                <!-- Feb 2022 -->
+                <!--<origin xyz="0.3399999999999999 0.0 0.24000000000000016" rpy="0.0 0.0 0.0" /> -->
+                
+                <!-- March 2022 -->
+                <!-- <origin xyz="0.39000000000000024 0.0 0.13999999999999996" rpy="0.0 0.0 0.0" /> -->
+                <origin xyz="-0.34 0.0 -0.2" rpy="0.0 0.0 0.0" />
+                
+                <axis xyz="0 0 0" />
+                <parent link="t265_link" />
+                <child link="dummy_link" />
+            </joint>
+        </xacro:if>
+
+    </xacro:macro>
+
+</robot>

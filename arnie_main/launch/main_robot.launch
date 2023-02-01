@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <arg name="roscore"             default="$(env RNET_ROSCORE)" />    <!-- "base"  -->
+    <arg name="rtabmap_mode"        default="$(env RNET_SLAM_MODE)"/>   <!-- "mapping" or "localisation" -->
+    <arg name="run_slam_on"         default="$(env RNET_RUN_SLAM_ON)"/> <!-- "robot" or "external" -->
+    <arg name="rtabmap_db_path"     default="$(env RNET_RTABMAP_ARNIE_LOC_DB_PATH)"/> 
+    <arg name="odom_mode"           default="$(env RNET_ODOM)"/>       <!-- "t265", "visual_jetson" or "visual_external" -->
+
+	<include file="$(find arnie_navigation)/launch/main_robot.launch">
+	    <arg name="joystick" value="$(env RNET_JOYSTICK)"/>
+    </include>
+    <include file="$(find arnie_localisation)/launch/main_robot.launch">
+        <arg name="run_slam_on"         value="$(arg run_slam_on)"/>  
+        <arg name="rtabmap_mode"        value="$(arg rtabmap_mode)"/>  
+        <arg name="rtabmap_db_path"     value="$(arg rtabmap_db_path)"/> 
+        <arg name="odom_mode"           value="$(arg odom_mode)"/> 
+    </include>
+    <include file="$(find arnie_description)/launch/main.launch" if="$(eval arg('roscore') == 'base')"/>
+</launch>

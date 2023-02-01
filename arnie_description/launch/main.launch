@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <include file="$(find arnie_description)/launch/$(env RNET_ROBOT).launch"/>
+
+</launch>

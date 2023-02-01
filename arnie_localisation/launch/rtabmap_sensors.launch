@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <arg name="camera1"              			default="t265"/>
+  <arg name="camera2"              			default="l515_r"/>
+  <arg name="camera3"              			default="l515_l"/>
+  <arg name="database_path"             default="$(find arnie_localisation)/maps/rtabmap.db" />
+  <!-- <arg name="compressed_rate"           default="10"/> -->
+  <arg name="manager"                   default="/jetson_nodelet_manager"/>
+  <arg name="odom_mode"                 default="visual" />  <!-- "t265", "visual_jetson" or "visual_external" -->
+
+    <!-- sync rgb/depth images per camera -->
+  <group ns="$(arg camera2)">
+    <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync $(arg manager)" output="screen">
+      <remap from="rgb/image"       to="/$(arg camera2)/color/image_raw"/>
+      <remap from="depth/image"     to="/$(arg camera2)/aligned_depth_to_color/image_raw"/>
+      <remap from="rgb/camera_info" to="/$(arg camera2)/color/camera_info"/>
+      <param name="approx_sync"        type="bool"   value="false" />
+      <!-- <param name="compressed_rate"    type="double" value="$(arg compressed_rate)" /> -->
+      <param name="frame_id"           type="string" value="$(arg camera2)_link" />
+    </node>
+  </group>
+
+  <group ns="$(arg camera3)">
+    <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync $(arg manager)" output="screen">
+      <remap from="rgb/image"       to="/$(arg camera3)/color/image_raw"/>
+      <remap from="depth/image"     to="/$(arg camera3)/aligned_depth_to_color/image_raw"/>
+      <remap from="rgb/camera_info" to="/$(arg camera3)/color/camera_info"/>
+      <param name="approx_sync"        type="bool"   value="false" />
+      <!-- <param name="compressed_rate"    type="double" value="$(arg compressed_rate)" /> -->
+      <param name="frame_id"           type="string" value="$(arg camera3)_link" />
+    </node>
+  </group>
+
+  <group if="$(eval arg('odom_mode') == 't265')">
+    <node name="odom_throttle" type="throttle" pkg="topic_tools" args="messages /$(arg camera1)/odom/sample 20 /$(arg camera1)/odom" />
+    <!-- <node pkg="tf" type="static_transform_publisher" name="t265_odom_frame_broadcaster" args="0 0 0 0 0 0 1 $(arg camera1)_pose_frame base_link 100" /> -->
+  </group>
+
+</launch>

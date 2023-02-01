@@ -1,0 +1,329 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!-- Authors: Nico Lingg & Cedric Goubard -->
+
+  <!-- 
+    This file includes <inertia> tags for all links. Other Gazebo-related elements are
+    stored in quickie_base_gazebo.urdf.xacro and imported here if the gazebo arg is set to true.
+  --> 
+  <xacro:include filename="$(find arnie_description)/robots/urdf/inc/quickie_base_gazebo.urdf.xacro" />
+
+  <xacro:macro name="arnie" params="prefix gazebo:=false">
+    <link name="${prefix}dummy_link" />
+    <joint name="${prefix}dummy_joint" type="fixed">
+      <parent link="${prefix}dummy_link" />
+      <child link="${prefix}base_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 0 0" />
+    </joint>
+    <link name="${prefix}base_link">
+      <inertial>
+        <origin xyz="-0.013975 0.051448 3.6862E-05" rpy="0 0 0" />
+        <mass value="110.78" />
+        <!-- <inertia ixx="0.50372" ixy="0.034645" ixz="0.00011003" iyy="3.112" iyz="0.00034085" izz="3.1694" /> -->
+        <inertia ixx="2.77527" ixy="0.05" ixz="0.01" iyy="6.491016" iyz="0.01" izz="6.66988" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/base_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/base_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <link name="${prefix}drive_wheel_right">
+      <inertial>
+        <origin xyz="-3.4907E-12 0.028895 1.236E-14" rpy="0 0 0" />
+        <mass value="3.9607" />
+        <inertia ixx="0.028179" ixy="3.3797E-15" ixz="-1.2302E-12" iyy="0.054226" iyz="-1.2741E-17" izz="0.028179" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/drive_wheel_right.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.29804 0.29804 0.29804 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/drive_wheel_right.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}base_drive_wheel_right" type="continuous">
+      <origin xyz="0 0.1995 0" rpy="0 0 0" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}drive_wheel_right" />
+      <axis xyz="0 1 0" />
+    </joint>
+    <link name="${prefix}drive_wheel_left">
+      <inertial>
+        <origin xyz="-3.4906E-12 0.028895 1.2374E-14" rpy="0 0 0" />
+        <mass value="3.9607" />
+        <inertia ixx="0.028179" ixy="3.3837E-15" ixz="-1.2302E-12" iyy="0.054226" iyz="-1.3611E-17" izz="0.028179" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/drive_wheel_left.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.29804 0.29804 0.29804 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/drive_wheel_left.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}base_drive_wheel_left" type="continuous">
+      <origin xyz="0 -0.1995 0" rpy="3.1416 0 0" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}drive_wheel_left" />
+      <axis xyz="0 -1 0" />
+    </joint>
+    <link name="${prefix}castor_front_left">
+      <inertial>
+        <origin xyz="0.010525 -0.0097266 7.7108E-08" rpy="0 0 0" />
+        <mass value="0.20821" />
+        <inertia ixx="0.00055537" ixy="8.8662E-05" ixz="8.9051E-11" iyy="0.00024751" iyz="1.6993E-09" izz="0.00042332" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/castor_front_left.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.19216 0.20392 0.20392 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/castor_front_left.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}base_to_castor_front_left" type="continuous">
+      <origin xyz="-0.38799 -0.17127 0" rpy="1.5708 0 3.1416" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}castor_front_left" />
+      <axis xyz="0 1 0" />
+    </joint>
+    <link name="${prefix}front_wheel_left">
+      <inertial>
+        <origin xyz="5.5511E-17 -4.3723E-13 1.5266E-16" rpy="0 0 0" />
+        <mass value="1.1217" />
+        <inertia ixx="0.0024847" ixy="2.8893E-15" ixz="3.8142E-20" iyy="0.0045217" iyz="-3.3191E-19" izz="0.0024847" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/front_wheel_left.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.89412 0.89412 0.89412 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/front_wheel_left.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}castor_to_front_wheel_left" type="continuous">
+      <origin xyz="0.026228 -0.0725 0" rpy="1.5708 0 3.1416" />
+      <parent link="${prefix}castor_front_left" />
+      <child link="${prefix}front_wheel_left" />
+      <axis xyz="0 1 0" />
+    </joint>
+    <link name="${prefix}castor_front_right">
+      <inertial>
+        <origin xyz="0.010525 -0.0097266 7.7108E-08" rpy="0 0 0" />
+        <mass value="0.59378" />
+        <inertia ixx="0.0015838" ixy="0.00025285" ixz="2.5396E-10" iyy="0.00070588" iyz="4.8462E-09" izz="0.0012073" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/castor_front_right.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.058824 0.058824 0.058824 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/castor_front_right.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}base_to_castor_front_right" type="continuous">
+      <origin xyz="-0.38799 0.17127 0" rpy="1.5708 0 3.1416" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}castor_front_right" />
+      <axis xyz="0 1 0" />
+    </joint>
+    <link name="${prefix}front_wheel_right">
+      <inertial>
+        <origin xyz="-5.5511E-17 -4.3723E-13 1.9429E-16" rpy="0 0 0" />
+        <mass value="1.1217" />
+        <inertia ixx="0.0024847" ixy="8.549E-18" ixz="1.0955E-20" iyy="0.0045217" iyz="-3.8877E-20" izz="0.0024847" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/front_wheel_right.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.89412 0.89412 0.89412 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/front_wheel_right.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}castor_to_front_wheel_right" type="continuous">
+      <origin xyz="0.026228 -0.0725 0" rpy="1.5708 0 3.1416" />
+      <parent link="${prefix}castor_front_right" />
+      <child link="${prefix}front_wheel_right" />
+      <axis xyz="0 1 0" />
+    </joint>
+    <link name="${prefix}castor_back_right">
+      <inertial>
+        <origin xyz="0.010525 -0.0097266 7.7108E-08" rpy="0 0 0" />
+        <mass value="0.59378" />
+        <inertia ixx="0.0015838" ixy="0.00025285" ixz="2.5396E-10" iyy="0.00070588" iyz="4.8462E-09" izz="0.0012073" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/castor_back_right.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.058824 0.058824 0.058824 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/castor_back_right.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}base_to_castor_back_right" type="continuous">
+      <origin xyz="0.33036 0.225 0" rpy="1.5708 0 0" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}castor_back_right" />
+      <axis xyz="0 1 0" />
+    </joint>
+    <link name="${prefix}back_wheel_right">
+      <inertial>
+        <origin xyz="-5.55111512312578E-17 -4.37178071521771E-13 1.80411241501588E-16" rpy="0 0 0" />
+        <mass value="1.1217362251687" />
+        <inertia ixx="0.00248469116365274" ixy="4.33111862479103E-18" ixz="8.98605873919767E-21" iyy="0.00452169778229441" iyz="-1.22844801633355E-14" izz="0.00248469116365274" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/back_wheel_right.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/back_wheel_right.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}castor_to_back_wheel_right" type="continuous">
+      <origin xyz="0.026228 -0.0725 0" rpy="1.5708 0 0" />
+      <parent link="${prefix}castor_back_right" />
+      <child link="${prefix}back_wheel_right" />
+      <axis xyz="0 1 0" />
+    </joint>
+    <link name="${prefix}castor_back_left">
+      <inertial>
+        <origin xyz="0.010525 -0.0097266 7.7108E-08" rpy="0 0 0" />
+        <mass value="0.59378" />
+        <inertia ixx="0.0015838" ixy="0.00025285" ixz="2.5396E-10" iyy="0.00070588" iyz="4.8462E-09" izz="0.0012073" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/castor_back_left.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.058824 0.058824 0.058824 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/castor_back_left.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}base_to_castor_back_left" type="continuous">
+      <origin xyz="0.33036 -0.225 0" rpy="1.5708 0 0" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}castor_back_left" />
+      <axis xyz="0 1 0" />
+    </joint>
+    <link name="${prefix}back_wheel_left">
+      <inertial>
+        <origin xyz="0 -4.3721E-13 1.6653E-16" rpy="0 0 0" />
+        <mass value="1.1217" />
+        <inertia ixx="0.0024847" ixy="4.3311E-18" ixz="8.9861E-21" iyy="0.0045217" iyz="-1.2284E-14" izz="0.0024847" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/back_wheel_left.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.89412 0.89412 0.89412 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://arnie_description/robots/meshes/back_wheel_left.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${prefix}castor_to_back_wheel_left" type="continuous">
+      <origin xyz="0.026228 -0.0725 0" rpy="1.5708 0 0" />
+      <parent link="${prefix}castor_back_left" />
+      <child link="${prefix}back_wheel_left" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <xacro:if value="${gazebo}">
+      <xacro:quickie_base_gazebo prefix="${prefix}"/>
+    </xacro:if>
+
+  </xacro:macro>
+</robot>

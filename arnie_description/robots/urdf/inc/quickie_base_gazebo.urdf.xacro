@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <!-- Authors: Nico Lingg & Cedric Goubard -->
+
+    <!--
+        This file Gazebo-related elements for the base.
+        DO NOT USE IT BY ITSELF; it is meant to be imported in quickie_base.urdf.xacro
+     -->
+
+    <xacro:macro name="quickie_base_gazebo" params="prefix">
+
+        <transmission name="trans_base_drive_wheel_right">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}base_drive_wheel_right">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="base_drive_wheel_right_motor">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <transmission name="trans_base_drive_wheel_left">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}base_drive_wheel_left">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="base_drive_wheel_left_motor">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <transmission name="trans_base_to_castor_front_left">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}base_to_castor_front_left">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="base_to_castor_front_left_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <transmission name="trans_castor_to_front_wheel_left">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}castor_to_front_wheel_left">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="castor_to_front_wheel_left_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <transmission name="trans_base_to_castor_front_right">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}base_to_castor_front_right">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="base_to_castor_front_right_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <transmission name="trans_castor_to_front_wheel_right">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}castor_to_front_wheel_right">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="castor_to_front_wheel_right_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <transmission name="trans_base_to_castor_back_right">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}base_to_castor_back_right">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="base_to_castor_back_right_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <transmission name="trans_castor_to_back_wheel_right">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}castor_to_back_wheel_right">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="castor_to_back_wheel_right_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <transmission name="trans_base_to_castor_back_left">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}base_to_castor_back_left">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="base_to_castor_back_left_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <transmission name="trans_castor_to_back_wheel_left">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}castor_to_back_wheel_left">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="castor_to_back_wheel_left_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <gazebo reference="${prefix}drive_wheel_left">
+            <mu1>1000.0</mu1>
+            <mu2>1000.0</mu2>
+            <minDepth>0.003</minDepth>
+            <kp>100000000.0</kp>
+            <kd>1</kd>
+        </gazebo>
+
+        <gazebo reference="${prefix}drive_wheel_right">
+            <mu1>1000.0</mu1>
+            <mu2>1000.0</mu2>
+            <minDepth>0.003</minDepth>
+            <kp>100000000.0</kp>
+            <kd>1</kd>
+        </gazebo>
+
+        <gazebo reference="${prefix}front_wheel_left">
+            <mu1>10</mu1>
+            <mu2>10</mu2>
+            <minDepth>0.003</minDepth>
+            <kp>100000000.0</kp>
+            <kd>1</kd>
+        </gazebo>
+
+        <gazebo reference="${prefix}back_wheel_left">
+            <mu1>10</mu1>
+            <mu2>10</mu2>
+            <minDepth>0.003</minDepth>
+            <kp>100000000.0</kp>
+            <kd>1</kd>
+        </gazebo>
+        
+        <gazebo reference="${prefix}front_wheel_right">
+            <mu1>10</mu1>
+            <mu2>10</mu2>
+            <minDepth>0.003</minDepth>
+            <kp>100000000.0</kp>
+            <kd>1</kd>
+        </gazebo>
+
+        <gazebo reference="${prefix}back_wheel_right">
+            <mu1>10</mu1>
+            <mu2>10</mu2>
+            <minDepth>0.003</minDepth>
+            <kp>100000000.0</kp>
+            <kd>1</kd>
+        </gazebo>
+
+
+    </xacro:macro>
+</robot>

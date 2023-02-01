@@ -1,0 +1,244 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="camera1"             default="t265" />
+    <arg name="camera2"             default="l515_r" />
+    <arg name="camera3"             default="l515_l" />
+    
+    <arg name="run_slam"            default="false"/>
+    <arg name="rtabmap_mode"        default="$(optenv RNET_SLAM_MODE localisation)"/>   <!-- "mapping" or "localisation" -->
+    <arg name="rtabmap_db_path"     default="$(optenv RNET_RTABMAP_ARNIE_LOC_DB_PATH '')"/> 
+    <arg name="run_visual_odom"     default="false"/>
+    <arg name="use_lidar"           default="false"/>
+    <arg name="run_relay"           default="false"/>
+    <arg name="odom_topic"          default="false"/> <!-- if visual odom is not used, which topic to use -->
+
+    <arg name="database_path"       default="$(find arnie_localisation)/$(arg rtabmap_db_path)" />
+    <arg name="manager"             default="camera_nodelet_manager"/>
+
+    <arg name="rtabmap_args" 	    default="--delete_db_on_start"  if="$(eval arg('rtabmap_mode') == 'mapping')"/> 
+    <arg name="rtabmap_args" 	    default=""                      unless="$(eval arg('rtabmap_mode') == 'mapping')"/>
+
+
+    <arg name="FAST/Gpu"                        default="true"/>
+    <arg name="GFTT/MinDistance"                default="20"/>
+
+    <arg name="Grid/3D"                         default="true" />   <!-- A 3D occupancy grid is required if you want an OctoMap (3D ray tracing). Set to false if you want only a 2D map, the cloud will be projected on xy plane. A 2D map can be still generated if checked, but it requires more memory and time to generate it. Ignored if laser scan is 2D and "Grid/FromDepth" is false. -->
+    <arg name="Grid/FootprintHeight"            default="0.0" />
+    <arg name="Grid/FootprintLength"            default="0.0" />
+    <arg name="Grid/FootprintWidth"             default="0.0" />
+    <arg name="Grid/RayTracing"                 default="true" />   <!-- Ray tracing is done for each occupied cell, filling unknown space between the sensor and occupied cells. If Grid/3D=true, RTAB-Map should be built with OctoMap support, otherwise 3D ray tracing is ignored. -->
+    <arg name="Grid/Scan2dUnknownSpaceFilled"   default="false" />   <!-- Unknown space filled. Only used with 2D laser scans. Use Grid/RangeMax to set maximum range if laser scan max range is to set. -->
+    <arg name="Grid/Sensor"                     default="2" />      <!-- Create occupancy grid from selected sensor: 0=laser scan, 1=depth image(s) or 2=both laser scan and depth image(s). -->
+
+    <arg name="GridGlobal/Eroded"               default="false" />   <!-- Erode obstacle cells. -->
+
+    <arg name="Icp/Force4DoF"                   default="true" />   <!-- Limit ICP to x, y, z and yaw DoF. Available if Icp/Strategy > 0. -->
+    <arg name="Icp/Strategy"                    default="1" />      <!-- ICP implementation: 0=Point Cloud Library, 1=libpointmatcher, 2=CCCoreLib (CloudCompare). -->
+
+    <arg name="Kp/DetectorStrategy"             default="6" />      <!-- 0=SURF 1=SIFT 2=ORB 3=FAST/FREAK 4=FAST/BRIEF 5=GFTT/FREAK 6=GFTT/BRIEF 7=BRISK 8=GFTT/ORB 9=KAZE 10=ORB-OCTREE 11=SuperPoint 12=SURF/FREAK 13=GFTT/DAISY 14=SURF/DAISY 15=PyDetector -->
+    <arg name="Kp/MaxDepth"                     default="0" /> 
+    <arg name="Kp/MaxFeatures"                  default="500" />      <!-- Maximum features extracted from the images (0 means not bounded, <0 means no extraction). -->
+
+     <!-- SLAM mode, otherwise it is Localization mode. -->
+    <arg name="Mem/IncrementalMemory"           default="true"    if="$(eval arg('rtabmap_mode') == 'mapping')"/> 
+    <arg name="Mem/IncrementalMemory"           default="false"   unless="$(eval arg('rtabmap_mode') == 'mapping')"/>  
+
+    <arg name="Mem/UseOdomFeatures"             default="true" />  <!-- Use odometry features instead of regenerating them.. -->
+    <arg name="Mem/UseOdomGravity"              default="false" /> 
+
+    <arg name="Odom/FilteringStrategy"          default="1"/>       <!-- 0:Filtering disabled; 1: Kalman Filtering; 2: Particle Filtering-->
+    <arg name="Odom/Holonomic"                  default="false" />  <!-- amiga cannot strafe -->
+    <arg name="Odom/ResetCountdown"             default="200" />    <!-- reset Odom after N wrong images -->
+    <arg name="Odom/Strategy"                   default="0" />      <!-- 0=Frame-to-Map (F2M) 1=Frame-to-Frame (F2F) 2=Fovis 3=viso2 4=DVO-SLAM 5=ORB_SLAM2 6=OKVIS 7=LOAM 8=MSCKF_VIO ; IF "Reg/Strategy"=1, then 0=S2M and 1=S2S) -->
+    
+    <arg name="Optimizer/GravitySigma"          default="0.1"/>
+    <arg name="Optimizer/Strategy"              default="2" />      <!-- Graph optimization strategy: 0=TORO, 1=g2o, 2=GTSAM and 3=Ceres. -->
+    <arg name="Optimizer/Robust"                default="true" />   <!-- Robust graph optimization using Vertigo (only work for g2o and GTSAM optimization strategies). Not compatible with "RGBD/OptimizeMaxError" if enabled. -->
+
+    <arg name="RGBD/NeighborLinkRefining"       default="true" />
+    <arg name="RGBD/StartAtOrigin"              default="true"/>    
+
+    <arg name="Rtabmap/DetectionRate"           default="1" />      <!-- Detection rate (Hz). RTAB-Map will filter input images to satisfy this rate. -->
+
+    <arg name="Reg/Force3DoF"                   default="true" />   <!-- Simplify problem by stating that robot moves on flat surface -->
+    <arg name="Reg/Strategy"                    default="2" />      <!-- 0=Vis, 1=Icp, 2=VisIcp -->
+
+    <arg name="SURF/GpuVersion"                 default="true" />   <!-- GPU-SURF: Use GPU version of SURF. This option is enabled only if OpenCV is built with CUDA and GPUs are detected. -->
+    
+    <arg name="Vis/CorGuessWinSize"             default="0" />
+    <arg name="Vis/FeatureType"                 default="$(arg Kp/DetectorStrategy)" />  <!-- [0=SURF 1=SIFT 2=ORB 3=FAST/FREAK 4=FAST/BRIEF 5=GFTT/FREAK 6=GFTT/BRIEF 7=BRISK 8=GFTT/ORB 9=KAZE 10=ORB-OCTREE 11=SuperPoint 12=SURF/FREAK 13=GFTT/DAISY 14=SURF/DAISY 15=PyDetector] -->
+    <arg name="Vis/EstimationType"              default="0" />
+    <arg name="Vis/MaxFeatures"                 default="0" />      <!-- 0 no limits. -->
+    <arg name="Vis/MaxDepth"                    default="0" />      <!-- 0 no limits. -->
+    <arg name="Vis/MinInliers"                  default="10" />     <!-- Minimum feature correspondences to compute/accept the transformation. -->
+
+    
+
+    <group ns="rtabmap">
+
+        <group if="$(arg run_relay)">
+            
+            <node pkg="nodelet" type="nodelet" name="rgbd_relay_$(arg camera2)" args="load rtabmap_ros/rgbd_relay $(arg manager)">
+            <!-- <node pkg="rtabmap_ros" type="rgbd_relay" name="rgbd_relay_$(arg camera2)"> -->
+                <param name="uncompress" type="bool" value="true" />
+    
+                <remap from="rgbd_image" to="/$(arg camera2)/rgbd_image/compressed" />
+                <remap from="/$(arg camera2)/rgbd_image/compressed_relay" to="/$(arg camera2)/rgbd_image_relay" />
+            </node>
+    
+            <node pkg="nodelet" type="nodelet" name="rgbd_relay_$(arg camera3)" args="load rtabmap_ros/rgbd_relay $(arg manager)">
+            <!-- <node pkg="rtabmap_ros" type="rgbd_relay" name="rgbd_relay_$(arg camera3)"> -->
+                <param name="uncompress" type="bool" value="true" />
+    
+                <remap from="rgbd_image" to="/$(arg camera3)/rgbd_image/compressed" />
+                <remap from="/$(arg camera3)/rgbd_image/compressed_relay" to="/$(arg camera3)/rgbd_image_relay" />
+            </node>
+
+        </group>
+
+        
+
+        <group if="$(arg run_visual_odom)">
+
+            <!-- <node pkg="rtabmap_ros" type="rgbd_odometry" name="visual_odom_rtab"> -->
+            <node pkg="nodelet" type="nodelet" name="visual_odom_rtab" args="load rtabmap_ros/rgbd_odometry $(arg manager)">
+
+                <param name="queue_size"                    type="int"      value="60"/>
+                <param name="subscribe_rgbd"                type="bool"     value="true" />
+                <param name="approx_sync"                   type="bool"     value="true" />
+                <param name="publish_tf"                    type="bool"     value="true" />
+                <param name="wait_for_transform_duration"                   value="0.5"/>
+                <param name="wait_imu_to_init"              type="bool"     value="false"/>
+                <param name="frame_id"                      type="string"   value="dummy_link"/>
+
+                <param name="rgbd_cameras"                  type="int"      value="2"  />
+                
+                <param name="FAST/Gpu"                      type="bool"     value="$(arg FAST/Gpu)"                     if="$(eval arg('Kp/DetectorStrategy') == '3')"/> 
+                <param name="FAST/Gpu"                      type="bool"     value="false"                               unless="$(eval arg('Kp/DetectorStrategy') == '3')"/> 
+
+                <param name="Kp/MaxDepth"                                   value="$(arg Kp/MaxDepth)" />
+                <param name="Kp/MaxFeatures"                                value="$(arg Kp/MaxFeatures)" />
+                <param name="Odom/FilteringStrategy"        type="int"      value="$(arg Odom/FilteringStrategy)"/>
+                <param name="Odom/Holonomic"                type="bool"     value="$(arg Odom/Holonomic)" /> 
+                <param name="Odom/ResetCountdown"           type="int"      value="$(arg Odom/ResetCountdown)" /> 
+                <param name="Odom/Strategy"                 type="int"      value="$(arg Odom/Strategy)"/> 
+                <param name="Optimizer/GravitySigma"                        value="$(arg Optimizer/GravitySigma)"/>
+                <param name="Reg/Force3DoF"                 type="bool"     value="$(arg Reg/Force3DoF)"/> 
+                <param name="Reg/Strategy"                  type="int"      value="$(arg Reg/Strategy)"/> 
+                <param name="RGBD/NeighborLinkRefining"                     value="$(arg RGBD/NeighborLinkRefining)" />
+                <param name="RGBD/StartAtOrigin"            type="bool"     value="$(arg RGBD/StartAtOrigin)"/> 
+
+                <param name="SURF/GpuVersion"               type="bool"     value="$(arg SURF/GpuVersion)"              if="$(eval arg('Kp/DetectorStrategy') == '0')"/> 
+                <param name="SURF/GpuVersion"               type="bool"     value="false"                               if="$(eval arg('Kp/DetectorStrategy') != '0')"/> 
+
+                <param name="Vis/CorGuessWinSize"           type="string"   value="$(arg Vis/CorGuessWinSize)" />
+                <param name="Vis/EstimationType"            type="int"      value="$(arg Vis/EstimationType)" />
+                <param name="Vis/FeatureType"               type="int"      value="$(arg Vis/FeatureType)" />
+                <param name="Vis/MaxDepth"                                  value="$(arg Vis/MaxDepth)" />  
+                <param name="Vis/MaxFeatures"               type="int"      value="$(arg Vis/MaxFeatures)" />
+
+
+                <remap from="rgbd_image0" to="/$(arg camera2)/rgbd_image" unless="$(arg run_relay)"/>
+                <remap from="rgbd_image1" to="/$(arg camera3)/rgbd_image" unless="$(arg run_relay)"/>
+
+                <remap from="rgbd_image0" to="/$(arg camera2)/rgbd_image_relay" if="$(arg run_relay)"/>
+                <remap from="rgbd_image1" to="/$(arg camera3)/rgbd_image_relay" if="$(arg run_relay)"/>
+
+                <remap from="odom"       to="/rtabmap/visual_odom"/>
+            </node>
+        
+        </group>
+        
+        <!-- Using a nodelet creates a transform not found error -->
+        <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg rtabmap_args)" if="$(arg run_slam)">
+        <!-- <node pkg="nodelet" type="nodelet" name="rtabmap" args="load rtabmap_ros/rtabmap $(arg manager) $(arg rtabmap_args)" output="screen"> -->
+            <param name="visual_odometry"                               value="true"        if="$(arg run_visual_odom)"/>
+            <param name="subscribe_odom_info"           type="bool"     value="true"        if="$(arg run_visual_odom)"/>
+
+            <param name="visual_odometry"                               value="false"       unless="$(arg run_visual_odom)"/>
+            <param name="subscribe_odom_info"           type="bool"     value="false"       unless="$(arg run_visual_odom)"/>
+            
+            <param name="queue_size"                    type="int"      value="100" />
+            <param name="database_path"                 type="string"   value="$(arg database_path)" />
+            <param name="wait_for_transform_duration"                   value="1"/>
+            <param name="frame_id"                      type="string"   value="dummy_link"/>
+
+            <param name="subscribe_depth"                               value="false" />
+            <param name="subscribe_rgbd"                                value="true" />
+            <param name="subscribe_rgb"                                 value="false" />
+            <param name="subscribe_scan"                type="bool"     value="true"/>
+            <param name="rgbd_cameras"                                  value="2" />
+            
+            <param name="gen_scan"                                      value="true" />
+            <param name="approx_sync"                                   value="true" />
+            <param name="map_always_update"                             value="false" /> <!-- refresh grid map even if we are not moving-->
+            <param name="map_empty_ray_tracing"                         value="false" /> <!-- don't fill empty space between the generated scans-->
+
+            <param name="RGBD/ProximityBySpace"         type="string"   value="true"/>
+
+            <param name="FAST/Gpu"                      type="bool"     value="$(arg FAST/Gpu)"                     if="$(eval arg('Kp/DetectorStrategy') == '3')"/> 
+            <param name="FAST/Gpu"                      type="bool"     value="false"                               unless="$(eval arg('Kp/DetectorStrategy') == '3')"/> 
+           
+            <param name="Grid/3D"                                       value="$(arg Grid/3D)" />   
+            <param name="Grid/FootprintHeight"                          value="$(arg Grid/FootprintHeight)" />
+            <param name="Grid/FootprintLength"                          value="$(arg Grid/FootprintLength)" />
+            <param name="Grid/FootprintWidth"                           value="$(arg Grid/FootprintWidth)" />
+            <param name="Grid/RayTracing"                               value="$(arg Grid/RayTracing)" />   
+            <param name="Grid/Scan2dUnknownSpaceFilled"                 value="$(arg Grid/Scan2dUnknownSpaceFilled)" />   
+            <param name="Grid/Sensor"                                   value="$(arg Grid/Sensor)" />      
+
+            <param name="GridGlobal/Eroded"                             value="$(arg GridGlobal/Eroded)" />   
+
+            <param name="Icp/Force4DoF"                                 value="$(arg Icp/Force4DoF)" />   
+            <param name="Icp/Strategy"                                  value="$(arg Icp/Strategy)" />      
+
+            <param name="Kp/DetectorStrategy"                           value="$(arg Kp/DetectorStrategy)" /> 
+            <param name="Kp/MaxDepth"                                   value="$(arg Kp/MaxDepth)" />
+            <param name="Kp/MaxFeatures"                                value="$(arg Kp/MaxFeatures)" />
+            <param name="Mem/IncrementalMemory"         type="bool"     value="$(arg Mem/IncrementalMemory)" />  
+            
+            <param name="Mem/UseOdomFeatures"           type="bool"     value="false"                               if="$(arg run_visual_odom)"/>  
+            <param name="Mem/UseOdomFeatures"           type="bool"     value="$(arg Mem/UseOdomFeatures)"          unless="$(arg run_visual_odom)"/>  
+            
+            <param name="Mem/UseOdomGravity"            type="bool"     value="$(arg Mem/UseOdomGravity)"           if="$(arg run_visual_odom)"/> 
+            <param name="Mem/UseOdomGravity"            type="bool"     value="true"                                unless="$(arg run_visual_odom)"/> 
+            
+            <param name="Optimizer/GravitySigma"                        value="$(arg Optimizer/GravitySigma)"/>
+            <param name="Optimizer/Strategy"                            value="$(arg Optimizer/Strategy)" /> 
+            <param name="Optimizer/Robust"                              value="$(arg Optimizer/Robust)" /> 
+            <param name="Reg/Force3DoF"                 type="bool"     value="$(arg Reg/Force3DoF)"/> 
+            <param name="Reg/Strategy"                  type="int"       value="$(arg Reg/Strategy)"/>
+
+            <param name="RGBD/NeighborLinkRefining"                     value="$(arg RGBD/NeighborLinkRefining)"    if="$(arg run_visual_odom)"/>
+            <param name="RGBD/NeighborLinkRefining"                     value="false"                               unless="$(arg run_visual_odom)"/>
+            <param name="RGBD/StartAtOrigin"            type="bool"     value="$(arg RGBD/StartAtOrigin)"/> 
+
+            <param name="Rtabmap/DetectionRate"         type="int"      value="$(arg Rtabmap/DetectionRate)" />
+            <param name="Rtabmap/DetectionRate"         type="int"      value="2" unless="$(eval arg('rtabmap_mode') == 'mapping')" />
+
+            <param name="SURF/GpuVersion"               type="bool"     value="$(arg SURF/GpuVersion)"              if="$(eval arg('Kp/DetectorStrategy') == '0')"/> 
+            <param name="SURF/GpuVersion"               type="bool"     value="false"                               unless="$(eval arg('Kp/DetectorStrategy') == '0')"/> 
+           
+            <param name="Vis/CorGuessWinSize"           type="string"   value="$(arg Vis/CorGuessWinSize)" />
+            <param name="Vis/EstimationType"            type="int"      value="$(arg Vis/EstimationType)" />
+            <param name="Vis/FeatureType"               type="int"      value="$(arg Vis/FeatureType)" />
+            <param name="Vis/MaxDepth"                                  value="$(arg Vis/MaxDepth)" /> 
+            <param name="Vis/MaxFeatures"               type="int"      value="$(arg Vis/MaxFeatures)" />
+
+            <param name="Icp/VoxelSize"                 type="string" value="0.05"/>
+            <param name="Icp/MaxCorrespondenceDistance" type="string" value="0.1"/>
+            
+
+            <remap from="rgbd_image0" to="/$(arg camera2)/rgbd_image" unless="$(arg run_relay)"/>
+            <remap from="rgbd_image1" to="/$(arg camera3)/rgbd_image" unless="$(arg run_relay)"/>
+
+            <remap from="rgbd_image0" to="/$(arg camera2)/rgbd_image_relay" if="$(arg run_relay)"/>
+            <remap from="rgbd_image1" to="/$(arg camera3)/rgbd_image_relay" if="$(arg run_relay)"/>
+
+            <remap from="scan"        to="/rplidar/scan"/>
+
+            <remap from="odom" to="$(arg odom_topic)" />
+            <remap from="odom" to="/rtabmap/visual_odom"      if="$(arg run_visual_odom)"/>
+        </node>
+    </group>
+</launch>

@@ -1,7 +1,8 @@
 # FROM personalroboticsimperial/prl:jetson2004-noetic-realsense-rtabmulti
 # FROM personalroboticsimperial/prl:jetson2004-noetic-cuda102-openCV420contrib-RS-rtabmulti
-FROM personalroboticsimperial/prl:jetson2004-noetic-cuda102-openCV440contrib-RS-rtabmulti
-SHELL ["/bin/bash", "-c"] 
+# FROM personalroboticsimperial/prl:jetson2004-noetic-cuda102-openCV440contrib-RS-rtabmulti
+FROM nvcr.io/nvidia/l4t-base:r32.5.0
+SHELL ["/bin/bash", "-c"]
 
 ENV CMAKE_BUILD_TYPE=Release
 ENV RNET_JOYSTICK=with_joystick
@@ -15,7 +16,7 @@ RUN cd src && git clone https://github.com/Slamtec/rplidar_ros.git && source ../
 
 WORKDIR /root/ros_ws
 
-# Separated to avoid a full rebuild when  changing the code 
+# Separated to avoid a full rebuild when  changing the code
 COPY arnie_navigation src/arnie_navigation/
 COPY arnie_localisation src/arnie_localisation/
 COPY arnie_main src/arnie_main/
@@ -23,7 +24,7 @@ COPY arnie_description src/arnie_description/
 
 RUN source /opt/ros/noetic/setup.bash && catkin build
 
-# CMD bash   
+# CMD bash
 
 
 CMD source /opt/ros/noetic/setup.bash && source devel/setup.bash && roslaunch arnie_main main_robot.launch --screen

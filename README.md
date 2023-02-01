@@ -27,7 +27,7 @@ Run the docker image to start ros core
 ```bash
 make run-external-core
 ```
-To get terminal access to the container, (requires teh above command to be running)
+To launch the main ros program, (requires the above command to be running)
 ```bash
-make run-external
+make run-external-main
 ```

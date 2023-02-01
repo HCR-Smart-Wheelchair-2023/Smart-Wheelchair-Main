@@ -21,7 +21,7 @@ run-jetson:
 	docker stop rnet_base || true && docker rm rnet_base || true
 	docker run \
 		-e ROS_IP=${RNET_JETSON_BASE_IP} \
-		-e ROS_MASTER_URI="http://${RNET_JETSON_BASE_IP}:11311" \
+		-e ROS_MASTER_URI="http://${RNET_COMPUTER_IP}:11311" \
 		-e RNET_ROBOT=${RNET_ROBOT} \
 		-e RNET_PI_IP=${RNET_PI_IP} \
 		-e RNET_PI_PORT=${RNET_PI_PORT} \
@@ -53,7 +53,7 @@ run-external-core:
 		-e "DISPLAY" \
 		-e "QT_X11_NO_MITSHM=1" \
 		-e "XAUTHORITY=${XAUTH}" \
-		-e ROS_MASTER_URI="http://${RNET_JETSON_BASE_IP}:11311" \
+		-e ROS_MASTER_URI="http://${RNET_COMPUTER_IP}:11311" \
 		-e ROS_IP="${RNET_COMPUTER_IP}" \
 		-e RNET_JOYSTICK=${RNET_JOYSTICK} \
 		-e RNET_MAPPING=${RNET_MAPPING} \
@@ -71,10 +71,11 @@ run-external-core:
 		-it \
 		amiga_base_external:latest
 
-run-external:
+run-external-main:
 	docker exec -it amiga_base_external:latest bash -c "cd /root/ros_ws/src && \
 		source /opt/ros/noetic/setup.bash && \
-		../devel/setup.bash bash"
+		../devel/setup.bash && \
+		roslaunch arnie_main main_external.launch --screen"
 
 run-pi:
 	docker stop can2rnet || true && docker rm can2rnet || true
@@ -92,10 +93,8 @@ restart-jetson:
 	ssh -X ${RNET_JETSON_BASE_USER}@${RNET_JETSON_BASE_IP} "cd rnet-wheelchair-docker && make run-jetson"
 
 topic-list:
-	ROS_MASTER_URI="http://${RNET_JETSON_BASE_IP}:11311" rostopic list
+	ROS_MASTER_URI="http://${RNET_COMPUTER_IP}:11311" rostopic list
 
-push-external:
-	docker push personalroboticsimperial/prl:amiga_base_external
 
 stop-jetson:
 	ssh -X ${RNET_JETSON_BASE_USER}@${RNET_JETSON_BASE_IP} "docker container stop rnet_base"

@@ -12,11 +12,42 @@
     <arg name="odom_mode"           default="$(optenv RNET_ODOM visual_jetson)"/>       <!-- "t265", "visual_jetson" or "visual_external" -->
 
     <!-- Send Commands to the PI via socket connection -->
-    <node pkg="arnie_navigation" type="robot_interface.py" name="robot_interface" output="screen" />
+    <include file="$(find arnie_navigation)/launch/main_robot.launch">
+	    <arg name="joystick" value="$(env RNET_JOYSTICK)"/>
+    </include>
+
     <!-- Start rviz -->
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find arnie_main)/rviz/arnie.rviz" if="$(arg rviz)"/>
 
     <node pkg="nodelet" type="nodelet" name="external_nodelet_manager" args="manager" output="screen"/>
+
+    <!-- Uncomment to add joystick support -->
+    <!-- <node name="joystick_driver" pkg="joy" type="joy_node" >
+        <param name="autorepeat_rate" value="50"/>
+        <param name="dev" value="/dev/input/js0"/>
+    </node>
+
+    <node name="joystick_to_twist" pkg="teleop_twist_joy" type="teleop_node">
+        <param name="scale_linear"          value="0.15" if="$(eval arg('rtabmap_mode') == 'mapping')" />
+        <param name="scale_angular"         value="0.1" if="$(eval arg('rtabmap_mode') == 'mapping')"/>
+        <param name="scale_linear"          value="0.3" if="$(eval arg('rtabmap_mode') == 'localisation')" />
+        <param name="scale_angular"         value="0.3" if="$(eval arg('rtabmap_mode') == 'localisation')"/>
+
+        <remap from="cmd_vel" to="user_cmd_vel"/>
+    </node> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- <include file="$(find arnie_localisation)/launch/rtabmap_mapping.launch">
 		<arg name="run_slam"            value="false"   if="$(eval arg('run_slam_on') == 'robot')"/>
@@ -45,7 +76,7 @@
 	<group ns="amiga_nav">
 
 		<!-- User joystick input -->
-		<group if="$(eval arg('joystick') == 'external')">
+		<!-- <group if="$(eval arg('joystick') == 'external')">
 			<node name="joystick_driver" pkg="joy" type="joy_node" >
 				<param name="autorepeat_rate" value="50"/>
 				<param name="dev" value="/dev/input/js0"/>
@@ -60,6 +91,12 @@
                 <remap from="cmd_vel" to="user_cmd_vel"/>
 			</node>
 		</group>
+        -->
+
+        <!-- Shared control node to mediate between input velocities and produce output command -->
+        <!-- <node pkg="shared_control" type="shared_controller.py" name="shared_controller">
+            <param name="cmd_vel_pub_topic" value="/cmd_vel"/>
+        </node> -->
 
 		<!-- <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pcl_to_laser">
 			<remap from="cloud_in" to="/rtabmap/local_grid_obstacle"/>
@@ -68,33 +105,27 @@
 
 
 		<!-- Move Base obstacle avoidance + autonomous nav -->
-        <node pkg="move_base" type="move_base" respawn="false" name="move_base" if="$(arg enable_move_base)">
-            <!-- General & global path planning configuration -->
+        <!-- <node pkg="move_base" type="move_base" respawn="false" name="move_base" if="$(arg enable_move_base)">
             <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
             <rosparam file="$(find arnie_navigation)/config/amiga/planner.yaml" command="load"/>
             <rosparam file="$(find arnie_navigation)/config/amiga/global_planner.yaml" command="load"/>
 
-            <!-- Local path planning configuration -->
             <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
             <rosparam file="$(find arnie_navigation)/config/amiga/base_local_planner.yaml" command="load"/>
 
-            <!-- Common costmap parameters -->
             <rosparam file="$(find arnie_navigation)/config/amiga/costmap_common_params.yaml" command="load" ns="global_costmap"/>
             <rosparam file="$(find arnie_navigation)/config/amiga/costmap_common_params.yaml" command="load" ns="local_costmap"/>
 
-            <!-- Local costmap setup -->
             <rosparam file="$(find arnie_navigation)/config/amiga/local_costmap_params.yaml" command="load" ns="local_costmap"/>
 
-            <!-- Global costmaps, either static or not depending on whether map is available -->
             <rosparam file="$(find arnie_navigation)/config/amiga/global_costmap_params.yaml" command="load" ns="global_costmap"/>
 
-            <!-- <remap from="odom" to="/rtabmap/visual_odom"/>   -->
             <remap from="odom" to="/t265/odom"/>
             <remap from="cmd_vel" to="auto_vel"/>
             <remap from="base_scan" to="local_scan"/>
             <remap from="/amiga_nav/move_base_simple/goal" to="/move_base_simple/goal"/>
             <remap from="map" to="/rtabmap/grid_map"/>
-        </node>
+        </node> -->
 
 
 		<!-- Obstacle avoidance for safe navigation either autonomously or in a blended input manner -->
@@ -124,18 +155,8 @@
             <!-- Publisher topics -->
             <!-- <param name="safe_cmd_pub_topic" value="obs_avoid_vel"/>
             <param name="auto_cmd_pub_topic" value="auto_vel"/>
-        </node>    -->
+        </node> -->
 
-
-		<!-- Shared control node to mediate between input velocities and produce output command -->
-        <node pkg="shared_control" type="shared_controller.py" name="shared_controller">
-            <param name="user_cmd_sub_topic" value="user_cmd_vel"/>
-            <param name="obs_avoid_cmd_sub_topic" value="obs_avoid_vel"/>
-            <param name="autonomy_cmd_sub_topic" value="auto_vel"/>
-            <param name="cmd_vel_pub_topic" value="/cmd_vel"/>
-            <param name="rate" value="10"/>
-            <param name="deadzone" value="0.05"/>
-        </node>
 
 
 	</group>

@@ -58,12 +58,16 @@ run-external-core:
 		-e RNET_JOYSTICK=${RNET_JOYSTICK} \
 		-e RNET_MAPPING=${RNET_MAPPING} \
 		-e RNET_ROSCORE=${RNET_ROSCORE} \
+		-e RNET_PI_IP=${RNET_PI_IP} \
+		-e RNET_PI_PORT=${RNET_PI_PORT} \
+		-e RNET_ROBOT=${RNET_ROBOT} \
 		-v ~/.Xauthority:/root/.Xauthority:rw \
 		-v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 		-v /tmp/.docker.xauth:/tmp/.docker.xauth \
 		-v $(current_dir)/arnie_main/:/root/ros_ws/src/arnie_main \
 		-v $(current_dir)/arnie_description/:/root/ros_ws/src/arnie_description \
 		-v $(current_dir)/arnie_localisation/:/root/ros_ws/src/arnie_localisation \
+		-v $(current_dir)/arnie_navigation/:/root/ros_ws/src/arnie_navigation \
 	    --privileged \
 		--network host \
 		--name arnie_external \
@@ -72,10 +76,16 @@ run-external-core:
 		amiga_base_external:latest
 
 run-external-main:
-	docker exec -it amiga_base_external:latest bash -c "cd /root/ros_ws/src && \
+	docker exec -it 2f80c9f379a8 bash -c "cd /root/ros_ws/src && \
 		source /opt/ros/noetic/setup.bash && \
-		../devel/setup.bash && \
+		source ../devel/setup.bash && \
 		roslaunch arnie_main main_external.launch --screen"
+		
+run-external-bash:
+	docker exec -it 2f80c9f379a8 bash -c "cd /root/ros_ws/src && \
+		source /opt/ros/noetic/setup.bash && \
+		source ../devel/setup.bash && \
+		bash"
 
 run-pi:
 	docker stop can2rnet || true && docker rm can2rnet || true

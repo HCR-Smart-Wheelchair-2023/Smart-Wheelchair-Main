@@ -41,11 +41,6 @@ COPY arnie_description arnie_description/
 COPY arnie_localisation arnie_localisation/
 COPY arnie_navigation/ arnie_navigation/
 
-# COPY arnie_navigation src/arnie_navigation/
-# COPY arnie_localisation src/arnie_localisation/
-# COPY arnie_main src/arnie_main/
-# COPY arnie_description src/arnie_description/
-
 RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
 
 CMD source ../devel/setup.bash && roscore

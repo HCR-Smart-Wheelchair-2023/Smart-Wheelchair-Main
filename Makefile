@@ -4,12 +4,6 @@ current_dir = $(shell pwd)
 
 JOYSTICK = "with_joystick"
 
-build-jetson-kernel:
-	cd librealsense && DEBIAN_FRONTEND=noninteractive ./scripts/patch-realsense-ubuntu-L4T.sh
-
-build-jetson:
-	docker build -t prl_rnet_jetson_noetic:latest -f Dockerfile.jetson20 .
-
 build-pi:
 	DOCKER_BUILDKIT=1 docker build -t prl_rnet_pi:latest -f Dockerfile.pi .
 
@@ -80,7 +74,7 @@ run-external-main:
 		source /opt/ros/noetic/setup.bash && \
 		source ../devel/setup.bash && \
 		roslaunch arnie_main main_external.launch --screen"
-		
+
 run-external-bash:
 	docker exec -it 2f80c9f379a8 bash -c "cd /root/ros_ws/src && \
 		source /opt/ros/noetic/setup.bash && \

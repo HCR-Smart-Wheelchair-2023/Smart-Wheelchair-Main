@@ -1,6 +1,6 @@
 # Information
 
-This repository contains the basic setup needed to be able to drive the wheelchair. Currently only a "cmd_vel" topic is seStatetup from which a subscriber sends commands to the raspberry pi to move the robot.
+This repository contains the basic setup needed to be able to drive the wheelchair. Currently only a "cmd_vel" topic is setup from which a subscriber sends commands to the raspberry pi to move the robot.
 
 # RNET Wheelchair base setup
 

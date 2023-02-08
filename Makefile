@@ -15,6 +15,7 @@ run-jetson:
 		-it \
 		--name jetson \
 		--gpus all \
+		--privileged \
 		jetson_base:latest
 
 

@@ -8,10 +8,10 @@ RUN ./sdk.zstd.run -- silent
 # CMD bash
 
 RUN apt-get update && apt-get install -y lsb-release && apt-get clean all
-RUN sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
-RUN sudo apt update
-RUN sudo apt install ros-noetic-desktop
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+RUN apt update
+RUN DEBIAN_FRONTEND=noninteractive apt install ros-noetic-desktop -y
 
 RUN mkdir /root/ros_ws/src
 WORKDIR /root/ros_ws/src

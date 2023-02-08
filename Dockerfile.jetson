@@ -1,7 +1,7 @@
 FROM nvcr.io/nvidia/l4t-base:r32.4.3
 
 
-RUN apt update  && DEBIAN_FRONTEND=noninteractive apt install -y zstd && apt install -y curl && apt install python-pip
+RUN apt update  && DEBIAN_FRONTEND=noninteractive apt install -y zstd && apt install -y curl && apt install -y python-pip
 RUN curl https://stereolabs.sfo2.cdn.digitaloceanspaces.com/zedsdk/3.8/ZED_SDK_Tegra_L4T35.1_v3.8.2.zstd.run -- output sdk.zstd.run
 RUN chmod +x sdk.zstd.run
 RUN ./sdk.zstd.run -- silent

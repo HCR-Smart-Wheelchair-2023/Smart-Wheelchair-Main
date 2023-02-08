@@ -25,7 +25,6 @@ run-external-core:
 		-v $(current_dir)/navigation/:/root/ros_ws/src/navigation \
 		-v $(current_dir)/user_interface/:/root/ros_ws/src/user_interface \
 		-v $(current_dir)/path_planning/:/root/ros_ws/src/path_planning \
-
 	    --privileged \
 		--network host \
 		--name external \

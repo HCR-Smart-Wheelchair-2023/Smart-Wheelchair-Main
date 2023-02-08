@@ -16,6 +16,10 @@
             <include file="$(find user_interface)/launch/user_interface.launch">
 
             </include>
+            
+            <include file="$(find path_planning)/launch/path_planning.launch">
+
+            </include>
     </group>
 
     <group if="$(eval arg('mode') == 'sim')">

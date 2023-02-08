@@ -12,20 +12,6 @@ build-jetson:
 
 run-jetson:
 	docker run \
-		-e "XAUTHORITY=${XAUTH}" \
-		-e ROS_MASTER_URI="http://${RNET_JETSON_BASE_IP}:11311" \
-		-e ROS_IP="${RNET_COMPUTER_IP}" \
-		-e RNET_PI_IP=${RNET_PI_IP} \
-		-e RNET_PI_PORT=${RNET_PI_PORT} \
-		-v ~/.Xauthority:/root/.Xauthority:rw \
-		-v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-		-v /tmp/.docker.xauth:/tmp/.docker.xauth \
-		-v $(current_dir)/robot_main/:/root/ros_ws/src/robot_main \
-		-v $(current_dir)/navigation/:/root/ros_ws/src/navigation \
-	    --privileged \
-		--network host \
-		--name jetson \
-		--gpus all \
 		-it \
 		jetson_base:latest
 

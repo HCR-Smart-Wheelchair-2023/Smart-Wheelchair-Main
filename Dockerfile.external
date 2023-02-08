@@ -39,6 +39,8 @@ RUN source /opt/ros/noetic/setup.bash && catkin build rtabmap_ros
 
 COPY robot_main robot_main/
 COPY navigation/ navigation/
+COPY user_interface/ user_interface/
+
 
 RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
 

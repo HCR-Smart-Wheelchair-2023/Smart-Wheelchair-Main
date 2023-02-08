@@ -20,7 +20,8 @@ RUN source /opt/ros/noetic/setup.bash
 WORKDIR /root/ros_ws/src
 
 RUN apt install -y git
-RUN pip install rosdep && rosdep init && rosdep update
+RUN pip install rosdep && rosdep init
+RUN rosdep update
 RUN git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git && cd ../
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN catkin_make -DCMAKE_BUILD_TYPE=Release

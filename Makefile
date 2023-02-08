@@ -14,9 +14,7 @@ run-jetson:
 	docker run \
 		-it \
 		--name jetson \
-		-v ~/.Xauthority:/root/.Xauthority:rw \
-		-v /tmp/.docker.xauth:/tmp/.docker.xauth \
-		--privileged \
+		--gpus all \
 		jetson_base:latest
 
 

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>user_interface</name>
+  <version>0.0.1</version>
+  <description>The user_interface node</description>
+
+  <maintainer email="bjs3118@ic.ac.uk">PRL</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+  <depend>geometry_msgs</depend>
+
+</package>

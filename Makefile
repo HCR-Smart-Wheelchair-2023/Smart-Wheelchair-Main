@@ -14,6 +14,7 @@ run-jetson:
 	docker run \
 		-it \
 		--name jetson \
+		--gpus all \
 		jetson_base:latest
 
 

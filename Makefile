@@ -13,6 +13,7 @@ build-jetson:
 run-jetson:
 	docker run \
 		-it \
+		--name jetson \
 		jetson_base:latest
 
 

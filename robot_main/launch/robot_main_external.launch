@@ -3,19 +3,19 @@
 
 
     <!-- Can be equal to sim or robot -->
-    <arg name="mode"    default="$(optenv MODE true)"/>
+    <arg name="mode"    default="$(optenv MODE robot)"/>
 
 
 
-    <group if="$(eval arg('mode')) == 'robot'">
+    <group if="$(eval arg('mode') == 'robot')">
             <!-- Listen to the /cmd_vel topic and send the commands to the PI -->
             <include file="$(find navigation)/launch/pi_interface.launch">
             </include>
-    <group>
+    </group>
 
-    <group if="$(eval arg('mode')) == 'sim'">
+    <group if="$(eval arg('mode') == 'sim')">
             <!-- TODO send commands to the simulation model -->
-    <group>
+    </group>
 
 
     <!-- Start rviz -->

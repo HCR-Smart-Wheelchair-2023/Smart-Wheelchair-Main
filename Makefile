@@ -31,13 +31,13 @@ run-external-core:
 		amiga_base_external:latest
 
 run-external-bash:
-	docker exec -it 2f80c9f379a8 bash -c "cd /root/ros_ws/src && \
+	docker exec -it external bash -c "cd /root/ros_ws/src && \
 		source /opt/ros/noetic/setup.bash && \
 		source ../devel/setup.bash && \
 		bash"
 
 run-external-main:
-	docker exec -it 2f80c9f379a8 bash -c "cd /root/ros_ws/src && \
+	docker exec -it external bash -c "cd /root/ros_ws/src && \
 		source /opt/ros/noetic/setup.bash && \
 		source ../devel/setup.bash && \
 		roslaunch robot_main robot_main_external.launch --screen"

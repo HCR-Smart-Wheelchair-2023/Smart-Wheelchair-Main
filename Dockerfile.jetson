@@ -2,16 +2,16 @@ FROM nvcr.io/nvidia/l4t-base:r34.1
 
 
 RUN apt update  && DEBIAN_FRONTEND=noninteractive apt install -y zstd && apt install -y curl && apt install -y pip
-RUN curl https://stereolabs.sfo2.cdn.digitaloceanspaces.com/zedsdk/3.8/ZED_SDK_Tegra_L4T35.1_v3.8.2.zstd.run --output sdk.zstd.run
-RUN chmod +x sdk.zstd.run
-RUN ./sdk.zstd.run -- silent
-# CMD bash
-
 
 RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/cross-linux-aarch64/cuda-keyring_1.0-1_all.deb
 RUN dpkg -i cuda-keyring_1.0-1_all.deb
 RUN apt-get update
 RUN apt-get -y install cuda-cross-aarch64
+
+RUN curl https://stereolabs.sfo2.cdn.digitaloceanspaces.com/zedsdk/3.8/ZED_SDK_Tegra_L4T35.1_v3.8.2.zstd.run --output sdk.zstd.run
+RUN chmod +x sdk.zstd.run
+RUN ./sdk.zstd.run -- silent
+# CMD bash
 
 RUN apt-get update && apt-get install -y lsb-release && apt-get clean all
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'

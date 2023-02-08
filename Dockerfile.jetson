@@ -23,22 +23,22 @@ RUN apt install -y git
 RUN pip install rosdep && rosdep init
 RUN rosdep update
 RUN git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git
-RUN cd ../
+WORKDIR /root/ros_ws/
 RUN pwd
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN catkin_make -DCMAKE_BUILD_TYPE=Release
 RUN source ./devel/setup.bash && cd ./src
 RUN git clone https://github.com/stereolabs/zed-ros-interfaces.git
-RUN ../
+WORKDIR /root/ros_ws/
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN catkin_make -DCMAKE_BUILD_TYPE=Release
 RUN source ./devel/setup.bash && cd ./src
 RUN git clone https://github.com/stereolabs/zed-ros-examples.git
-RUN cd ../
+WORKDIR /root/ros_ws/
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN catkin_make -DCMAKE_BUILD_TYPE=Release
 RUN source ./devel/setup.bash
-
+WORKDIR /root/ros_ws/src
 # RUN cd .. && catkin config --cmake-args -DRTABMAP_SYNC_MULTI_RGBD=ON
 CMD bash
 

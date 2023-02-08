@@ -13,9 +13,10 @@ RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt
 RUN apt update
 RUN DEBIAN_FRONTEND=noninteractive apt install ros-noetic-desktop -y
 
+SHELL ["/bin/bash", "-c"]
 RUN mkdir /root/ros_ws
 RUN mkdir /root/ros_ws/src
-RUN bash -c "source /opt/ros/noetic/setup.bash"
+RUN source /opt/ros/noetic/setup.bash
 WORKDIR /root/ros_ws/src
 
 RUN apt install -y git

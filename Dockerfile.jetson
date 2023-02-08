@@ -16,7 +16,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt install ros-noetic-desktop -y
 RUN mkdir /root/ros_ws
 RUN mkdir /root/ros_ws/src
 WORKDIR /root/ros_ws/src
-# RUN source /opt/ros/noetic/setup.bash
+RUN source /opt/ros/noetic/setup.bash
 
 # RUN git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git && cd ../
 # RUN rosdep install --from-paths src --ignore-src -r -y

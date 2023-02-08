@@ -23,6 +23,7 @@ RUN apt install -y git
 RUN pip install rosdep && rosdep init
 RUN rosdep update
 RUN git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git && cd ../
+RUN pwd
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN catkin_make -DCMAKE_BUILD_TYPE=Release
 RUN source ./devel/setup.bash && cd ./src

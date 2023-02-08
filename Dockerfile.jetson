@@ -18,6 +18,8 @@ RUN mkdir /root/ros_ws/src
 RUN bash -c "source /opt/ros/noetic/setup.bash"
 WORKDIR /root/ros_ws/src
 
+RUN apt install git
+
 RUN git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git && cd ../
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN catkin_make -DCMAKE_BUILD_TYPE=Release

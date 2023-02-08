@@ -69,6 +69,13 @@ run-external-bash:
 		source ../devel/setup.bash && \
 		bash"
 
+
+run-jetson-bash:
+	docker exec -it jetson bash -c "cd /root/ros_ws/src && \
+		source /opt/ros/noetic/setup.bash && \
+		source ../devel/setup.bash && \
+		bash"
+
 run-external-main:
 	docker exec -it external bash -c "cd /root/ros_ws/src && \
 		source /opt/ros/noetic/setup.bash && \

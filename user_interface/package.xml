@@ -11,5 +11,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>rospy</depend>
   <depend>geometry_msgs</depend>
+  <depend>std_msgs.msg</depend>
+
 
 </package>

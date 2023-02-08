@@ -9,6 +9,8 @@ The aim of this node is to identify the coordinates of a way point from a name.
 
 import rospy
 from geometry_msgs.msg import Point
+from std_msgs.msg import String
+
 
 def callback(data):
     # callback function to handle the incoming string message

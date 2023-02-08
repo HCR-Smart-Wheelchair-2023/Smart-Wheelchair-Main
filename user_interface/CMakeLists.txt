@@ -8,6 +8,7 @@ project(user_interface)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   geometry_msgs
+  std_msgs
   roslaunch
 )
 #roslaunch_add_file_check(launch)

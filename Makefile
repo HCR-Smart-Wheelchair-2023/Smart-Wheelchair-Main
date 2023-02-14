@@ -13,6 +13,8 @@ build-jetson:
 run-jetson:
 	docker run \
 		-it \
+		--name jetson \
+		--gpus all \
 		jetson_base:latest
 
 
@@ -65,6 +67,13 @@ run-external-core:
 
 run-external-bash:
 	docker exec -it external bash -c "cd /root/ros_ws/src && \
+		source /opt/ros/noetic/setup.bash && \
+		source ../devel/setup.bash && \
+		bash"
+
+
+run-jetson-bash:
+	docker exec -it reverent_sinoussi bash -c "cd /root/ros_ws/src && \
 		source /opt/ros/noetic/setup.bash && \
 		source ../devel/setup.bash && \
 		bash"

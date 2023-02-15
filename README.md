@@ -48,3 +48,11 @@ make run-external-bash
 ## Driving the Robot
 
 - Once "make run-external-core" and "make run-external-main" are running it should be possible to publish to "/cmd_vel" to drive the robot
+
+
+
+## Starting Simulation for Sim Development
+
+```
+roslaunch wheele_gazebo wheele.launch
+```

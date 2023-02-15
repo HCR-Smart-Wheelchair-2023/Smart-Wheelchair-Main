@@ -16,7 +16,7 @@
             <include file="$(find user_interface)/launch/user_interface.launch">
 
             </include>
-            
+
             <include file="$(find path_planning)/launch/path_planning.launch">
 
             </include>
@@ -27,7 +27,7 @@
             <!-- Open gazebo server, with model and subscribes to topics and stuff -->
     </group>
 
-    <node unless="$(arg sim)" pkg="tf" type="static_transform_publisher" name="laser_broadcaster" args="0 0 0 3.14 0 0 base_link laser 100" />
+    <!-- <node unless="$(arg sim)" pkg="tf" type="static_transform_publisher" name="laser_broadcaster" args="0 0 0 3.14 0 0 base_link laser 100" /> -->
 
     <!-- Start rviz -->
 	<!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robot_main)/rviz/arnie.rviz" if="$(arg rviz)"/> -->

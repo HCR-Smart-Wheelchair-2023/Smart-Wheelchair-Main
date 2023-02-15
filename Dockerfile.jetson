@@ -1,7 +1,7 @@
 FROM personalroboticsimperial/prl:ub2004-noetic-openCV420wContrib
 
 
-RUN apt update  && DEBIAN_FRONTEND=noninteractive apt install -y zstd && apt install -y curl && apt install -y pip
+RUN apt update  && DEBIAN_FRONTEND=noninteractive apt install -y zstd && apt install -y curl && apt install -y pip && apt install -y wget
 
 RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
 RUN mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600

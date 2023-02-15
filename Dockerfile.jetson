@@ -9,7 +9,7 @@ RUN wget https://developer.download.nvidia.com/compute/cuda/12.0.1/local_install
 RUN sudo dpkg -i cuda-repo-ubuntu2004-12-0-local_12.0.1-525.85.12-1_amd64.deb
 RUN sudo cp /var/cuda-repo-ubuntu2004-12-0-local/cuda-*-keyring.gpg /usr/share/keyrings/
 RUN sudo apt-get update
-RUN sudo apt-get -y install cuda
+RUN sudo apt-get -y install cuda --fix-missing
 
 # RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/cross-linux-aarch64/cuda-keyring_1.0-1_all.deb
 # RUN dpkg -i cuda-keyring_1.0-1_all.deb

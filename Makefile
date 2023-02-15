@@ -23,6 +23,7 @@ run-external-core:
 		-v /tmp/.docker.xauth:/tmp/.docker.xauth \
 		-v $(current_dir)/robot_main/:/root/ros_ws/src/robot_main \
 		-v $(current_dir)/navigation/:/root/ros_ws/src/navigation \
+		-v $(current_dir)/emotion/:/root/ros_ws/src/emotion \
 	    --privileged \
 		--network host \
 		--name external \

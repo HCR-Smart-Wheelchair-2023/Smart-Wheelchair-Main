@@ -21,7 +21,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -y  && \
         ros-noetic-octomap && \
     DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:borglab/gtsam-release-4.0 && \
     DEBIAN_FRONTEND=noninteractive apt update && \
-    DEBIAN_FRONTEND=noninteractive apt install -y libgtsam-dev libgtsam-unstable-dev
+    DEBIAN_FRONTEND=noninteractive apt install -y libgtsam-dev libgtsam-unstable-dev \
+    apt-get install -y ros-noetic-telop-twist-keyboard \
+    apt-get install ros-noetic-navigation \
 
 WORKDIR /rtabmap
 RUN git clone https://github.com/introlab/rtabmap.git

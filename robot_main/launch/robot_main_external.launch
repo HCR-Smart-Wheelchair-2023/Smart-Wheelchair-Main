@@ -20,6 +20,10 @@
             <include file="$(find path_planning)/launch/path_planning.launch">
 
             </include>
+
+            <include file="$(find wheele_2dnav)/launch/move_base.launch">
+
+            </include>
     </group>
 
     <group if="$(eval arg('mode') == 'sim')">

@@ -6,8 +6,10 @@ width = 1000
 height = 1000
 
 
-# add the coordinates of the points in the map 
-map_coordinates = [(100,100),(500,100),(500,900),(100,900)]
+# add the coordinates of the points in the map
+Y_OFFSET = 100
+X_OFFSET = 100
+map_coordinates = [(X_OFFSET,774 + Y_OFFSET),(X_OFFSET + 121,774 + Y_OFFSET),(500,900),(100,900)]
 
 
 # point = Point(0.5, 0.5)

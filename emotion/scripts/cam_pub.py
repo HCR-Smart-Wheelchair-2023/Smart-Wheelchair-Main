@@ -15,7 +15,7 @@ cap = cv2.VideoCapture('/dev/video0')
 if not (cap.isOpened()):
     print("Could not open video device")
 
-rr = rospy.Rate(3)
+rr = rospy.Rate(1)
 bridge = CvBridge()
 while not rospy.is_shutdown():
     rospy.loginfo('Publishing')

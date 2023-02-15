@@ -10,6 +10,15 @@
     <group if="$(eval arg('mode') == 'robot')">
             <!-- Listen to the /cmd_vel topic and send the commands to the PI -->
             <include file="$(find navigation)/launch/pi_interface.launch">
+
+            </include>
+
+            <include file="$(find user_interface)/launch/user_interface.launch">
+
+            </include>
+            
+            <include file="$(find path_planning)/launch/path_planning.launch">
+
             </include>
     </group>
 

@@ -16,6 +16,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -y  && \
         software-properties-common \
         ros-noetic-joy \
         ros-noetic-teleop-twist-joy \
+        ros-noetic-rqt \
+        ros-noetic-rqt-common-plugins \
         ros-noetic-octomap && \
     DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:borglab/gtsam-release-4.0 && \
     DEBIAN_FRONTEND=noninteractive apt update && \
@@ -37,6 +39,10 @@ RUN source /opt/ros/noetic/setup.bash && catkin build rtabmap_ros
 
 COPY robot_main robot_main/
 COPY navigation/ navigation/
+COPY user_interface/ user_interface/
+COPY path_planning/ path_planning/
+
+
 
 RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
 

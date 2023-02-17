@@ -2,14 +2,22 @@ import numpy as np
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
-width = 1000
-height = 1000
+width = 2000
+height = 2000
 
 
 # add the coordinates of the points in the map
-Y_OFFSET = 100
-X_OFFSET = 100
-map_coordinates = [(X_OFFSET,774 + Y_OFFSET),(X_OFFSET + 121,774 + Y_OFFSET),(500,900),(100,900)]
+Y_OFFSET = int(height/2)
+X_OFFSET = int(width/2)
+
+vectors = [(0,774),(121,0),(0,250),(-2500,0),(0,205),(2500 + 167, 0),(0,-250-205),(221,0),(0,-774),(-121-221-167,0)]
+map_coordinates = []
+coordinate = (X_OFFSET,Y_OFFSET)
+for vector in vectors:
+    map_coordinates.append(coordinate)
+    coordinate = (coordinate[0] + 1 * int(vector[0]/3), coordinate[1] + -1 * int(vector[1]/3))
+print(map_coordinates)
+# map_coordinates = [(X_OFFSET, Y_OFFSET),(X_OFFSET,Y_OFFSET +774),(X_OFFSET + 121,774 + Y_OFFSET),(500,900),(100,900)]
 
 
 # point = Point(0.5, 0.5)

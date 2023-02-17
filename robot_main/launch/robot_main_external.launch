@@ -3,9 +3,13 @@
 
 
     <!-- Can be equal to sim or robot -->
-    <arg name="mode"    default="$(optenv MODE robot)"/>
+    <arg name="mode"    default="$(optenv MODE sim)"/>
 
 
+    <!-- Start the map server -->
+    <include file="$(find path_planning)/launch/path_planning.launch">
+
+    </include>
 
     <group if="$(eval arg('mode') == 'robot')">
             <!-- Listen to the /cmd_vel topic and send the commands to the PI -->
@@ -17,9 +21,7 @@
 
             </include>
 
-            <include file="$(find path_planning)/launch/path_planning.launch">
 
-            </include>
     </group>
 
     <group if="$(eval arg('mode') == 'sim')">

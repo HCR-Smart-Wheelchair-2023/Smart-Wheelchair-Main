@@ -3,12 +3,12 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 import os
 import yaml
-
+# 83 y 213 x
+# 70 90 20
 width = 500
 height = 500
 resolution = 0.1
 vectors_cm = [(0,774),(121,0),(0,250),(-2500,0),(0,205),(2500 + 167, 0),(0,-250-205),(221,0),(0,-774),(-121-221-167,0)]
-
 
 
 # add the coordinates of the points in the map
@@ -20,7 +20,6 @@ coordinate = (X_OFFSET,Y_OFFSET)
 for vector in vectors_cm:
     map_coordinates.append(coordinate)
     coordinate = (coordinate[0] + 1 * int(vector[0]/(100*resolution)), coordinate[1] + -1 * int(vector[1]/(100*resolution)))
-print(map_coordinates)
 # map_coordinates = [(X_OFFSET, Y_OFFSET),(X_OFFSET,Y_OFFSET +774),(X_OFFSET + 121,774 + Y_OFFSET),(500,900),(100,900)]
 
 

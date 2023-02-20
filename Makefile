@@ -7,6 +7,9 @@ JOYSTICK = "with_joystick"
 build-external:
 	DOCKER_BUILDKIT=1 docker build -t amiga_base_external:latest -f Dockerfile.external .
 
+build-sim:
+	DOCKER_BUILDKIT=1 docker build -t sim:latest -f Dockerfile.sim .
+
 build-jetson:
 	DOCKER_BUILDKIT=1 docker build -t jetson_base:latest -f Dockerfile.jetson .
 
@@ -89,3 +92,29 @@ run-external-main:
 
 topic-list:
 	ROS_MASTER_URI="http://${RNET_COMPUTER_IP}:11311" rostopic list
+
+
+
+run-external-core:
+	xhost +si:localuser:root
+	docker stop sim || true && docker rm sim || true
+	docker run \
+		-e "DISPLAY" \
+		-e "QT_X11_NO_MITSHM=1" \
+		-e "XAUTHORITY=${XAUTH}" \
+		-v ~/.Xauthority:/root/.Xauthority:rw \
+		-v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+		-v /tmp/.docker.xauth:/tmp/.docker.xauth \
+		-v $(current_dir)/robot_main/:/root/ros_ws/src/robot_main \
+		-v $(current_dir)/navigation/:/root/ros_ws/src/navigation \
+		-v $(current_dir)/user_interface/:/root/ros_ws/src/user_interface \
+		-v $(current_dir)/path_planning/:/root/ros_ws/src/path_planning \
+		-v $(current_dir)/emotion/:/root/ros_ws/src/emotion \
+		-v $(current_dir)/wheele_description/:/root/ros_ws/src/wheele_description \
+		-v $(current_dir)/wheele_gazebo/:/root/ros_ws/src/wheele_gazebo \
+		-v $(current_dir)/wheele_gazebo/:/root/ros_ws/src/wheele_gazebo \
+	    --privileged \
+		--network host \
+		--name external \
+		-it \
+		sim:latest

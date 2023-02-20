@@ -12,7 +12,6 @@ RUN debconf-set-selections < keyboard.config
 RUN export DEBIAN_FRONTEND=noninteractive; sudo apt-get --yes --force-yes install ros-noetic-desktop-full
 RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
     python3-catkin-tools \
-
     ros-noetic-rtabmap ros-noetic-rtabmap-ros \
     ros-noetic-libg2o \
     git && \
@@ -32,27 +31,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -y  && \
     ros-noetic-teleop-twist-keyboard \
     ros-noetic-navigation
 
-WORKDIR /rtabmap
-RUN git clone https://github.com/introlab/rtabmap.git
-RUN cd rtabmap/build  && \
-    cmake .. && \
-    make -j24 && \
-    make install
-
 WORKDIR /root/ros_ws/src
-RUN git clone https://github.com/introlab/rtabmap_ros.git
 
 RUN source /opt/ros/noetic/setup.bash && cd .. && catkin config --cmake-args -DRTABMAP_SYNC_MULTI_RGBD=ON
 
-RUN source /opt/ros/noetic/setup.bash && catkin build rtabmap_ros
-
-COPY robot_main robot_main/
-COPY navigation/ navigation/
-COPY user_interface/ user_interface/
-COPY path_planning/ path_planning/
-
-
+RUN source /opt/ros/noetic/setup.bash
 
 RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
 
-CMD source ../devel/setup.bash && roscore
+CMD cd .. && catkin build && cd src && source ../devel/setup.bash && roscore

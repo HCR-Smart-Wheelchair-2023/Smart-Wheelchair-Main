@@ -5,11 +5,17 @@
     <!-- Can be equal to sim or robot -->
     <arg name="mode"    default="$(optenv MODE sim)"/>
 
+    <!-- Set up the tf transforms -->
+    <node pkg="tf" type="static_transform_publisher" name="laser" args="0 0 0 3.14 0 0 base_link laser 100" />
+    <!-- unless="$(arg sim)" -->
 
     <!-- Start the map server -->
     <include file="$(find path_planning)/launch/path_planning.launch">
-
     </include>
+
+    <!-- Start Rviz -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robot_main)/rviz/config.rviz"/>
+
 
     <group if="$(eval arg('mode') == 'robot')">
             <!-- Listen to the /cmd_vel topic and send the commands to the PI -->
@@ -27,12 +33,9 @@
     <group if="$(eval arg('mode') == 'sim')">
             <!-- TODO send commands to the simulation model -->
             <!-- Open gazebo server, with model and subscribes to topics and stuff -->
+            <include file="$(find wheele_gazebo)/launch/wheele.launch"></include>
+
     </group>
-
-    <!-- <node unless="$(arg sim)" pkg="tf" type="static_transform_publisher" name="laser_broadcaster" args="0 0 0 3.14 0 0 base_link laser 100" /> -->
-
-    <!-- Start rviz -->
-	<!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robot_main)/rviz/arnie.rviz" if="$(arg rviz)"/> -->
 
     <!-- <node pkg="nodelet" type="nodelet" name="external_nodelet_manager" args="manager" output="screen"/> -->
 

@@ -3,13 +3,15 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 import os
 import yaml
+import json
 # 83 y 213 x
 # 70 90 20
 width = 500
 height = 500
 resolution = 0.1
-vectors_cm = [(0,774),(121,0),(0,250),(-2500,0),(0,205),(2500 + 167, 0),(0,-250-205),(221,0),(0,-774),(-121-221-167,0)]
-
+# vectors_cm = [(0,774),(121,0),(0,250),(-2500,0),(0,205),(2500 + 167, 0),(0,-250-205),(221,0),(0,-774),(-121-221-167,0)]
+with open(os.path.dirname(__file__) + "/../config/room_dimensions.json", encoding='utf8') as file:
+    vectors_cm = json.loads(file.read())
 
 # add the coordinates of the points in the map
 Y_OFFSET = int(height/2)

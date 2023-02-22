@@ -32,7 +32,8 @@ def callback(point_cloud_msg: PointCloud2):
         transformed_cloud = do_transform_cloud(point_cloud_msg, trans)
     else:
         transformed_cloud = point_cloud_msg
-    print('Sending Message')
+    print(transformed_cloud.header.frame_id)
+    # print('Sending Message')
     transformed_cloud.header.frame_id = map_frame
     pub.publish(transformed_cloud)
 

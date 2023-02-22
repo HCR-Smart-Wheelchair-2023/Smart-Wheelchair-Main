@@ -50,6 +50,7 @@ run-external-core:
 		-e "XAUTHORITY=${XAUTH}" \
 		-e ROS_MASTER_URI="http://${RNET_COMPUTER_IP}:11311" \
 		-e ROS_IP="${RNET_COMPUTER_IP}" \
+		-e "MODE=robot" \
 		-e RNET_PI_IP=${RNET_PI_IP} \
 		-e RNET_PI_PORT=${RNET_PI_PORT} \
 		-v ~/.Xauthority:/root/.Xauthority:rw \

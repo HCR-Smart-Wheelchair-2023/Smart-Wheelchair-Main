@@ -34,7 +34,7 @@ def callback(point_cloud_msg: PointCloud2):
         transformed_cloud = point_cloud_msg
     print(transformed_cloud.header.frame_id)
     # print('Sending Message')
-    transformed_cloud.header.frame_id = map_frame if sim else camera_framecamera
+    transformed_cloud.header.frame_id = map_frame if sim else camera_frame
     pub.publish(transformed_cloud)
 
 # Subscribe to the point cloud topic

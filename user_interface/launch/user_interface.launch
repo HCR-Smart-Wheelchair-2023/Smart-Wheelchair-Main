@@ -8,6 +8,7 @@
         <arg name="ssl" default="true"/>
         <arg name="certfile" default="$(find user_interface)/cert.pem"/>
         <arg name="keyfile" default="$(find user_interface)/key.pem"/>
+        <arg name="authenticate" default="false"/>
     </include>
 
 

@@ -33,6 +33,7 @@ def odom_callback(msg):
                      "base_link",
                      "odom")
     if not sim:
+        print('sending')
         pub.publish(msg)
 
 

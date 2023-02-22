@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>WHEELE</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/RobotWebTools/roslibjs/src/RosLib.js"></script>
+</head>
+<body>
+    <h1>Wheele</h1>
+    <script src="static/stuff.js"></script>
+    <input type="text" id="inputField">
+    <video id="videoElement" autoplay></video>
+    <div class="button-wrapper">
+        <button id="door" class="button" onclick="door()">door</button>
+        <button id="kitchen" class="button" onclick="kitchen()">kitchen</button>
+        <button id="table" class="button" onclick="table()">table</button>
+        <button id="bathroom" class="button" onclick="bathroom()">bathroom</button>
+        <button id="voice_recog" class="button" onclick="startListening()">voice mode</button>
+        <button id="video" class="button" onclick="startCamera()">start camera</button>
+    </div>
+    <button id="button1">Button 1</button>
+    <button id="button2">Button 2</button>
+
+   <script>
+      const inputField = document.getElementById('inputField');
+      const videoElement = document.getElementById('videoElement');
+    </script>
+</body>
+</html>

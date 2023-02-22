@@ -14,8 +14,10 @@ prev_transform = np.array((-1,-1,-1))
 prev_rotation = np.array((0,0,0,0))
 
 def odom_callback(msg):
+    global pub
     # print(msg)
     global prev_transform
+    global sim
     global prev_rotation
     transform = np.array((msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z))
     rotation = np.array((msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w))
@@ -30,7 +32,8 @@ def odom_callback(msg):
                      rospy.Time.now(),
                      "base_link",
                      "odom")
-
+    if not sim:
+        pub.publish(msg)
 
 
 
@@ -42,4 +45,5 @@ if __name__ == '__main__':
     # TODO change topic based on value of sim
     topic = '/odom' if sim else '/zed2i/zed_node/odom'
     rospy.Subscriber(topic, Odometry, odom_callback)
+    pub = rospy.Publisher('cloud', PointCloud2, queue_size=10)
     rospy.spin()

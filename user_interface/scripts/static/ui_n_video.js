@@ -7,7 +7,7 @@ if ('serviceWorker' in navigator)
 
 // Connect to ROS
  var ros = new ROSLIB.Ros({
-    url : 'ws://192.168.50.101:11311'
+    url : 'ws://192.168.50.101:8080'
 });
 
 // Subscribe to a topic

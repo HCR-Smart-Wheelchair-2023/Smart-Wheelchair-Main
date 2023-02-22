@@ -9,6 +9,8 @@ import math
 # Initialize ROS node
 rospy.init_node('camera_to_map_transform')
 sim = rospy.get_param("mode") == 'sim'
+print('#######')
+print(sim)
 # Create a TransformListener
 tfBuffer = tf2_ros.Buffer()
 listener = tf2_ros.TransformListener(tfBuffer)

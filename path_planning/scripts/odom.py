@@ -40,7 +40,9 @@ def odom_callback(msg):
                      "odom")
     if not sim:
         # print('sending')
-        # msg.header.frame_id = 'odom'
+        msg.pose.pose.position.x += 10
+        msg.pose.pose.position.y += 10
+        msg.header.frame_id = 'odom'
         pub.publish(msg)
 
 

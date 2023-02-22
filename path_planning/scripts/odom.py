@@ -14,6 +14,7 @@ prev_transform = np.array((-1,-1,-1))
 prev_rotation = np.array((0,0,0,0))
 
 def odom_callback(msg):
+    print(msg)
     global prev_transform
     global prev_rotation
     transform = np.array((msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z))

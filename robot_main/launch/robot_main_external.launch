@@ -24,7 +24,7 @@
     <group if="$(eval arg('mode') == 'robot')">
         <node pkg="tf" type="static_transform_publisher" name="odom" args="100 100 0 0 0 0 map odom 100" />
         <node pkg="tf" type="static_transform_publisher" name="camera_link"
-            args="0 0 10 0 0 0 base_link camera_link 100" />
+            args="0 0 1 0 0 0 base_link camera_link 100" />
     </group>
     <!-- Should be configured differently for the jetson that for the  -->
     <include file="$(find path_planning)/launch/odom.launch">

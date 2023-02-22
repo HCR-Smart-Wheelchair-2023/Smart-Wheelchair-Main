@@ -32,7 +32,8 @@ def odom_callback(msg):
     # prev_transform = transform
     # prev_rotation = rotation
     br = tf.TransformBroadcaster()
-    br.sendTransform((msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z),
+    print('publishing transform')
+    br.sendTransform((msg.pose.pose.position.x + 1, msg.pose.pose.position.y + 2, msg.pose.pose.position.z),
                      (msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w),
                      rospy.Time.now(),
                      "base_link",

@@ -34,6 +34,7 @@ def callback(point_cloud_msg: PointCloud2):
     #     transformed_cloud = point_cloud_msg
     # print(transformed_cloud.header.frame_id)
     # print('Sending Message')
+    print(point_cloud_msg.header)
     transformed_cloud = point_cloud_msg
     transformed_cloud.header.frame_id = camera_frame
 

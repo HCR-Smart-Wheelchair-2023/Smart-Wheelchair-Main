@@ -9,17 +9,14 @@
     <!-- x y z (m) yaw pitch roll (radians) -->
     <!-- <node pkg="tf" type="static_transform_publisher" name="zed_link" args="0 0 1 0 0 0
     base_link zed_link 100" /> -->
+    <node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 map odom 100"/>
     <node pkg="tf" type="static_transform_publisher" name="camera_link"
         args="0 0 0 1.57 3.14 1.57 base_link camera_link 100" />
-    <node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 map odom 100" />
 
     <!-- Should be configured differently for the jetson that for the  -->
-    <include file="$(find path_planning)/launch/odom.launch"
-        args="$(optenv MODE sim)">
+    <include file="$(find path_planning)/launch/odom.launch">
     </include>
-    <include file="$(find path_planning)/launch/point_cloud_transform.launch"
-        args="$(optenv MODE sim)">
-    </include>
+    <include file="$(find path_planning)/launch/point_cloud_transform.launch"/>
 
 
     <!-- unless="$(arg sim)" -->

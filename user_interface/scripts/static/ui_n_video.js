@@ -1,5 +1,5 @@
 // Register the service worker
-if ('serviceWorker' in navigator) 
+if ('serviceWorker' in navigator)
 {window.addEventListener('load', () => {navigator.serviceWorker.register('/serviceworker.js');
 });}
 
@@ -7,7 +7,7 @@ if ('serviceWorker' in navigator)
 
 // Connect to ROS
  var ros = new ROSLIB.Ros({
-    url : 'ws://192.168.50.101:8080'
+    url : 'wss://192.168.50.101:8080'
 });
 
 // Subscribe to a topic
@@ -38,7 +38,7 @@ function publishMessage(id) {
     });
     // Publish the message
     publisher.publish(message);
-    //publish to relevant topic 
+    //publish to relevant topic
 }
 
 // Example of getting button id and listening for click
@@ -61,7 +61,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   // button1.addEventListener('click', () => {
   //   speak('Hello, this is button 1.');
   // });
-  
+
   // // Function to speak the message using the browser's SpeechSynthesis API
   // function speak(message) {
   //   const speech = new SpeechSynthesisUtterance();
@@ -91,27 +91,27 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     window.speechSynthesis.speak(msg);
   }
 
-  //------------------------------------------- code to do speech to text might be useful after---------------------------  
+  //------------------------------------------- code to do speech to text might be useful after---------------------------
   function startListening() {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'en-UK';
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-  
+
     recognition.start();
-  
+
     recognition.onresult = function(event) {
       const result = event.results[0][0].transcript;
       inputField.value = result;
     };
   }
 
-  
+
 
   // -----------------------------------------------code to use camera---------------------------------------------------
   // Get the video element
-  const video = document.getElementById('video'); 
-  
+  const video = document.getElementById('video');
+
   function startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {

@@ -30,5 +30,5 @@ include_directories(
 #############
 ## Install ##
 #############
-catkin_install_python(PROGRAMS scripts/user_interface.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+# catkin_install_python(PROGRAMS scripts/user_interface.py
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

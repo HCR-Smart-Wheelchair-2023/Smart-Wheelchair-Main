@@ -1,0 +1,164 @@
+    body {
+        background-color: #add8e6;
+        /* background-image: linear-gradient(to bottom, #ffffff, #f2f2f2); */
+      }
+
+      .button-wrapper {
+        text-align: center;
+      }
+      
+      .button {
+        background-color: #1d1fa1;
+        color: white;
+        padding: 10px 20px;
+        border: 15px solid #00054d;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-right: 50px;
+        width: 150px;
+        height: 150px;
+      }
+
+      .button:hover {
+        background-color: #3e8e51;
+        border: 15px solid #004d15;
+    }
+    .button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
+         /* h1 {
+        font-family: 'Courier New', Courier, monospace ;
+        font-size: 100px;
+        color: #1d1fa1;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 2px;
+        border-bottom: 2px solid #1d1fa1;
+        margin-bottom: 20px;
+
+        -webkit-text-stroke: 3px #0e87d8;
+      } */
+      
+      h1 {
+        font-size: 72px;
+        font-weight: bold;
+        font-family:Arial, Helvetica, sans-serif;
+        color: #ffcc00;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 6px;
+        text-shadow: 4px 4px #666;
+        margin-bottom: 50px;
+        border-bottom: 5px dotted #ffcc00;
+        animation: rainbow 2s linear infinite;
+      }
+      
+      @keyframes rainbow {
+        0% {
+          color: #ffcc00;
+        }
+        16.7% {
+          color: #ff8000;
+        }
+        33.3% {
+          color: #ff3300;
+        }
+        50% {
+          color: #cc00cc;
+        }
+        66.7% {
+          color: #3366ff;
+        }
+        83.3% {
+          color: #33cc33;
+        }
+        100% {
+          color: #ffcc00;
+        }
+      } 
+    /* Define styles for the button when clicked 
+    button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+     
+       h1 {
+        font-size: 72px;
+        font-weight: bold;
+        font-family:Arial, Helvetica, sans-serif;
+        color: #ffcc00;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 6px;
+        text-shadow: 4px 4px #666;
+        margin-bottom: 50px;
+        border-bottom: 5px dotted #ffcc00;
+        animation: rainbow 2s linear infinite;
+      }
+      
+      @keyframes rainbow {
+        0% {
+          color: #ffcc00;
+        }
+        16.7% {
+          color: #ff8000;
+        }
+        33.3% {
+          color: #ff3300;
+        }
+        50% {
+          color: #cc00cc;
+        }
+        66.7% {
+          color: #3366ff;
+        }
+        83.3% {
+          color: #33cc33;
+        }
+        100% {
+          color: #ffcc00;
+        }
+      } 
+	/* Define styles for the button 
+    button {
+        background-color: #4CAF50; /* Green 
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    
+    /* Define styles for the button when hovered over 
+    button:hover {
+        background-color: #3e8e41;
+    }
+    
+    /* Define styles for the button when clicked 
+    button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
+
+      */
+
+      /* h1 {
+        font-size: 48px;
+        font-weight: bold;
+        border: 4px solid #333;
+        padding: 20px;
+        text-align: center;
+      } */
+ 

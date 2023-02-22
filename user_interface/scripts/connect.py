@@ -1,6 +1,9 @@
+#! /usr/bin/env python3
+
 ## http://146.169.149.69:5000
 
 from flask import Flask, send_from_directory
+import os
 #import crypiptography
 #from openssl import SSL
 

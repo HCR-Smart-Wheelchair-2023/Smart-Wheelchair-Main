@@ -38,14 +38,19 @@ function publishMessage() {
     });
     // Publish the message
     publisher.publish(message);
+    //publish to relevant topic 
 }
+//example of geting button id and listening for click
+const doorBut = document.getElementById('door');
+doorBut.addEventListener('click',publishMessage());
 
-// Get a reference to the button element
-var button = document.getElementById('door');
-
-// Add a click event listener to the button
-button.addEventListener('click', handleClick);
-
+//example of publishing at the click of a button
+// const doorBut = document.getElementById('door');
+// // Add a click event listener to the button
+// doorBut.addEventListener('click',() => {
+//   const myMessage = new ROSLIB.Message({ data: 'go to the door' });
+//   myTopic.publish(myMessage);
+// });
 //--------------------------------------------------------speech functions------------------------------------------------------
 
 
@@ -99,6 +104,8 @@ function door() {
     };
   }
 
+  
+
   // -----------------------------------------------code to use camera---------------------------------------------------
   // Get the video element
   const video = document.getElementById('video'); 
@@ -113,3 +120,40 @@ function door() {
         console.error('Error accessing camera:', error);
       });
   }
+
+
+  //   // Get a video stream from the iPad Pro's camera
+  // const constraints = { video: true };
+  // const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+  // // Create a video element and set the stream as its source
+  // const video = document.createElement('video');
+  // video.srcObject = stream;
+  // await video.play();
+
+  // // Create a FaceDetector object
+  // const faceDetector = new window.FaceDetector();
+
+  // // Detect faces in the video stream
+  // const faces = await faceDetector.detect(video);
+
+  // // Get the face mesh data for the first face detected
+  // const face = faces[0];
+  // const faceMesh = face.landmarks.get('faceMesh');
+
+  //   // -----------------------------------------------code to use LIDAR---------------------------------------------------
+
+
+  //   // Request an XR session with the lidar feature
+  // const xrSession = await navigator.xr.requestSession('immersive-ar', {
+  //   requiredFeatures: ['lidar'],
+  // });
+
+  // // Get an XRFrame of reference
+  // const xrFrameOfRef = await xrSession.requestFrameOfReference('eye-level');
+
+  // // Get an XRPointCloud
+  // const xrPointCloud = await xrFrameOfRef.getPointCloud();
+
+  // // Get the points from the point cloud
+  // const points = xrPointCloud.points;

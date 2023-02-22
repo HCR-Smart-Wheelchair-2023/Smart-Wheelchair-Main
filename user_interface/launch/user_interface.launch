@@ -3,5 +3,12 @@
 
     <!-- Run the script that listens to the /user_intput topic and sends target to the navigation  -->
 	<node pkg="user_interface" type="user_interface.py" name="user_interface" output="screen" />
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
+     <arg name="port" value="8080"/>
+        <arg name="ssl" default="true"/>
+        <arg name="ssl_certfile" default="$(find user_interface)/cert.pem"/>
+        <arg name="ssl_keyfile" default="$(find user_interface)/key.pem"/>
+    </include>
+
 
 </launch>

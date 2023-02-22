@@ -64,7 +64,7 @@
     <group if="$(eval arg('mode') == 'sim')">
         <!-- TODO send commands to the simulation model -->
         <!-- Open gazebo server, with model and subscribes to topics and stuff -->
-        <include file="$(find wheele_gazebo)/launch/wheele.launch"></include>
+        <!-- <include file="$(find wheele_gazebo)/launch/wheele.launch"></include> -->
 
     </group>
 

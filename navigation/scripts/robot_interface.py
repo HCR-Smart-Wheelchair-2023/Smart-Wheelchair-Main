@@ -125,7 +125,7 @@ class rmv_ros_simple:
     def call_back_twist(self, cmd_msg):
         rospy.loginfo(cmd_msg)
         # parse the command signals
-        amplifier = 3
+        amplifier = 10
         self.ang_deg_cmd = np.clip(cmd_msg.angular.z/1.57*amplifier, -1, 1)
         self.lin_cmd = cmd_msg.linear.x + cmd_msg.linear.y
         self.lin_cmd = np.clip(self.lin_cmd*amplifier, -1, 1)

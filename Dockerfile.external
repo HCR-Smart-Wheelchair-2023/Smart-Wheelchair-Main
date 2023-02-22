@@ -51,8 +51,11 @@ COPY wheele_description/ wheele_description/
 COPY room_description/ room_description/
 COPY wheele_gazebo/ wheele_gazebo/
 
+WORKDIR /root/ros_ws/src
 
 RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
 
-CMD cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build && source ../devel/setup.bash && roscore
+WORKDIR /root/ros_ws/src
+
+CMD cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build && source ./devel/setup.bash && roscore
 # CMD source ../devel/setup.bash && roslaunch arnie_main main_external.launch --screen

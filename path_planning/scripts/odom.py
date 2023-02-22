@@ -40,6 +40,6 @@ if __name__ == '__main__':
     sim = rospy.get_param("mode") == 'sim'
     print(sim)
     # TODO change topic based on value of sim
-    topic = '/odom' if sim else '/zed21/zed_node/odom/Odometry'
+    topic = '/odom' if sim else '/zed21/zed_node/odom'
     rospy.Subscriber('/odom', Odometry, odom_callback)
     rospy.spin()

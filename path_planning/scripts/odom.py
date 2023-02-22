@@ -45,5 +45,5 @@ if __name__ == '__main__':
     # TODO change topic based on value of sim
     topic = '/odom' if sim else '/zed2i/zed_node/odom'
     rospy.Subscriber(topic, Odometry, odom_callback)
-    pub = rospy.Publisher('cloud', PointCloud2, queue_size=10)
+    pub = rospy.Publisher('/odom', Odometry, queue_size=10)
     rospy.spin()

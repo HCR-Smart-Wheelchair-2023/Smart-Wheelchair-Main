@@ -1,4 +1,5 @@
 local_costmap:
+  global_frame: odom
   update_frequency: 5
   publish_frequency: 5
   transform_tolerance: 0.25

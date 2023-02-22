@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <!-- Run the script that listens to the cmd_vel topic and sends commands to the robot  -->
+	<node pkg="path_planning" type="point_cloud_transform.py" name="point_cloud_transform" output="screen" />
+
+</launch>

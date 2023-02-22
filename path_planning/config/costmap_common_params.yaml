@@ -19,8 +19,9 @@ plugins:
 obstacle_layer:
     observation_sources: point_cloud_sensor
     point_cloud_sensor: {
+        sensor_frame: camera_link,
         data_type: PointCloud2,
-        topic: /zed/zed_node/point_cloud/cloud_registered,
+        topic: /cloud,
         marking: true,
         clearing: true,
         inf_is_valid: true

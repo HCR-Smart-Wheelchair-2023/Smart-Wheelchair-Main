@@ -7,9 +7,6 @@ JOYSTICK = "with_joystick"
 build-external:
 	DOCKER_BUILDKIT=1 docker build -t amiga_base_external:latest -f Dockerfile.external .
 
-build-sim:
-	DOCKER_BUILDKIT=1 docker build -t sim:latest -f Dockerfile.sim .
-
 build-jetson:
 	DOCKER_BUILDKIT=1 docker build -t jetson_base:latest -f Dockerfile.jetson .
 
@@ -91,6 +88,9 @@ run-external-main:
 topic-list:
 	ROS_MASTER_URI="http://${RNET_COMPUTER_IP}:11311" rostopic list
 
+build-sim:
+	DOCKER_BUILDKIT=1 docker build -t sim:latest \
+	-f Dockerfile.sim .
 
 
 run-sim-core:
@@ -110,6 +110,7 @@ run-sim-core:
 		-v $(current_dir)/path_planning/:/root/ros_ws/src/path_planning \
 		-v $(current_dir)/emotion/:/root/ros_ws/src/emotion \
 		-v $(current_dir)/wheele_description/:/root/ros_ws/src/wheele_description \
+		-v $(current_dir)/room_description/:/root/ros_ws/src/room_description \
 		-v $(current_dir)/wheele_gazebo/:/root/ros_ws/src/wheele_gazebo \
 	    --privileged \
 		--network host \

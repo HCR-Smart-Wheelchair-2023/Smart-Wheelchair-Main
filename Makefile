@@ -91,6 +91,9 @@ run-external-main:
 topic-list:
 	ROS_MASTER_URI="http://${RNET_COMPUTER_IP}:11311" rostopic list
 
+reset-zed-odom:
+	ROS_MASTER_URI="http://${RNET_COMPUTER_IP}:11311" rosservice call /zed/reset_odometry
+
 build-sim:
 	DOCKER_BUILDKIT=1 docker build -t sim:latest \
 	-f Dockerfile.sim .

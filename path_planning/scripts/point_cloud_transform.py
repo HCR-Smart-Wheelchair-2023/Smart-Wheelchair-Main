@@ -22,19 +22,28 @@ map_frame = 'map'
 # Define a callback function for the point cloud subscriber
 def callback(point_cloud_msg: PointCloud2):
     global sim
+    try:
+        trans = tfBuffer.lookup_transform(map_frame, camera_frame, rospy.Time())
+        print(trans)
+    except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
+        ...
     # Wait for the transform to become available
-    if sim:
-        try:
-            trans = tfBuffer.lookup_transform(map_frame, camera_frame, rospy.Time())
-        except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
-            rospy.logwarn('Failed to get transform: {}'.format(str(e)))
-            return
-        transformed_cloud = do_transform_cloud(point_cloud_msg, trans)
-    else:
-        transformed_cloud = point_cloud_msg
+    # if sim:
+    #     try:
+    #         trans = tfBuffer.lookup_transform(map_frame, camera_frame, rospy.Time())
+    #     except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
+    #         rospy.logwarn('Failed to get transform: {}'.format(str(e)))
+    #         return
+    #     transformed_cloud = do_transform_cloud(point_cloud_msg, trans)
+    # else:
+    #     transformed_cloud = point_cloud_msg
     # print(transformed_cloud.header.frame_id)
     # print('Sending Message')
-    transformed_cloud.header.frame_id = map_frame if sim else camera_frame
+    # print(point_cloud_msg.header)
+    transformed_cloud = point_cloud_msg
+    transformed_cloud.header.frame_id = camera_frame
+
+    # transformed_cloud.header.frame_id = map_frame if sim else camera_frame
     pub.publish(transformed_cloud)
 
 # Subscribe to the point cloud topic

@@ -32,6 +32,9 @@ def odom_callback(msg):
     # prev_transform = transform
     # prev_rotation = rotation
     br = tf.TransformBroadcaster()
+    print('publishing transform')
+    msg.pose.pose.position.x += 10
+    msg.pose.pose.position.y += 10
     br.sendTransform((msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z),
                      (msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w),
                      rospy.Time.now(),
@@ -39,7 +42,7 @@ def odom_callback(msg):
                      "odom")
     if not sim:
         # print('sending')
-        # msg.header.frame_id = 'odom'
+        msg.header.frame_id = 'odom'
         pub.publish(msg)
 
 

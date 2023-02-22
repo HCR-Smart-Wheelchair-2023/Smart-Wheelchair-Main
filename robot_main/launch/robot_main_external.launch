@@ -56,9 +56,9 @@
 
         </include>
 
-        <include file="$(find user_interface)/launch/user_interface.launch">
+        <!-- <include file="$(find user_interface)/launch/user_interface.launch">
 
-        </include>
+        </include> -->
     </group>
 
     <group if="$(eval arg('mode') == 'sim')">

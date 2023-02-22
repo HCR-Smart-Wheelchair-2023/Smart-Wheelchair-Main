@@ -100,10 +100,14 @@ function door() {
   }
 
   // -----------------------------------------------code to use camera---------------------------------------------------
+  // Get the video element
+  const video = document.getElementById('video'); 
+  
   function startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
         videoElement.srcObject = stream;
+        video.play();
       })
       .catch(error => {
         console.error('Error accessing camera:', error);

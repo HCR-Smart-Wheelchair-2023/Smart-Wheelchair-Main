@@ -38,14 +38,19 @@ function publishMessage() {
     });
     // Publish the message
     publisher.publish(message);
+    //publish to relevant topic 
 }
+//example of geting button id and listening for click
+const doorBut = document.getElementById('door');
+doorBut.addEventListener('click',publishMessage());
 
-// Get a reference to the button element
-var button = document.getElementById('door');
-
-// Add a click event listener to the button
-button.addEventListener('click', handleClick);
-
+//example of publishing at the click of a button
+// const doorBut = document.getElementById('door');
+// // Add a click event listener to the button
+// doorBut.addEventListener('click',() => {
+//   const myMessage = new ROSLIB.Message({ data: 'go to the door' });
+//   myTopic.publish(myMessage);
+// });
 //--------------------------------------------------------speech functions------------------------------------------------------
 
 
@@ -98,6 +103,8 @@ function door() {
       inputField.value = result;
     };
   }
+
+  
 
   // -----------------------------------------------code to use camera---------------------------------------------------
   // Get the video element

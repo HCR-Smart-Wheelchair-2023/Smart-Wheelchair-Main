@@ -29,8 +29,8 @@ def odom_callback(msg):
         return
     last_time = time.time()
     # print(msg)
-    prev_transform = transform
-    prev_rotation = rotation
+    # prev_transform = transform
+    # prev_rotation = rotation
     br = tf.TransformBroadcaster()
     print('publishing transform')
     br.sendTransform((msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z),

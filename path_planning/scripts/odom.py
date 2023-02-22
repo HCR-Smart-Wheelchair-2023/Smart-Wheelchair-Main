@@ -20,6 +20,7 @@ def odom_callback(msg):
     rotation = np.array((msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w))
     if np.linalg.norm(transform-prev_transform) < 0.04 and np.linalg.norm(rotation-prev_rotation) < 0.04:
         return
+    print(msg)
     prev_transform = transform
     prev_rotation = rotation
     br = tf.TransformBroadcaster()

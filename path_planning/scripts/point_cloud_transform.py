@@ -22,11 +22,11 @@ map_frame = 'map'
 # Define a callback function for the point cloud subscriber
 def callback(point_cloud_msg: PointCloud2):
     global sim
-    try:
-        trans = tfBuffer.lookup_transform(map_frame, camera_frame, rospy.Time())
-        print(trans)
-    except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
-        ...
+    # try:
+    #     trans = tfBuffer.lookup_transform(map_frame, camera_frame, rospy.Time())
+    #     print(trans)
+    # except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
+    #     ...
     # Wait for the transform to become available
     # if sim:
     #     try:

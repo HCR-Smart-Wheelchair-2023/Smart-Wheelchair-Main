@@ -2,7 +2,7 @@
 <launch>
 
     <!-- Run the script that listens to the /user_intput topic and sends target to the navigation  -->
-	<node pkg="user_interface" type="user_interface.py" name="user_interface" output="screen" />
+	<node pkg="user_interface" type="connect.py" name="connect" output="screen" />
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" >
      <arg name="port" value="8080"/>
         <arg name="ssl" default="true"/>

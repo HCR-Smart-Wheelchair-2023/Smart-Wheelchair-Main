@@ -38,7 +38,7 @@ def callback(point_cloud_msg: PointCloud2):
 
 # Subscribe to the point cloud topic
 # TODO change for zed2i
-topic = '/camera/depth/points' if sim else '/zed21/zed_node/point_cloud/cloud_registered'
+topic = '/camera/depth/points' if sim else '/zed2i/zed_node/point_cloud/cloud_registered'
 sub = rospy.Subscriber(topic, PointCloud2, callback)
 # Create a publisher for the transformed point cloud
 pub = rospy.Publisher('cloud', PointCloud2, queue_size=10)

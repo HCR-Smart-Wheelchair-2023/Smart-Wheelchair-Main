@@ -9,20 +9,25 @@ import sys
 import numpy as np
 from nav_msgs.msg import Odometry
 from time import sleep
+import time
 
-prev_transform = np.array((-1,-1,-1))
-prev_rotation = np.array((0,0,0,0))
-
+# prev_transform = np.array((-1,-1,-1))
+# prev_rotation = np.array((0,0,0,0))
+last_time = 0
 def odom_callback(msg):
     global pub
     # print(msg)
     global prev_transform
     global sim
     global prev_rotation
-    transform = np.array((msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z))
-    rotation = np.array((msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w))
-    if np.linalg.norm(transform-prev_transform) < 0.04 and np.linalg.norm(rotation-prev_rotation) < 0.04:
+    global last_time
+    # transform = np.array((msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z))
+    # rotation = np.array((msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w))
+    # if np.linalg.norm(transform-prev_transform) < 0.04 and np.linalg.norm(rotation-prev_rotation) < 0.04:
+    #     return
+    if time.time() - last_time < 0.2:
         return
+    last_time = time.time()
     # print(msg)
     prev_transform = transform
     prev_rotation = rotation

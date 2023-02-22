@@ -61,6 +61,7 @@ run-external-core:
 		-v $(current_dir)/user_interface/:/root/ros_ws/src/user_interface \
 		-v $(current_dir)/path_planning/:/root/ros_ws/src/path_planning \
 		-v $(current_dir)/emotion/:/root/ros_ws/src/emotion \
+		-v $(current_dir)/user_interface/:/root/ros_ws/src/user_interface \
 	    --privileged \
 		--network host \
 		--name external \

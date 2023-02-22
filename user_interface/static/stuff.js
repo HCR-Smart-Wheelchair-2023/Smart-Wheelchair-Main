@@ -7,13 +7,13 @@ if ('serviceWorker' in navigator)
 
 // Connect to ROS
  var ros = new ROSLIB.Ros({
-    url : 'ws:// ROS ip adress here and rosbridge port number'
+    url : 'ws://192.168.50.101:11311'
 });
 
 // Subscribe to a topic
 var listener = new ROSLIB.Topic({
     ros : ros,
-    name : '/my_topic',
+    name : '/target_command',
     messageType : 'std_msgs/String'
 });
 
@@ -31,26 +31,28 @@ listener.subscribe(function(message) {
 });
 
 // Define the function to execute when the button is clicked
-function publishMessage() {
+function publishMessage(id) {
     // Create a message
     var message = new ROSLIB.Message({
-        data : 'Hello, ROS!'
+        data : id
     });
     // Publish the message
     publisher.publish(message);
     //publish to relevant topic 
 }
-//example of geting button id and listening for click
-const doorBut = document.getElementById('door');
-doorBut.addEventListener('click',publishMessage());
 
-//example of publishing at the click of a button
-// const doorBut = document.getElementById('door');
-// // Add a click event listener to the button
-// doorBut.addEventListener('click',() => {
-//   const myMessage = new ROSLIB.Message({ data: 'go to the door' });
-//   myTopic.publish(myMessage);
-// });
+// Example of getting button id and listening for click
+const doorBut = document.getElementById('door');
+const kitchenBut = document.getElementById('kitchen');
+const tableBut = document.getElementById('table');
+const bathroomBut = document.getElementById('bathroom');
+
+doorBut.addEventListener('click',publishMessage('door'));
+kitchenBut.addEventListener('click',publishMessage('kitchen'));
+tableBut.addEventListener('click',publishMessage('table'));
+bathroomBut.addEventListener('click',publishMessage('bathroom'));
+
+
 //--------------------------------------------------------speech functions------------------------------------------------------
 
 
@@ -66,7 +68,7 @@ doorBut.addEventListener('click',publishMessage());
   //   speech.text = message;
   //   window.speechSynthesis.speak(speech);
   // }
-function door() {
+  function door() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the door';
     window.speechSynthesis.speak(msg);

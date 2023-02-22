@@ -85,7 +85,7 @@ run-external-main:
 		source /opt/ros/noetic/setup.bash && \
 		source ../devel/setup.bash && \
 		export ROS_IP=192.168.50.101 && \
-		export ROS_MASTER_URI=http:192.168.50.101:11311 && \
+		export ROS_MASTER_URI=http://192.168.50.101:11311 && \
 		roslaunch robot_main robot_main_external.launch --screen"
 
 topic-list:

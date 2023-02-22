@@ -86,10 +86,14 @@ run-external-main:
 		source ../devel/setup.bash && \
 		export ROS_IP=192.168.50.101 && \
 		export ROS_MASTER_URI=http://192.168.50.101:11311 && \
+		rosservice call /zed/reset_odometry && \
 		roslaunch robot_main robot_main_external.launch --screen"
 
 topic-list:
 	ROS_MASTER_URI="http://${RNET_COMPUTER_IP}:11311" rostopic list
+
+reset-zed-odom:
+	ROS_MASTER_URI="http://${RNET_COMPUTER_IP}:11311" rosservice call /zed/reset_odometry
 
 build-sim:
 	DOCKER_BUILDKIT=1 docker build -t sim:latest \

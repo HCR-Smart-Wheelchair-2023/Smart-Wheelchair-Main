@@ -41,6 +41,7 @@ def odom_callback(msg):
     if not sim:
         # print('sending')
         # msg.header.frame_id = 'odom'
+        print(msg)
         pub.publish(msg)
 
 

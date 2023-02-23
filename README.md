@@ -53,6 +53,13 @@ make run-external-bash
 
 ## Starting Simulation for Sim Development
 
+If not already done, install the required ROS packages:
+```
+sudo apt-get install ros-noetic-ros-control ros-noetic-ros-controllers
+```
+
+Then, start the simulation (world, model and controllers) with the following command:
+
 ```
 roslaunch wheele_gazebo wheele.launch
 ```

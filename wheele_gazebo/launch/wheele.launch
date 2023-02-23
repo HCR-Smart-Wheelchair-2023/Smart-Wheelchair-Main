@@ -7,9 +7,32 @@
     <arg name="paused" value="false"/>
     <!-- more default parameters can be changed here -->
   </include>
+
+  <!-- Spawn the room model -->
   <node name="spawn_room" pkg="gazebo_ros" type="spawn_model" args="-file $(find room_description)/urdf/room_1.urdf -urdf -z 0 -x 4 -y 4.3
-  -Y -1.57
-  -model room_description" />
-  <node name="spawn_wheele" pkg="gazebo_ros" type="spawn_model" args="-file $(find wheele_description)/urdf/wheelchair_3.urdf -urdf -z 1 -x 2.5 -y 2.5 -Y 1.57 -model wheelchair_3" />
-  <!-- <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find wheele_description)/urdf/baxter.urdf -urdf -z 1 -model baxter" /> -->
+  -Y -1.57 -model room_description" />
+
+  <!-- Load the URDF wheele model desciption -->
+  <param name="wheele/robot_description"
+    command="$(find xacro)/xacro --inorder '$(find wheele_description)/urdf/wheelchair_3.urdf'" /> 
+
+  <!-- Spawn the URDF wheele model -->
+  <node name="model_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" ns="wheele"
+    args="-urdf -param robot_description -model wheele -x 2 -y 2 -z 0.5" />
+
+  <!-- Find the controller config file -->
+  <rosparam file="$(find wheele_sim_control)/config/wheele_control.yaml" command="load"/>
+
+  <!-- Relay /cmd_vel to input topic -->
+  <node name="relay" pkg="topic_tools" type="relay" respawn="false" output="screen" 
+    args="/cmd_vel /wheele/mobile_base_controller/cmd_vel"/>
+
+  <!-- Start controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="wheele" args="mobile_base_controller joint_state_controller"/>
+
+  <!-- Convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" ns="wheele" output="screen" />
+
 </launch>

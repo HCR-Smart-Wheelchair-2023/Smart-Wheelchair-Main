@@ -3,7 +3,7 @@ import rospy
 import math
 
 from people_msg.msg import People
-
+from zed-ros-interfaces.msg import ObjectsStamped
 from nav_msgs.msg import OccupancyGrid
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
@@ -41,7 +41,7 @@ def social_predict(costmap, object_pos, velocity, t):
 class MapProcessor:
     def __init__(self):
         self.map_sub = rospy.Subscriber('/map', OccupancyGrid, self.map_callback_map, queue_size=1)
-        self.update_sub = rospy.Subscriber('/tracked_people', People, self.map_callback_update, queue_size=1)
+        self.update_sub = rospy.Subscriber('/tracked_people', ObjectsStamped, self.map_callback_update, queue_size=1)
         self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=10)
         self.latest_map = None
 
@@ -53,8 +53,8 @@ class MapProcessor:
 
         #predict for each detected object
         adjusted_cells = []
-        for person in data.people:
-            adjusted_cells += social_predict(self.latest_map, person.pose.pose.position, person.twist.twist.linear, t)
+        for person in data.objects:
+            adjusted_cells += social_predict(self.latest_map, person.position, person.velocity, t)
         
         adj_map = OccupancyGrid()       
         adj_map.header = self.latest_map.header

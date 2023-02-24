@@ -32,6 +32,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -y  && \
     ros-noetic-navigation
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ros-noetic-tf2-sensor-msgs
+RUN DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-pointcloud-to-laserscan ros-noetic-gmapping
 
 WORKDIR /root/ros_ws/src
 

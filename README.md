@@ -56,3 +56,11 @@ make run-external-bash
 ```
 roslaunch wheele_gazebo wheele.launch
 ```
+
+
+
+- Set the odom-base_link from the odom topic for the zed
+- Set the map-odom to make the map-base equal pose from pose topic
+
+- Set up a topic that allows setting of the current pose
+- 

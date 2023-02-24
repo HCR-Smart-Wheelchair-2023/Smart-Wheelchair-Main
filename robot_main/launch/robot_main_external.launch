@@ -10,26 +10,57 @@
     <!-- <node pkg="tf" type="static_transform_publisher" name="zed_link" args="0 0 1 0 0 0
     base_link zed_link 100" /> -->
 
-    <!-- <node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 map odom
-    100"/> -->
+
     <!-- <node pkg="tf" type="static_transform_publisher" name="camera_link"
     args="0 0 0 1.57 3.14 1.57 base_link camera_link 100" /> -->
 
+    <!-- Publish messages on the odom topic to the odom frame -->
+    <include file="$(find path_planning)/launch/odom.launch">
+    </include>
+    <include file="$(find path_planning)/launch/pose.launch">
+    </include>
 
     <group if="$(eval arg('mode') == 'sim')">
-        <node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 map odom 100" />
+        <!-- Odom is always correct to no need for correction between odom and maps -->
+        <!-- <node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 map odom 100" /> -->
+        <!-- Offset of camera fromt the robot base_link -->
         <node pkg="tf" type="static_transform_publisher" name="camera_link"
             args="0 0 0 1.57 3.14 1.57 base_link camera_link 100" />
-        <include file="$(find path_planning)/launch/odom.launch">
-            </include>
     </group>
     <group if="$(eval arg('mode') == 'robot')">
-        <!-- <node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 map odom 100" /> -->
+        <!-- No need to publish Odom -->
+        <!-- Set the coordinate of the camera fromt he base_link -->
         <node pkg="tf" type="static_transform_publisher" name="camera_link"
             args="0 0 0.6 0 0 0 base_link camera_link 100" />
     </group>
+
+
     <!-- Should be configured differently for the jetson that for the  -->
     <include file="$(find path_planning)/launch/point_cloud_transform.launch" />
+
+    <!-- Convert PointCloud to laserscan for the slam mapping -->
+    <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan_node">
+        <remap from="cloud_in" to="cloud" />
+        <rosparam>
+            target_frame: map
+            min_height: 0.01
+            angle_increment: 0.006038462
+            use_inf: true
+            linearUpdate: 0.1
+            occ_thresh: 0.1
+        </rosparam>
+    </node>
+
+    <!-- Set up gmapping -->
+    <node pkg="gmapping" type="slam_gmapping" name="gmapping">
+        <remap from="map" to="gmap" />
+        <param name="base_frame" value="base_link"/>
+        <param name="map_frame" value="map"/>
+        <param name="odom_frame" value="odom" />
+        <param name="delta" value="0.1" />
+        <param name="maxUrange" value="5" />
+        <param name="maxRange" value="6" />
+    </node>
 
 
     <!-- unless="$(arg sim)" -->

@@ -42,9 +42,13 @@ RUN source /opt/ros/noetic/setup.bash && catkin build rtabmap_ros
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ros-noetic-tf2-sensor-msgs
 
 RUN DEBIAN_FRONTEND=noninteractive apt install -y python3-pip && pip install flask
-RUN DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-rosbridge-server-suite
+RUN DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-pointcloud-to-laserscan ros-noetic-gmapping
+
 WORKDIR /root/ros_ws/src
 
+RUN git clone https://github.com/stereolabs/zed-ros-interfaces.git
+RUN cd .. && rosdep install --from-paths src --ignore-src -r -y
+WORKDIR /root/ros_ws/src
 COPY robot_main robot_main/
 COPY navigation/ navigation/
 COPY user_interface/ user_interface/

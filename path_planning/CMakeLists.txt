@@ -32,3 +32,12 @@ include_directories(
 #############
 catkin_install_python(PROGRAMS scripts/path_planning.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/odom.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/pose.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/point_cloud_transform.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

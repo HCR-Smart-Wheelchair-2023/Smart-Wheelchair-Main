@@ -16,8 +16,6 @@ app = Flask(__name__, static_url_path='/static')
 def index():
     return app.send_static_file('main.html')
 
-
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', ssl_context='adhoc')
 

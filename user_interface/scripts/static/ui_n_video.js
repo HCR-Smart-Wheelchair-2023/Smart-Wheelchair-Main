@@ -68,27 +68,45 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   //   speech.text = message;
   //   window.speechSynthesis.speak(speech);
   // }
+  function post_dest(_goal){
+    fetch('/goal_dest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ goal: _goal })
+    })
+    .then(response => response.text())
+    .then(result => {
+      console.log('Result:', result);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
   function door() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the door';
     window.speechSynthesis.speak(msg);
-  }
+    post_dest('door');
+    }
 
   function kitchen() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the kitchen';
     window.speechSynthesis.speak(msg);
+    post_dest('kitchen');
   }
 
   function table() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the table';
     window.speechSynthesis.speak(msg);
+    post_dest('table')
   }
   function bathroom() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the bathroom';
     window.speechSynthesis.speak(msg);
+    post_dest('bathroom')
   }
 
   //------------------------------------------- code to do speech to text might be useful after---------------------------

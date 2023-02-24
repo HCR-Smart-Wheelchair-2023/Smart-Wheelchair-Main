@@ -44,5 +44,14 @@ def process_image():
     # Return a result
     return 'Image processed successfully'
 
+@app.route('/goal_dest', methods=['POST'])
+def get_goal():
+    data = request.get_json()
+    goal = data['goal']
+    print(goal)
+    with open("goal.txt", "w") as f:
+        f.write(goal)
+    return 'New goal'
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', ssl_context='adhoc',debug=True)

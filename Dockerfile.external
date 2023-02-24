@@ -52,6 +52,12 @@ COPY path_planning/ path_planning/
 COPY wheele_description/ wheele_description/
 COPY room_description/ room_description/
 COPY wheele_gazebo/ wheele_gazebo/
+COPY social_predictions/ social_predictions/
+COPY people_msg/ people_msg/
+COPY zed_dummy/ zed_dummy/
+
+
+
 
 WORKDIR /root/ros_ws/src
 

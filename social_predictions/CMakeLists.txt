@@ -104,7 +104,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  CATKIN_DEPENDS people_msg
+  CATKIN_DEPENDS people_msg zed_interfaces
 #  INCLUDE_DIRS include
 #  LIBRARIES social_predictions
 #  CATKIN_DEPENDS nav_msgs std_msgs

@@ -14,16 +14,18 @@
     <!-- <node pkg="tf" type="static_transform_publisher" name="camera_link"
     args="0 0 0 1.57 3.14 1.57 base_link camera_link 100" /> -->
 
+    <!-- Publish messages on the odom topic to the odom frame -->
+    <include file="$(find path_planning)/launch/odom.launch">
+    </include>
+    <include file="$(find path_planning)/launch/pose.launch">
+    </include>
 
     <group if="$(eval arg('mode') == 'sim')">
         <!-- Odom is always correct to no need for correction between odom and maps -->
-        <node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 map odom 100" />
+        <!-- <node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 map odom 100" /> -->
         <!-- Offset of camera fromt the robot base_link -->
         <node pkg="tf" type="static_transform_publisher" name="camera_link"
             args="0 0 0 1.57 3.14 1.57 base_link camera_link 100" />
-        <!-- Publish messages on the odom topic to the odom frame -->
-        <include file="$(find path_planning)/launch/odom.launch">
-        </include>
     </group>
     <group if="$(eval arg('mode') == 'robot')">
         <!-- No need to publish Odom -->
@@ -31,6 +33,8 @@
         <node pkg="tf" type="static_transform_publisher" name="camera_link"
             args="0 0 0.6 0 0 0 base_link camera_link 100" />
     </group>
+
+
     <!-- Should be configured differently for the jetson that for the  -->
     <include file="$(find path_planning)/launch/point_cloud_transform.launch" />
 

@@ -36,8 +36,8 @@ if __name__ == '__main__':
     rospy.init_node('odom_to_base_link_transform')
     sim = rospy.get_param("mode") == 'sim'
     # TODO change topic based on value of sim
-    # topic = '/odom' if sim else '/zed2i/zed_node/odom'
-    topic = '/odom'
+    topic = '/odom' if sim else '/zed2i/zed_node/odom'
+    # topic = '/odom'
     rospy.Subscriber(topic, Odometry, odom_callback)
     pub = rospy.Publisher('/odom', Odometry, queue_size=10)
     rospy.spin()

@@ -31,8 +31,8 @@ def social_predict(costmap, object_pos, velocity, t):
         y = grid_y + round(i * cells_to_move_y / num_steps) * y_step
         if x >= 0 and x < costmap.info.width and y >= 0 and y < costmap.info.height:
             idx = int(x + y * costmap.info.width)
-            if costmap.data[idx] == 0: # Cell is unoccupied
-                cells.append(idx)
+            #if costmap.data[idx] == 0: # Cell is unoccupied
+            cells.append(idx)
 
     return cells
 
@@ -48,15 +48,26 @@ class MapProcessor:
         self.latest_map = data
 
     def map_callback_update(self, data):
-        object_pos = Point(1.0, 2.0, 0.0)
-        velocity = Point(1.0, 0.5, 0.0)
         t = 5.0
-        adjusted_cells = social_predict(self.latest_map, object_pos, velocity, t)
+
+        object_pos1 = Point(1.0, 2.0, 0.0)
+        velocity1 = Point(1.0, 0.5, 0.0)
+        object_pos2 = Point(5.0, 2.0, 0.0)
+        velocity2 = Point(-1.0, 0.5, 0.0)
+        object_pos3 = Point(10.0, 3.0, 0.0)
+        velocity3 = Point(0.1, -0.5, 0.0)
+
+        objs = [[object_pos1, velocity1], [object_pos2, velocity2], [object_pos3, velocity3]]
+
+        # predict for each detected object
+        adjusted_cells = []
+        for obj in objs:
+            adjusted_cells += social_predict(self.latest_map, obj[0], obj[1], t)
+        
         adj_map = OccupancyGrid()       
         adj_map.header = self.latest_map.header
         adj_map.info = self.latest_map.info
         adj_map.data = list(self.latest_map.data)
-
         for i in adjusted_cells:
             adj_map.data[i] = 30
 

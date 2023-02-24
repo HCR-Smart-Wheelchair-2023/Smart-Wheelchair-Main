@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import rospy
 import math
-#from social_predictions_helper import social_predict
+
+from people_msg.msg import People
 
 from nav_msgs.msg import OccupancyGrid
 from std_msgs.msg import String
@@ -40,7 +41,7 @@ def social_predict(costmap, object_pos, velocity, t):
 class MapProcessor:
     def __init__(self):
         self.map_sub = rospy.Subscriber('/map', OccupancyGrid, self.map_callback_map, queue_size=1)
-        self.update_sub = rospy.Subscriber('/update_map', String, self.map_callback_update, queue_size=1)
+        self.update_sub = rospy.Subscriber('/tracked_people', People, self.map_callback_update, queue_size=1)
         self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=10)
         self.latest_map = None
 
@@ -50,19 +51,10 @@ class MapProcessor:
     def map_callback_update(self, data):
         t = 5.0
 
-        object_pos1 = Point(1.0, 2.0, 0.0)
-        velocity1 = Point(1.0, 0.5, 0.0)
-        object_pos2 = Point(5.0, 2.0, 0.0)
-        velocity2 = Point(-1.0, 0.5, 0.0)
-        object_pos3 = Point(10.0, 3.0, 0.0)
-        velocity3 = Point(0.1, -0.5, 0.0)
-
-        objs = [[object_pos1, velocity1], [object_pos2, velocity2], [object_pos3, velocity3]]
-
-        # predict for each detected object
+        #predict for each detected object
         adjusted_cells = []
-        for obj in objs:
-            adjusted_cells += social_predict(self.latest_map, obj[0], obj[1], t)
+        for person in data.people:
+            adjusted_cells += social_predict(self.latest_map, person.pose.pose.position, person.twist.twist.linear, t)
         
         adj_map = OccupancyGrid()       
         adj_map.header = self.latest_map.header

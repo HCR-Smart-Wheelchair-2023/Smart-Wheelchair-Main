@@ -48,7 +48,7 @@ def process_image():
 def get_goal():
     data = request.get_json()
     goal = data['goal']
-    print(goal)
+    print('Goal: '+goal)
     with open("goal.txt", "w") as f:
         f.write(goal)
     return 'New goal'

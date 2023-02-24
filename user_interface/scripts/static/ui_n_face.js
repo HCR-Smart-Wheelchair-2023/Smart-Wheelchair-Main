@@ -68,45 +68,27 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   //   speech.text = message;
   //   window.speechSynthesis.speak(speech);
   // }
-  function post_dest(_goal){
-    fetch('/goal_dest', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ goal: _goal })
-    })
-    .then(response => response.text())
-    .then(result => {
-      console.log('Result:', result);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-  }
   function door() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the door';
     window.speechSynthesis.speak(msg);
-    post_dest('door');
-    }
+  }
 
   function kitchen() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the kitchen';
     window.speechSynthesis.speak(msg);
-    post_dest('kitchen');
   }
 
   function table() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the table';
     window.speechSynthesis.speak(msg);
-    post_dest('table')
   }
   function bathroom() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the bathroom';
     window.speechSynthesis.speak(msg);
-    post_dest('bathroom')
   }
 
   //------------------------------------------- code to do speech to text might be useful after---------------------------
@@ -129,7 +111,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   // -----------------------------------------------code to use camera---------------------------------------------------
   // Get the video element
   let video = null
-  let canvas = null
+  //let canvas = null
   let context = null
   function startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -164,3 +146,72 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
         console.error('Error accessing camera:', error);
       });
   }
+
+  //------------detect FACE from CAMERA data-----------------
+
+// Get the canvas element
+const canvas = document.getElementById('canvas');
+
+// Create a Three.js scene
+const scene = new THREE.Scene();
+
+// Create a camera
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+// Create a renderer
+const renderer = new THREE.WebGLRenderer({ canvas });
+
+// Create a directional light
+const light = new THREE.DirectionalLight(0xffffff);
+light.position.set(1, 1, 1).normalize();
+scene.add(light);
+
+// Create a face mesh materials
+const material = new THREE.MeshPhongMaterial({
+  color: 0xffffff,
+  specular: 0x050505,
+  shininess: 100
+});
+
+// Load the pre-built face mesh model
+const loader = new THREE.BufferGeometryLoader();
+loader.load('/path/to/face-mesh.json', function (geometry) {
+  // Create a face mesh object
+  const mesh = new THREE.Mesh(geometry, material);
+
+  // Add the face mesh object to the scene
+  scene.add(mesh);
+});
+
+// Create an ARKit session
+const session = new ARKit.Session();
+
+// Create a face tracking configuration
+const configuration = new ARKit.FaceTrackingConfiguration();
+
+// Start the ARKit session
+session.run(configuration, { device: 'iPad' });
+
+// Render the scene
+function render() {
+  // Update the camera matrix from the ARKit session
+  camera.matrix.fromArray(session.currentFrame.camera.transform);
+
+  // Update the face mesh geometry from the ARKit session
+  const faceAnchor = session.currentFrame.anchors[0];
+  if (faceAnchor) {
+    const geometry = mesh.geometry;
+    geometry.attributes.position.array = faceAnchor.geometry.vertices;
+    geometry.attributes.position.needsUpdate = true;
+    geometry.computeVertexNormals();
+  }
+
+  // Render the scene
+  renderer.render(scene, camera);
+
+  // Request the next frame
+  requestAnimationFrame(render);
+}
+
+// Start rendering the scene
+requestAnimationFrame(render);

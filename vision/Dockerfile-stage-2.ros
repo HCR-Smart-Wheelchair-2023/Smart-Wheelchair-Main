@@ -1,45 +1,48 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
-SHELL ["/bin/bash", "-c"]
+# Set bash as default shell
 
-# Source ROS
-RUN source /opt/ros/noetic/setup.bash
+#### SETUP ROS WORKSPACE ####
 
-# Setup Catkin workspace
-RUN mkdir -p ~/catkin_ws/src
-WORKDIR ~/catkin_ws/
-RUN source /opt/ros/noetic/setup.bash
-RUN . /opt/ros/noetic/setup.bash && catkin_make
-RUN source devel/setup.bash
+# Build the workspace
+RUN mkdir -p /opt/ros_ws/src
+WORKDIR /opt/ros_ws
+RUN  . /opt/ros/noetic/setup.sh && \
+	catkin_make 	
+
+#### ZED ROS WRAPPER ####
 
 # Clone the ZED ROS Wrapper
-WORKDIR ~/catkin_ws/src
+WORKDIR /opt/ros_ws/src
 RUN git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git
 
 # Install ZED ROS Wrapper
-WORKDIR ~/catkin_ws/
-RUN rosdep init
-RUN rosdep update
-RUN rosdep install --from-paths src --ignore-src -r -y
-RUN source /opt/ros/noetic/setup.bash
-RUN . /opt/ros/noetic/setup.bash && catkin_make -DCMAKE_BUILD_TYPE=Release
+WORKDIR /opt/ros_ws/
+RUN rosdep init \
+    && rosdep update \
+    && rosdep install --from-paths /opt/ros_ws/src --ignore-src -r -y \
+    && . /opt/ros/noetic/setup.sh \
+    && catkin_make -DCMAKE_BUILD_TYPE=Release
 RUN chmod a+x devel/setup.bash
-RUN source ./devel/setup.bash
+RUN . ./devel/setup.sh
 
 # Clone the ROS ZED Examples
-WORKDIR ~/catkin_ws/src
-RUN apt-get update -y
+WORKDIR /opt/ros_ws/src/
+# RUN apt-get update -y
 RUN git clone https://github.com/stereolabs/zed-ros-examples.git
 
-# Install ROS ZED Examples
-WORKDIR ~/catkin_ws/
-RUN rosdep install --from-paths ~/catkin_ws/src --ignore-src -r -y
-RUN /opt/ros/noetic/setup.bash
-RUN . /opt/ros/noetic/setup.bash && catkin_make -DCMAKE_BUILD_TYPE=Release
-RUN source ./devel/setup.bash
+# Run apt-get update
+RUN apt-get update -y
 
-# setup entrypoint
+# Install ROS ZED Examples
+WORKDIR /opt/ros_ws/
+RUN rosdep install --from-paths src --ignore-src -r -y \
+    && . /opt/ros/noetic/setup.sh \
+    && catkin_make -DCMAKE_BUILD_TYPE=Release
+RUN  . ./devel/setup.sh
+
+# Setup entrypoint
 WORKDIR /
 COPY ./ros_entrypoint.sh /
 RUN chmod a+x /ros_entrypoint.sh

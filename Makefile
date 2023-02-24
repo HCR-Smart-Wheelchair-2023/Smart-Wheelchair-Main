@@ -65,7 +65,6 @@ run-external-core:
 		-v $(current_dir)/social_predictions/:/root/ros_ws/src/social_predictions \
 		-v $(current_dir)/people_msg/:/root/ros_ws/src/people_msg \
 		-v $(current_dir)/zed_dummy/:/root/ros_ws/src/zed_dummy \
-
 	    --privileged \
 		--network host \
 		--name external \

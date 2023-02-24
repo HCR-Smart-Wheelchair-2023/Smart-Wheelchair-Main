@@ -110,13 +110,37 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
 
   // -----------------------------------------------code to use camera---------------------------------------------------
   // Get the video element
-  const video = document.getElementById('video');
-
+  let video = null
+  let canvas = null
+  let context = null
   function startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
         videoElement.srcObject = stream;
-        video.play();
+        //video.play();
+        function saveFrame() {
+          console.log('in save frame')
+          document.getElementById('canvas').getContext('2d').drawImage(videoElement, 0, 0, document.getElementById('canvas').width, document.getElementById('canvas').height);
+          const dataURL = document.getElementById('canvas').toDataURL('image/face.jpeg', 1.0);
+          console.log(dataURL)
+
+          //---send data to URL
+          fetch('/process-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image_data: dataURL })
+          })
+          .then(response => response.text())
+          .then(result => {
+            console.log('Result:', result);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        }
+  
+        saveFrame();
+
       })
       .catch(error => {
         console.error('Error accessing camera:', error);

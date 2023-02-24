@@ -51,3 +51,42 @@ def gen():
 def video_feed():
     return Response(gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+#------------
+
+# import rospy
+# from sensor_msgs.msg import Image
+# from cv_bridge import CvBridge
+# import asyncio
+# import websockets
+# import cv2
+# import numpy as np
+# from base64 import b64decode
+
+# bridge = CvBridge()
+# publisher = rospy.Publisher('image_topic', Image, queue_size=10)
+# rospy.init_node('websocket_to_ros', anonymous=True)
+
+# async def receive_video(websocket, path):
+#     while True:
+#         # Receive the base64-encoded string from the JavaScript client
+#         data = await websocket.recv()
+
+#         # Decode the base64-encoded string to a numpy array
+#         nparr = np.frombuffer(b64decode(data.split(',')[1]), np.uint8)
+#         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+#         # Convert the numpy array to a ROS Image message
+#         ros_image = bridge.cv2_to_imgmsg(img, encoding='bgr8')
+
+#         # Publish the ROS Image message to the 'image_topic' topic
+#         publisher.publish(ros_image)
+
+# async def main():
+#     async with websockets.serve(receive_video, 'localhost', 8000):
+#         await asyncio.Future()  # run forever
+
+# if __name__ == '__main__':
+#     try:
+#         main()
+#     except rospy.ROSInterruptException:
+#         pass

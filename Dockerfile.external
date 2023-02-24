@@ -47,8 +47,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-pointcloud-to-laser
 WORKDIR /root/ros_ws/src
 
 RUN git clone https://github.com/stereolabs/zed-ros-interfaces.git
-RUN rosdep install --from-paths src --ignore-src -r -y
-
+RUN cd .. && rosdep install --from-paths src --ignore-src -r -y
+WORKDIR /root/ros_ws/src
 COPY robot_main robot_main/
 COPY navigation/ navigation/
 COPY user_interface/ user_interface/

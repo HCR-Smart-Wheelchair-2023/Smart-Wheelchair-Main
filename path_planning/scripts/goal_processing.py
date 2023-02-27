@@ -10,7 +10,7 @@ Coordinate = tuple[float,float]
 
 class GoalController:
 
-    GOALS : dict[str,Coordinate] = {
+    GOALS = {
 
     }
 

@@ -17,7 +17,7 @@ import time
 
 class PoseController:
 
-    MARKERS : dict[str,Pose] = {
+    MARKERS = {
 
     }
 

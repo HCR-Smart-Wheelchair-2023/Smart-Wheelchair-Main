@@ -9,7 +9,7 @@ local_costmap:
   height: 3
   # origin_x: -1.5
   # origin_y: -1.5
-  resolution: 0.2
-  inflation_radius: 0.3
+  resolution: 0.1
+  inflation_radius: 0.01
   plugins:
       - {name: obstacle_layer,        type: "costmap_2d::VoxelLayer"}

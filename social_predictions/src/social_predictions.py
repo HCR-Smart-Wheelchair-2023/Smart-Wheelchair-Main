@@ -2,15 +2,15 @@
 import rospy
 import math
 
-from people_msg.msg import People
-
+from people_msg.msg import People, Person
+# from zed_interfaces.msg import ObjectsStamped
 from nav_msgs.msg import OccupancyGrid
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
 
 
 def social_predict(costmap, object_pos, velocity, t):
-    # Convert the object position to grid coordinates
+    # Convert the object position to grid coordinatesn
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
     grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
 
@@ -53,8 +53,8 @@ class MapProcessor:
 
         #predict for each detected object
         adjusted_cells = []
-        for person in data.people:
-            adjusted_cells += social_predict(self.latest_map, person.pose.pose.position, person.twist.twist.linear, t)
+        for person in data.person:
+            adjusted_cells += social_predict(self.latest_map, person.position, person.linear_velocity, t)
         
         adj_map = OccupancyGrid()       
         adj_map.header = self.latest_map.header

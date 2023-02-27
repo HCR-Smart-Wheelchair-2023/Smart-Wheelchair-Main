@@ -120,10 +120,16 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
         //video.play();
         function saveFrame() {
           console.log('in save frame')
-          document.getElementById('canvas').getContext('2d').drawImage(videoElement, 0, 0, document.getElementById('canvas').width, document.getElementById('canvas').height);
-          const dataURL = document.getElementById('canvas').toDataURL('image/face.jpeg', 1.0);
-          console.log(dataURL)
-
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = videoElement.videoWidth;
+          canvas.height = videoElement.videoHeight;
+          ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+          // console.log(document.getElementById('canvas').getContext('2d').drawImage(videoElement, 0, 0, document.getElementById('canvas').width, document.getElementById('canvas').height));
+          const dataURL = canvas.toDataURL('image/face.jpeg', 1.0);
+          // console.log(dataURL)
+          // const data = document.getElementById('canvas').getContext("2d").getImageData(10, 10, 50, 50);
+          // console.log(data)
           //---send data to URL
           fetch('/process-image', {
             method: 'POST',
@@ -138,7 +144,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
             console.error('Error:', error);
           });
         }
-  
+
         saveFrame();
 
       })

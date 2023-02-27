@@ -9,13 +9,17 @@ import tf2_ros
 import sys
 import numpy as np
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import PoseStamped, Quaternion, Vector3, TransformStamped, Transform
+from geometry_msgs.msg import PoseStamped, Quaternion, Vector3, TransformStamped, Transform, Pose
 from std_msgs.msg import Header
 from time import sleep
 import time
 
 
 class PoseController:
+
+    MARKERS : dict[str,Pose] = {
+
+    }
 
     def __init__(self) -> None:
         # the current pose with offset
@@ -39,10 +43,48 @@ class PoseController:
 
         marker_topic = ''
         self.marker_topic = rospy.Subscriber(
-            marker_topic, Pose, self.pose_callback)
+            marker_topic, Pose, self.receive_markers)
 
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
+
+    def receive_markers(self, msg):
+        print(msg)
+
+        # marker_code = ''
+        # marker_pose = self.MARKERS[marker_code]
+
+        # # translation from the robot to the marker
+        # translation = Vector3(x=msg.pose.position.x,
+        #                       y=msg.pose.position.y, z=msg.pose.position.z)
+        # rotation = Quaternion(x=msg.pose.pose.orientation.x, y=msg.pose.pose.orientation.y, z=msg.pose.pose.orientation.z,
+        #                       w=msg.pose.pose.orientation.w)
+        # take the marker pose and subtract the translation and rotation
+        # inverse_transform = tf2_ros.transformations.inverse_transform(odom_base)
+        # result_transform = tf2_ros.transformations.concatenate_transforms(
+        #     self.pose, inverse_transform.transform
+        # )
+
+        # subtract the current map-baselink frame to find the offset value
+
+        # try:
+        #     odom_base = self.tf_buffer.lookup_transform(
+        #         'base_link', 'odom', rospy.Time())
+        # except Exception:
+        #     return
+
+        # inverse_transform = tf2_ros.transformations.inverse_transform(odom_base)
+        # result_transform = tf2_ros.transformations.concatenate_transforms(
+        #     self.pose, inverse_transform.transform
+        # )
+
+
+
+
+        # calculate the transform from the wheelchair to the marker in the map frame
+        # add the transform of the maker
+        # subtract the map-baselink frame to find offset
+        # save offset
 
     def pose_callback(self, msg: PoseStamped):
         # rospy.loginfo("Hello, ROS!")

@@ -11,6 +11,7 @@ import numpy as np
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, Quaternion, Vector3, TransformStamped, Transform
 from zed_interfaces import ObjectStamped
+from people_msg import People
 from std_msgs.msg import Header
 from time import sleep
 import time
@@ -23,11 +24,12 @@ class BodyProcessingController:
     def __init__(self) -> None:
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
-        self.sub = rospy.Subscriber(topic, ObjectStamped, callback)
+        topic = '/NA'
+        self.sub = rospy.Subscriber(topic, ObjectStamped, self.receive_objects)
 
     def receive_objects(self, message : ObjectStamped):
         objects = message.objects
-        people = [process_person for person in message.objects]
+        people = [self.process_person(person) for person in message.objects]
 
     def calculate_orientation(self, skeleton) -> float:
         left_shoulder = np.array(skeleton.keypoints[2])

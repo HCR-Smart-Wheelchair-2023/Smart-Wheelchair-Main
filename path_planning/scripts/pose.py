@@ -112,6 +112,7 @@ class PoseController:
         self.received_message = True
 
     def publish_frames(self):
+        rospy.loginfo("Hello, ROS!")
         br = tf.TransformBroadcaster()
         if not self.received_message:
             br.sendTransform((0, 0, 0),
@@ -120,7 +121,7 @@ class PoseController:
                              "odom",
                              "map")
             return
-
+        rospy.loginfo("Hello, ROS2")
         # publish the current pose and offset
         # transform = np.array((0,0,0,0,0,0,0))
         # transform = np.add(transform, self.pose)
@@ -142,7 +143,7 @@ class PoseController:
                              "odom",
                              "map")
             return
-
+        rospy.loginfo("Hello, ROS3")
         inverse_transform = tf2_ros.transformations.inverse_transform(odom_base)
         result_transform = tf2_ros.transformations.concatenate_transforms(
             self.pose, inverse_transform.transform
@@ -155,8 +156,9 @@ class PoseController:
             transform=Transform(
                 translation=result_transform.translation, rotation=result_transform.rotation),
         )
+        rospy.loginfo("Hello, ROS4")
         br.sendTransform(transform)
-
+        rospy.loginfo("Hello, ROS5")
         # # send the transform between map and odom
         # br.sendTransform(transform[:3],
         #                  Quaternion(*transform[3:]),

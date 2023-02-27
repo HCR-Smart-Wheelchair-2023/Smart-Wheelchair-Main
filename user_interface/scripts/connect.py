@@ -9,9 +9,6 @@ from io import BytesIO
 from PIL import Image
 import base64
 
-#import crypiptography
-#from openssl import SSL
-
 app = Flask(__name__, static_url_path='/static')
 
 @app.route('/')

@@ -14,13 +14,14 @@ import cv2
 class FER():
     def __init__(self):
         rospy.init_node('FER')
-        #instantiate subscriber and publisher 
-        self.pub = rospy.Publisher('sentiment', String, queue_size=10)
+        #instantiate subscriber
+        self.pub = rospy.Publisher('chatter', String, queue_size=10)
         self.image_sub = rospy.Subscriber('/CamFrames', Image, self.img_cb)
+        #get image, preprecess and run model
         self.bridge = CvBridge()
-        # initialize emotion as neutral
+        #create new ros topic and send emotion matrix
         self.emotion = 'neutral'
-        # again ideally this would be it own node  
+
         self.cmdvel_sub = rospy.Subscriber('/cmd_vel', Twist, self.cmdvel_cb)
         self.pub_adj = rospy.Publisher('cmd_vel_adj', Twist, queue_size = 10)
         self.scaling_factor = 1
@@ -30,19 +31,15 @@ class FER():
         rospy.loginfo('Recieved image')
         # ros img to opencv
         cv_image = self.bridge.imgmsg_to_cv2(data)
-        cv2.imwrite('/home/max/ROS/catkin_ws/src/emotion_detection_ros/scripts/image/img1.jpg', cv_image)
-        
-        # determine current dominant sentiment of the human
-        objs = DeepFace.analyze(img_path = "/home/max/ROS/catkin_ws/src/emotion_detection_ros/scripts/image/img1.jpg", actions = ['emotion'])
+        cv2.imwrite('/root/ros_ws/src/emotion/scripts/image/img1.jpg', cv_image)
+
+        objs = DeepFace.analyze(img_path = "/root/ros_ws/src/emotion/scripts/image/img1.jpg", actions = ['emotion'])
         self.emotion = objs[0]['dominant_emotion']
 
         self.pub.publish(self.emotion)
-    
-    # ideally this would be its own node, figuring out how to adjust the motion based on not only emotion
+
     def cmdvel_cb(self,data):
-        
-        # adjust the incoming linear velocity by simple scaling factor 
-        # use most recent emotion recorded
+
         if self.emotion == 'neutral':
             self.scaling_factor = 1
         elif self.emotion == 'fear':
@@ -50,10 +47,10 @@ class FER():
         elif self.emotion == 'happy':
             self.scaling_factor = 1.5
 
-        adj_data = data.data
+        adj_data = data
+        print(adj_data.linear)
         adj_data.linear.x = adj_data.linear.x * self.scaling_factor
-
-        self.pub.publish(adj_data)
+        self.pub_adj.publish(adj_data)
 
 
 

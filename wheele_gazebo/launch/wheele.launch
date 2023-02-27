@@ -7,7 +7,7 @@
     <arg name="paused" value="false"/>
     <!-- more default parameters can be changed here -->
   </include>
-  <node name="spawn_room" pkg="gazebo_ros" type="spawn_model" args="-file $(find room_description)/urdf/room_1.urdf -urdf -z 0 -x 4 -y 4.3
+  <node name="spawn_room" pkg="gazebo_ros" type="spawn_model" args="-file $(find room_gen)/urdf/room.urdf -urdf -z 0 -x 4 -y 4.3
   -Y -1.57
   -model room_description" />
   <node name="spawn_wheele" pkg="gazebo_ros" type="spawn_model" args="-file $(find wheele_description)/urdf/wheelchair_3.urdf -urdf -z 1 -x 2.5 -y 6.5 -Y 1.57 -model wheelchair_3" />

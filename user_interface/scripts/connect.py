@@ -28,18 +28,29 @@ def process_image():
     print(image_data)
     # Remove the "data:image/png;base64," prefix from the data URL
     image_data = image_data.replace('data:image/png;base64,', '')
-    
+
     # Convert the base64-encoded data to bytes
     image_bytes = BytesIO(base64.b64decode(image_data))
-    print(image_bytes)
+    # print(len(image_bytes))
+    # with open("output.png", "wb") as f:
+    #     f.write(image_bytes)
     # Open the image using PIL
     image = Image.open(image_bytes)
     image.save('./face.png')
     # Do some processing on the image
     # ...
-    
+
     # Return a result
     return 'Image processed successfully'
+
+@app.route('/goal_dest', methods=['POST'])
+def get_goal():
+    data = request.get_json()
+    goal = data['goal']
+    print('Goal: '+goal)
+    with open("goal.txt", "w") as f:
+        f.write(goal)
+    return 'New goal'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', ssl_context='adhoc',debug=True)

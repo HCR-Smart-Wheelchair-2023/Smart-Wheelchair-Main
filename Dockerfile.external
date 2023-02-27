@@ -45,9 +45,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y python3-pip && pip install fla
 RUN DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-pointcloud-to-laserscan ros-noetic-gmapping
 
 WORKDIR /root/ros_ws/src
+RUN apt-get install -y ros-noetic-aruco-ros
+
+WORKDIR /root/ros_ws/src
 
 RUN git clone https://github.com/stereolabs/zed-ros-interfaces.git
 RUN cd .. && rosdep install --from-paths src --ignore-src -r -y
+
+
 WORKDIR /root/ros_ws/src
 COPY robot_main robot_main/
 COPY navigation/ navigation/

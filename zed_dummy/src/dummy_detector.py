@@ -3,7 +3,9 @@ import rospy
 import random
 
 from std_msgs.msg import String
-from people_msg.msg import People
+from people_msg.msg import People, Person
+# from zed_interfaces.msg import ObjectsStamped, Object
+
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point
 
@@ -28,13 +30,14 @@ while not rospy.is_shutdown():
 
     objs = [[object_pos1, velocity1], [object_pos2, velocity2], [object_pos3, velocity3]]
 
-    for obj in objs:
-        odom_msg = Odometry()
+    for obj in range(1, 3):
+        odom_msg = Person()
         # Fill in the data for the odom_msg object
-        odom_msg.pose.pose.position = obj[0]
-        odom_msg.twist.twist.linear = obj[1]
+        odom_msg.odom.pose.pose.position = Point(random.uniform(-5, 5), random.uniform(-5, 5), 0.0)
+        odom_msg.odom.twist.twist.linear = Point(random.uniform(-2, 2), random.uniform(-2, 2), 0.0)
 
-        people_msg.people.append(odom_msg)
+        people_msg.person.append(odom_msg)
+
 
     pub.publish(people_msg)
     rate.sleep()

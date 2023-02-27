@@ -117,7 +117,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     recognition.maxAlternatives = 1;
 
     recognition.start();
-    
+
     recognition.addEventListener('result', event => {
       const transcript = event.results[0][0].transcript;
       // inputField.value = transcript;
@@ -133,15 +133,19 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
       if (result.includes(keyword1)) {
       console.log(`The string contains the keyword '${keyword1}'`);
       inputField.value = "door " 
+      door()
       }
       else if (result.includes(keyword2)){
         inputField.value = "bathroom " 
+        bathroom()
       }
       else if (result.includes(keyword3)){
         inputField.value = "table" 
+        table()
       }
        else if (result.includes(keyword4)){
         inputField.value = "kitchen" 
+        kitchen()
       }
       else {
         inputField.value = "error" 

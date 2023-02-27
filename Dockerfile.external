@@ -48,6 +48,8 @@ WORKDIR /root/ros_ws/src
 
 RUN git clone https://github.com/stereolabs/zed-ros-interfaces.git
 RUN cd .. && rosdep install --from-paths src --ignore-src -r -y
+
+
 WORKDIR /root/ros_ws/src
 COPY robot_main robot_main/
 COPY navigation/ navigation/

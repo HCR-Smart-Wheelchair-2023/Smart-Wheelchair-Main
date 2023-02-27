@@ -29,10 +29,17 @@ class BodyProcessingController:
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         topic = '/NA'
         self.sub = rospy.Subscriber(topic, ObjectStamped, self.receive_objects)
+        self.pub = rospy.Publisher('/people', People, queue_size=10)
 
     def receive_objects(self, message : ObjectStamped):
         objects = message.objects
         people = [self.process_person(person) for person in message.objects]
+        people_msg = People()
+        people_msg.header.frame_id = 'map'
+        people_msg.header.stamp = rospy.Time.now()
+        people_msg.people = people
+        self.pub.publish(people_msg)
+
 
     def calculate_orientation(self, skeleton) -> float:
         left_shoulder = np.array(skeleton.keypoints[2])
@@ -50,7 +57,8 @@ class BodyProcessingController:
         velocity = np.array(person.velocity)
 
         # calculate orientation from velocity
-        if np.linalg.norm(velocity) < 0.2:
+        static = np.linalg.norm(velocity) < 0.2
+        if static:
             theta = self.calculate_orientation(skeleton)
         else:
             theta = np.arctan(velocity[0]/velocity[1])
@@ -61,5 +69,9 @@ class BodyProcessingController:
         odom.child_frame_id = "map"
         odom.pose.pose = Pose(Point(position[0], position[1], 0.0), Quaternion(0,0,theta,0))
         odom.twist.twist = Twist(Vector3(velocity[0], velocity[1], 0), Vector3(0, 0, 0))
-        person = Person()
-        person.header.frame_id = "map"
+        new_person = Person()
+        new_person.header.frame_id = "map"
+        new_person.label = person.label
+        new_person.static = static
+        new_person.odom = odom
+        return new_person

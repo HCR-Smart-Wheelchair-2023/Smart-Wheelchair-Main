@@ -1,7 +1,8 @@
 obstacle_range: 6.0
 raytrace_range: 8.5
 # TODO
-footprint: [[0.40, 0.40], [0.40, -0.40], [-0.40, -0.40], [-0.40, 0.40]]
+# footprint: [[0.40, 0.40], [0.40, -0.40], [-0.40, -0.40], [-0.40, 0.40]]
+footprint = [[-0.335,-0.5475],[-0.335,0.5475],[0.335,0.5475],[0.335,-0.5475]]
 map_topic: /map
 subscribe_to_updates: true
 global_frame: map

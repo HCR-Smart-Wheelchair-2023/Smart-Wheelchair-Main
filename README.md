@@ -63,4 +63,17 @@ roslaunch wheele_gazebo wheele.launch
 - Set the map-odom to make the map-base equal pose from pose topic
 
 - Set up a topic that allows setting of the current pose
-- 
+-
+
+
+- PI  prl@192.168.50.100 password: HCRrnet1
+- Orin prl@192.168.50.102 password: prl
+
+Laptop
+make run-external core
+make run-external-main
+
+Orin Intruction (First start roscore on laptop)
+cd human....
+sudo ./start_docker....
+./start.sh

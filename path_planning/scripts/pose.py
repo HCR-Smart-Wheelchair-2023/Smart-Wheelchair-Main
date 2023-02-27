@@ -13,6 +13,7 @@ from geometry_msgs.msg import PoseStamped, Quaternion, Vector3, TransformStamped
 from std_msgs.msg import Header
 from time import sleep
 import time
+import threading
 
 
 class PoseController:
@@ -37,7 +38,8 @@ class PoseController:
                 translation=translation, rotation=rotation),
         )
         self.pose = transform
-        self.timer = rospy.Timer(rospy.Duration(0.2), self.publish_frames)
+        # self.timer = rospy.Timer(rospy.Duration(0.2), self.publish_frames)
+        threading.Timer(0.2, self.publish_frames).start()
         self.sub = rospy.Subscriber(
             '/zed2i/zed_node/pose', PoseStamped, self.pose_callback)
 

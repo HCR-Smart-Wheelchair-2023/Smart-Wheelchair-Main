@@ -146,6 +146,7 @@ class PoseController:
                              rospy.Time.now(),
                              "odom",
                              "map")
+            rospy.loginfo("Sent transform")
             return
         rospy.loginfo("Hello, ROS3")
         inverse_transform = tf2_ros.transformations.inverse_transform(odom_base)

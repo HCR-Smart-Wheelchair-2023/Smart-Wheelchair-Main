@@ -135,6 +135,7 @@ class PoseController:
             odom_base = self.tf_buffer.lookup_transform(
                 'base_link', 'odom', rospy.Time())
         except Exception:
+            rospy.loginfo("Hello, ROS!")
             br.sendTransform((0, 0, 0),
                              (0, 0, 0, 0),
                              rospy.Time.now(),

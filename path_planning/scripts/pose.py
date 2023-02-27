@@ -40,8 +40,8 @@ class PoseController:
         self.pose = transform
         # self.timer = rospy.Timer(rospy.Duration(0.2), self.publish_frames)
         threading.Timer(0.2, self.publish_frames).start()
-        self.sub = rospy.Subscriber(
-            '/zed2i/zed_node/pose', PoseStamped, self.pose_callback)
+        # self.sub = rospy.Subscriber(
+        #     '/zed2i/zed_node/pose', PoseStamped, self.pose_callback)
 
         marker_topic = '/aruco_single/pose'
         self.marker_topic = rospy.Subscriber(

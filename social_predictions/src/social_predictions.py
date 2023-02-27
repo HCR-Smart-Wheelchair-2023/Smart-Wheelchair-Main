@@ -78,7 +78,7 @@ class MapProcessor:
 
         #predict for each detected object
         adjusted_cells = []
-        for person in data.Object:
+        for person in data.objects:
             adjusted_cells += social_predict(self.latest_map, person.position, person.velocity, t)
         
         

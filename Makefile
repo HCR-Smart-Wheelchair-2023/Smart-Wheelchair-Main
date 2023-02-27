@@ -125,7 +125,7 @@ run-sim-core:
 		-v $(current_dir)/wheele_gazebo/:/root/ros_ws/src/wheele_gazebo \
 		-v $(current_dir)/social_predictions/:/root/ros_ws/src/social_predictions \
 		-v $(current_dir)/people_msg/:/root/ros_ws/src/people_msg \
-		-v $(current_dir)/zed_dummy/:/root/ros_ws/src/zed_dummy \
+		-v $(current_dir)/emotion_detection/:/root/ros_ws/src/emotion_detection \
 	    --privileged \
 		--network host \
 		--name sim \

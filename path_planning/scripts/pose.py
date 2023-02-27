@@ -49,7 +49,8 @@ class PoseController:
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
 
     def receive_markers(self, msg):
-        print(msg)
+        # print(msg)
+        rospy.loginfo(str(msg))
 
         # marker_code = ''
         # marker_pose = self.MARKERS[marker_code]

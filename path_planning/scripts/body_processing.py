@@ -11,8 +11,11 @@ import numpy as np
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, Quaternion, Vector3, TransformStamped, Transform
 from zed_interfaces import ObjectStamped
-from people_msg import People
+from people_msg.People import People
+from people_msg.Person import Person
 from std_msgs.msg import Header
+from nav_msgs.msg import Odometry
+from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3
 from time import sleep
 import time
 
@@ -48,6 +51,15 @@ class BodyProcessingController:
 
         # calculate orientation from velocity
         if np.linalg.norm(velocity) < 0.2:
-            theta = self.calculate_orientation(person.skeleton)
+            theta = self.calculate_orientation(skeleton)
         else:
             theta = np.arctan(velocity[0]/velocity[1])
+
+        odom = Odometry()
+        odom.header.stamp = rospy.Time.now()
+        odom.header.frame_id = "map"
+        odom.child_frame_id = "map"
+        odom.pose.pose = Pose(Point(position[0], position[1], 0.0), Quaternion(0,0,theta,0))
+        odom.twist.twist = Twist(Vector3(velocity[0], velocity[1], 0), Vector3(0, 0, 0))
+        person = Person()
+        person.header.frame_id = "map"

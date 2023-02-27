@@ -2,25 +2,25 @@
 import rospy
 import math
 
-from people_msg.msg import People
-from zed_interfaces.msg import ObjectsStamped
+from people_msg.msg import People, Person
+# from zed_interfaces.msg import ObjectsStamped
 from nav_msgs.msg import OccupancyGrid
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
 
 
 def social_predict(costmap, object_pos, velocity, t):
-    # Convert the object position to grid coordinates
-    grid_x = int((object_pos[0] - costmap.info.origin.position.x) / costmap.info.resolution)
-    grid_y = int((object_pos[1] - costmap.info.origin.position.y) / costmap.info.resolution)
+    # Convert the object position to grid coordinatesn
+    grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
+    grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
 
     # Calculate the number of cells the object will move in the next t seconds
-    cells_to_move_x = int(math.ceil(abs(velocity[0]) * t / costmap.info.resolution))
-    cells_to_move_y = int(math.ceil(abs(velocity[1]) * t / costmap.info.resolution))
+    cells_to_move_x = int(math.ceil(abs(velocity.x) * t / costmap.info.resolution))
+    cells_to_move_y = int(math.ceil(abs(velocity.y) * t / costmap.info.resolution))
 
     # determine the direction of the line
-    x_step = 1 if velocity[0] > 0 else -1
-    y_step = 1 if velocity[1] > 0 else -1
+    x_step = 1 if velocity.x > 0 else -1
+    y_step = 1 if velocity.y > 0 else -1
 
     # calculate the number of steps needed to traverse the line
     num_steps = max(cells_to_move_x, cells_to_move_y)
@@ -41,7 +41,7 @@ def social_predict(costmap, object_pos, velocity, t):
 class MapProcessor:
     def __init__(self):
         self.map_sub = rospy.Subscriber('/map', OccupancyGrid, self.map_callback_map, queue_size=1)
-        self.update_sub = rospy.Subscriber('/tracked_people', ObjectsStamped, self.map_callback_update, queue_size=1)
+        self.update_sub = rospy.Subscriber('/tracked_people', People, self.map_callback_update, queue_size=1)
         self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=10)
         self.latest_map = None
 
@@ -53,8 +53,8 @@ class MapProcessor:
 
         #predict for each detected object
         adjusted_cells = []
-        for person in data.objects:
-            adjusted_cells += social_predict(self.latest_map, person.position, person.velocity, t)
+        for person in data.person:
+            adjusted_cells += social_predict(self.latest_map, person.position, person.linear_velocity, t)
         
         adj_map = OccupancyGrid()       
         adj_map.header = self.latest_map.header

@@ -5,42 +5,6 @@ if ('serviceWorker' in navigator)
 
 //-----------------------------------------roslibJS stuff ------------------------------------------------------------------------------------------------
 
-// Connect to ROS
- var ros = new ROSLIB.Ros({
-    url : 'wss://192.168.50.101:8080'
-});
-
-// Subscribe to a topic
-var listener = new ROSLIB.Topic({
-    ros : ros,
-    name : '/target_command',
-    messageType : 'std_msgs/String'
-});
-
-// Update the message on the web page when a new message is received
-listener.subscribe(function(message) {
-    var messageElement = document.getElementById('message');
-    messageElement.innerHTML = message.data;
-});
-
- // Create a publisher
- var publisher = new ROSLIB.Topic({
-    ros : ros,
-    name : '/my_topic',
-    messageType : 'std_msgs/String'
-});
-
-// Define the function to execute when the button is clicked
-function publishMessage(id) {
-    // Create a message
-    var message = new ROSLIB.Message({
-        data : id
-    });
-    // Publish the message
-    publisher.publish(message);
-    //publish to relevant topic
-}
-
 // Example of getting button id and listening for click
 const doorBut = document.getElementById('door');
 const kitchenBut = document.getElementById('kitchen');

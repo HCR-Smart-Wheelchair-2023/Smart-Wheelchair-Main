@@ -41,7 +41,7 @@ class PoseController:
         self.sub = rospy.Subscriber(
             '/zed/zed_node/pose', PoseStamped, self.pose_callback)
 
-        marker_topic = 'aruco_single/pose'
+        marker_topic = '/aruco_single/pose'
         self.marker_topic = rospy.Subscriber(
             marker_topic, PoseStamped, self.receive_markers)
 

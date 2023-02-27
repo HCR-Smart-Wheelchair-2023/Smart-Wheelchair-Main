@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import rospy
 import random
+import math
 
 from std_msgs.msg import String
 from people_msg.msg import People, Person
@@ -30,11 +31,17 @@ while not rospy.is_shutdown():
 
     objs = [[object_pos1, velocity1], [object_pos2, velocity2], [object_pos3, velocity3]]
 
-    for obj in range(1, 3):
+    for obj in range(1, 6):
         odom_msg = Person()
         # Fill in the data for the odom_msg object
         odom_msg.odom.pose.pose.position = Point(random.uniform(-5, 5), random.uniform(-5, 5), 0.0)
         odom_msg.odom.twist.twist.linear = Point(random.uniform(-2, 2), random.uniform(-2, 2), 0.0)
+        
+        b = random.choice([True, False])
+        odom_msg.static.data = b
+        if b:
+            odom_msg.odom.pose.pose.orientation.x = random.uniform(0, math.pi)
+            
 
         people_msg.person.append(odom_msg)
 

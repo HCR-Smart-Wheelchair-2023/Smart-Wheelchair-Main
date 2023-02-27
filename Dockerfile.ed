@@ -40,9 +40,8 @@ COPY people_msg/ people_msg/
 COPY zed_dummy/ zed_dummy/
 
 WORKDIR /root/ros_ws/src
+RUN DEBIAN_FRONTEND=noninteractive pip install -r emotion_detection/requirements.txt 
 RUN DEBIAN_FRONTEND=noninteractive pip install deepface 
-RUN DEBIAN_FRONTEND=noninteractive pip install deepface 
-
 
 WORKDIR /root/ros_ws/src
 

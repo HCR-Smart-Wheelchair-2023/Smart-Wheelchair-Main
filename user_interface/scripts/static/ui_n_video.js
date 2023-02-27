@@ -118,9 +118,38 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
 
     recognition.start();
 
+    recognition.addEventListener('result', event => {
+      const transcript = event.results[0][0].transcript;
+      // inputField.value = transcript;
+      // Perform action with transcript
+    });
     recognition.onresult = function(event) {
       const result = event.results[0][0].transcript;
-      inputField.value = result;
+      //inputField.value = result;
+      const keyword1 = "door";
+      const keyword2 = "bathroom";
+      const keyword3 = "table";
+      const keyword4 = "kitchen";
+      if (result.includes(keyword1)) {
+      console.log(`The string contains the keyword '${keyword1}'`);
+      inputField.value = "door " 
+      door()
+      }
+      else if (result.includes(keyword2)){
+        inputField.value = "bathroom " 
+        bathroom()
+      }
+      else if (result.includes(keyword3)){
+        inputField.value = "table" 
+        table()
+      }
+       else if (result.includes(keyword4)){
+        inputField.value = "kitchen" 
+        kitchen()
+      }
+      else {
+        inputField.value = "error" 
+      }
     };
   }
 

@@ -50,6 +50,7 @@ class PoseController:
 
     def receive_markers(self, msg):
         # print(msg)
+        rospy.loginfo("test")
         rospy.loginfo(str(msg))
 
         # marker_code = ''
@@ -88,6 +89,7 @@ class PoseController:
         # save offset
 
     def pose_callback(self, msg: PoseStamped):
+        rospy.loginfo("test2")
         # rospy.loginfo("Hello, ROS!")
         # self.pose = np.array((msg.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z,
         #                       msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w))

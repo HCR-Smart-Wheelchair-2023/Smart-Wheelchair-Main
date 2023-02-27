@@ -114,9 +114,11 @@ class PoseController:
         self.received_message = True
 
     def publish_frames(self):
-        rospy.loginfo("Hello, ROS!")
+        rospy.loginfo("Hello, ROS")
         br = tf.TransformBroadcaster()
+        rospy.loginfo("Hello, ROS122431")
         if not self.received_message:
+            rospy.loginfo("Hello, ROS25235")
             br.sendTransform((0, 0, 0),
                              (0, 0, 0, 0),
                              rospy.Time.now(),

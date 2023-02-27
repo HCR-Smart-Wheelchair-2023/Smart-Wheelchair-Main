@@ -99,8 +99,8 @@ class PoseController:
 
         translation = Vector3(x=msg.pose.position.x,
                               y=msg.pose.position.y, z=msg.pose.position.z)
-        rotation = Quaternion(x=msg.pose.pose.orientation.x, y=msg.pose.pose.orientation.y, z=msg.pose.pose.orientation.z,
-                              w=msg.pose.pose.orientation.w)
+        rotation = Quaternion(x=msg.pose.orientation.x, y=msg.pose.orientation.y, z=msg.pose.orientation.z,
+                              w=msg.pose.orientation.w)
         transform = TransformStamped(
             header=Header(
                 stamp=rospy.Time.now(), frame_id="map"),

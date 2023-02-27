@@ -41,9 +41,9 @@ class PoseController:
         self.sub = rospy.Subscriber(
             '/zed/zed_node/pose', PoseStamped, self.pose_callback)
 
-        marker_topic = ''
+        marker_topic = 'aruco_single/pose'
         self.marker_topic = rospy.Subscriber(
-            marker_topic, Pose, self.receive_markers)
+            marker_topic, PoseStamped, self.receive_markers)
 
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)

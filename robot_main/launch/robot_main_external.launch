@@ -53,7 +53,7 @@
     </node>
 
     <!-- Set up gmapping -->
-    <node pkg="gmapping" type="slam_gmapping" name="gmapping">
+    <!-- <node pkg="gmapping" type="slam_gmapping" name="gmapping">
         <remap from="map" to="gmap" />
         <param name="base_frame" value="base_link"/>
         <param name="map_frame" value="map"/>
@@ -61,7 +61,7 @@
         <param name="delta" value="0.1" />
         <param name="maxUrange" value="5" />
         <param name="maxRange" value="6" />
-    </node>
+    </node> -->
 
 
     <!-- unless="$(arg sim)" -->

@@ -44,7 +44,7 @@ class MapStitcher:
         static_array = static_array.reshape(self.static_map.info.width*self.static_map.info.height)
         self.static_map.data = static_array
         self.pub.publish(self.static_map)
-
+        rospy.loginfo(f'publioshed')
         # map_array = np.pad(map_array, pad_width=((int(self.dynamic_map))))
         # self.static_map_array.reshape((map_data.info.height, map_data.info.width))
         #     padding = max(int(map_data.info.height - self.dynamic_map.info.height), 0)

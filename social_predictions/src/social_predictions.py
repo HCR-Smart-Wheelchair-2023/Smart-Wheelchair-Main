@@ -167,7 +167,7 @@ def social_predict(costmap, object_pos, velocity, t = 5.0):
 
 class MapProcessor:
     def __init__(self):
-        self.map_sub = rospy.Subscriber('/map', OccupancyGrid, self.map_callback_map, queue_size=1)
+        self.map_sub = rospy.Subscriber('/staticmap', OccupancyGrid, self.map_callback_map, queue_size=1)
         self.update_sub = rospy.Subscriber('/zed/zed_node/obj_det/objects', ObjectsStamped, self.map_callback_update, queue_size=1)
         self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=10)
         self.latest_map = None
@@ -177,7 +177,6 @@ class MapProcessor:
 
     def map_callback_update(self, data):
         
-
         # Params to tune 
         t = 2.0
         distribution_scale_factor = 1

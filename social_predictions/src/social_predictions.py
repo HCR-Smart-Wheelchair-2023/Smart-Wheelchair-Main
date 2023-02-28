@@ -11,34 +11,57 @@ from nav_msgs.msg import OccupancyGrid
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
 
-    
-def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 100):
+def gaussian2d(x, y, x0, y0, sigma_x, sigma_y, theta):
+    a = np.cos(theta)**2/(2*sigma_x**2) + np.sin(theta)**2/(2*sigma_y**2)
+    b = -np.sin(2*theta)/(4*sigma_x**2) + np.sin(2*theta)/(4*sigma_y**2)
+    c = np.sin(theta)**2/(2*sigma_x**2) + np.cos(theta)**2/(2*sigma_y**2)
+    z = np.exp(-(a*(x-x0)**2 + 2*b*(x-x0)*(y-y0) + c*(y-y0)**2))
+    return z
 
-    x_vector = abs(math.cos(orientation))
-    y_vector = abs(math.sin(orientation))
+def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 1, gaus_sep = 2):
 
-    cov111 = max(10, int(x_vector*distribution_scale_factor))
-    cov122 = max(10, int(y_vector*distribution_scale_factor))
-    # Define the parameters of the two normal distributions
-    mean1 = [0, 0]
-    cov1 = [[cov111, 0], [0, cov122]]
+    mu1_x = 0
+    mu1_y = 0
+
+
+    # Parameters TO TUNE 
+    sigma1_x = 1 * distribution_scale_factor
+    sigma1_y = 1 * distribution_scale_factor
+
+    sigma2_x = 2 * distribution_scale_factor
+    sigma2_y = 1 * distribution_scale_factor
 
     # Create a meshgrid of points to evaluate the normal distributions
-    x, y = np.mgrid[-50:50:1, -50:50:1]
+    x, y = np.mgrid[-10:10:1, -10:10:1]
     pos = np.empty(x.shape + (2,))
     pos[:, :, 0] = x; pos[:, :, 1] = y
 
-    # print(pos.shape)
+    # Finding location of second Guassian
+    mu2_x = mu1_x + (gaus_sep * math.cos(orientation.x))
+    mu2_y = mu1_y + (gaus_sep * math.sin(orientation.x))
 
-    # Evaluate the normal distributions at the meshgrid points
-    rv1 = multivariate_normal(mean1, cov1)
-    z1 = np.array(rv1.pdf(pos))
+    # Distribution of Gaussians
+    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, -orientation.x)
+    Z2 = gaussian2d(x, y, mu2_x, mu2_y, sigma2_x, sigma2_y, -orientation.x)
+
+    # Superposition of Gaussians
+    Z = Z1+Z2
+
+
+
+    # Scaling the array 
+    # Find the minimum and maximum values in the array
+    min_val = np.min(Z)
+    max_val = np.max(Z)
     
-    z1_new = (z1 * 10000).astype(int)
-    z1_flat = z1_new.flatten().tolist()
+    # Scale the array to the range between 0 and 100
+    Z_scaled = ((Z - min_val) * 100 / (max_val - min_val)).astype(int)
+    # print("Z: ", Z_scaled)
+    
+    z1_flat = Z_scaled.flatten().tolist()
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
     grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
-
+    # print(z1_flat)
     relative_pos = []
 
     for i in pos: 
@@ -47,10 +70,6 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
             y_relative = grid_y + int(j[1])
             flat_pos = int(x_relative + y_relative * costmap.info.width)
             relative_pos.append(flat_pos)
-
-
-    # print("relative_pos", len(relative_pos))
-    # print("z1_flat", len(z1_flat))
 
 
     return relative_pos, z1_flat
@@ -100,8 +119,9 @@ class MapProcessor:
         
         # Params to tune 
         t = 3.0
-        distribution_scale_factor = 50
-        
+        distribution_scale_factor = 1
+        gaus_sep = 2        
+
         adj_map = OccupancyGrid()       
         adj_map.header = self.latest_map.header
         adj_map.info = self.latest_map.info
@@ -111,7 +131,7 @@ class MapProcessor:
         adjusted_cells = []
         for person in data.person:
             if person.static.data:
-                pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.pose.pose.orientation.x, distribution_scale_factor)
+                pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.pose.pose.orientation, distribution_scale_factor, gaus_sep)
                 for (i, pos) in enumerate(pos):
                     if vals[i] != 0:
                         adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])

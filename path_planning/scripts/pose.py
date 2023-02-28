@@ -26,22 +26,36 @@ class PoseController:
         # the current pose with offset
         self.received_message = False
         # add the start pose
-        translation = Vector3(x=0,
-                              y=0, z=0)
-        rotation = Quaternion(x=0, y=0, z=0,
-                              w=0)
-        transform = TransformStamped(
+        self.MARKER = TransformStamped(
+            header=Header(
+                stamp=rospy.Time.now(), frame_id="map"),
+            child_frame_id="map",
+            transform=Transform(
+                translation=Vector3(x=0,y=0, z=0),
+                rotation=Quaternion(x=0, y=0, z=0,w=0)),
+        )
+
+
+        self.offset = TransformStamped(
             header=Header(
                 stamp=rospy.Time.now(), frame_id="map"),
             child_frame_id="base_link",
             transform=Transform(
-                translation=translation, rotation=rotation),
+                translation=Vector3(x=0,y=0, z=0),
+                rotation=Quaternion(x=0, y=0, z=0,w=0)),
         )
-        self.pose = transform
-        # self.timer = rospy.Timer(rospy.Duration(0.2), self.publish_frames)
-        threading.Timer(0.2, self.publish_frames).start()
-        # self.sub = rospy.Subscriber(
-        #     '/zed2i/zed_node/pose', PoseStamped, self.pose_callback)
+
+        self.pose = TransformStamped(
+            header=Header(
+                stamp=rospy.Time.now(), frame_id="map"),
+            child_frame_id="base_link",
+            transform=Transform(
+                translation=Vector3(x=0,y=0, z=0),
+                rotation=Quaternion(x=0, y=0, z=0,w=0)),
+        )
+        rospy.Timer(rospy.Duration(1.0/10.0), self.pose_callback)
+        self.sub = rospy.Subscriber(
+            '/zed2i/zed_node/pose', PoseStamped, self.pose_callback)
 
         marker_topic = '/aruco_single/pose'
         self.marker_topic = rospy.Subscriber(
@@ -49,6 +63,8 @@ class PoseController:
 
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
+
+        rospy.spin()
 
     def receive_markers(self, msg):
         # print(msg)
@@ -59,15 +75,18 @@ class PoseController:
         # marker_pose = self.MARKERS[marker_code]
 
         # # translation from the robot to the marker
-        # translation = Vector3(x=msg.pose.position.x,
-        #                       y=msg.pose.position.y, z=msg.pose.position.z)
-        # rotation = Quaternion(x=msg.pose.pose.orientation.x, y=msg.pose.pose.orientation.y, z=msg.pose.pose.orientation.z,
-        #                       w=msg.pose.pose.orientation.w)
+        translation = Vector3(x=msg.pose.position.x,
+                              y=msg.pose.position.y, z=msg.pose.position.z)
+        rotation = Quaternion(x=msg.pose.pose.orientation.x, y=msg.pose.pose.orientation.y, z=msg.pose.pose.orientation.z,
+                              w=msg.pose.pose.orientation.w)
         # take the marker pose and subtract the translation and rotation
-        # inverse_transform = tf2_ros.transformations.inverse_transform(odom_base)
-        # result_transform = tf2_ros.transformations.concatenate_transforms(
-        #     self.pose, inverse_transform.transform
-        # )
+        inverse_marker_transform = tf2_ros.transformations.inverse_transform(Transform(
+                translation=translation,
+                rotation=rotation
+        ))
+        result_transform = tf2_ros.transformations.concatenate_transforms(
+            self.pose, inverse_transform.transform
+        )
 
         # subtract the current map-baselink frame to find the offset value
 
@@ -114,18 +133,18 @@ class PoseController:
         self.received_message = True
 
     def publish_frames(self):
-        rospy.loginfo("Hello, ROS")
+        # rospy.loginfo("Hello, ROS")
         br = tf.TransformBroadcaster()
-        rospy.loginfo("Hello, ROS122431")
+        # rospy.loginfo("Hello, ROS122431")
         if not self.received_message:
-            rospy.loginfo("Hello, ROS25235")
+            # rospy.loginfo("Hello, ROS25235")
             br.sendTransform((0, 0, 0),
                              (0, 0, 0, 0),
                              rospy.Time.now(),
                              "odom",
                              "map")
             return
-        rospy.loginfo("Hello, ROS2")
+        # rospy.loginfo("Hello, ROS2")
         # publish the current pose and offset
         # transform = np.array((0,0,0,0,0,0,0))
         # transform = np.add(transform, self.pose)
@@ -140,19 +159,24 @@ class PoseController:
             odom_base = self.tf_buffer.lookup_transform(
                 'base_link', 'odom', rospy.Time())
         except Exception:
-            rospy.loginfo("Hello, ROS!")
+            # rospy.loginfo("Hello, ROS!")
             br.sendTransform((0, 0, 0),
                              (0, 0, 0, 0),
                              rospy.Time.now(),
                              "odom",
                              "map")
-            rospy.loginfo("Sent transform")
+            # rospy.loginfo("Sent transform")
             return
-        rospy.loginfo("Hello, ROS3")
+
+        result_transform = tf2_ros.transformations.concatenate_transforms(
+            self.pose, self.offset
+        )
+        # rospy.loginfo("Hello, ROS3")
         inverse_transform = tf2_ros.transformations.inverse_transform(odom_base)
         result_transform = tf2_ros.transformations.concatenate_transforms(
             self.pose, inverse_transform.transform
         )
+
 
         transform = TransformStamped(
             header=Header(
@@ -161,9 +185,9 @@ class PoseController:
             transform=Transform(
                 translation=result_transform.translation, rotation=result_transform.rotation),
         )
-        rospy.loginfo("Hello, ROS4")
+        # rospy.loginfo("Hello, ROS4")
         br.sendTransform(transform)
-        rospy.loginfo("Hello, ROS5")
+        # rospy.loginfo("Hello, ROS5")
         # # send the transform between map and odom
         # br.sendTransform(transform[:3],
         #                  Quaternion(*transform[3:]),

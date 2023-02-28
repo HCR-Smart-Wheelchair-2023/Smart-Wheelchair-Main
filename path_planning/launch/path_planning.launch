@@ -4,7 +4,9 @@
     <!-- Run the script that listens to the /user_intput topic and sends target to the navigation  -->
     <!-- <node pkg="path_planning" type="path_planning.py" name="path_planning" output="screen" /> -->
     <node pkg="map_server" type="map_server" name="map_server"
-        args="$(find path_planning)/map/map.yaml" />
+        args="$(find path_planning)/map/map.yaml" >
+        <remap from="map" to="/staticmap" />
+    </node>
 
     <node pkg="move_base" type="move_base" name="move_base" output="screen">
         <param name="controller_frequency" value="10.0" />

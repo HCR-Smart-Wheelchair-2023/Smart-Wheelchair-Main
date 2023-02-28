@@ -33,10 +33,10 @@ class MapStitcher:
         # self.dynamic_map.data = map_array
         map_array = map_array.reshape((self.dynamic_map.info.height, self.dynamic_map.info.width))
         static_array = self.static_array
-        x_min = self.dynamic_map.info.center.origin.position.x - int(self.dynamic_map.info.height/2)
-        x_max = self.dynamic_map.info.center.origin.position.x - ceil(self.dynamic_map.info.height/2)
-        y_min = self.dynamic_map.info.center.origin.position.y - int(self.dynamic_map.info.width/2)
-        y_max = self.dynamic_map.info.center.origin.position.y - ceil(self.dynamic_map.info.width/2)
+        x_min = self.dynamic_map.info.origin.position.x - int(self.dynamic_map.info.height/2)
+        x_max = self.dynamic_map.info.origin.position.x - ceil(self.dynamic_map.info.height/2)
+        y_min = self.dynamic_map.info.origin.position.y - int(self.dynamic_map.info.width/2)
+        y_max = self.dynamic_map.info.origin.position.y - ceil(self.dynamic_map.info.width/2)
         static_array[x_min:x_max,y_min:y_max] += map_array
         static_array = static_array.reshape(self.static_map.info.width*self.static_map.info.height)
         self.static_map.data = static_array

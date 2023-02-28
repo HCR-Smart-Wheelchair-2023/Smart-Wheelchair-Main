@@ -153,19 +153,19 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
 
 //--------CAMERA
 
- // Get the video element
-  const video = document.getElementById('video'); 
+//  // Get the video element
+//   const video = document.getElementById('video'); 
   
-  function startCamera() {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
-        videoElement.srcObject = stream;
-        video.play();
-      })
-      .catch(error => {
-        console.error('Error accessing camera:', error);
-      });
-  }
+//   function startCamera() {
+//     navigator.mediaDevices.getUserMedia({ video: true })
+//       .then(stream => {
+//         videoElement.srcObject = stream;
+//         video.play();
+//       })
+//       .catch(error => {
+//         console.error('Error accessing camera:', error);
+//       });
+//   }
 
 // // Get a video stream from the iPad Pro's camera
 // const constraints = { video: true };

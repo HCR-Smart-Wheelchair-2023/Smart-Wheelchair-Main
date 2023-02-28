@@ -9,9 +9,6 @@ from io import BytesIO
 from PIL import Image
 import base64
 
-#import crypiptography
-#from openssl import SSL
-
 app = Flask(__name__, static_url_path='/static')
 
 @app.route('/')
@@ -31,16 +28,18 @@ def process_image():
     print(image_data)
     # Remove the "data:image/png;base64," prefix from the data URL
     image_data = image_data.replace('data:image/png;base64,', '')
-    
+
     # Convert the base64-encoded data to bytes
     image_bytes = BytesIO(base64.b64decode(image_data))
-    print(image_bytes)
+    # print(len(image_bytes))
+    # with open("output.png", "wb") as f:
+    #     f.write(image_bytes)
     # Open the image using PIL
     image = Image.open(image_bytes)
     image.save('./face.png')
     # Do some processing on the image
     # ...
-    
+
     # Return a result
     return 'Image processed successfully'
 

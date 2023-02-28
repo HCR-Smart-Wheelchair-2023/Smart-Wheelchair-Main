@@ -120,11 +120,12 @@ run-sim-core:
 		-v $(current_dir)/path_planning/:/root/ros_ws/src/path_planning \
 		-v $(current_dir)/emotion/:/root/ros_ws/src/emotion \
 		-v $(current_dir)/wheele_description/:/root/ros_ws/src/wheele_description \
+		-v $(current_dir)/room_gen/:/root/ros_ws/src/room_gen \
 		-v $(current_dir)/room_description/:/root/ros_ws/src/room_description \
 		-v $(current_dir)/wheele_gazebo/:/root/ros_ws/src/wheele_gazebo \
 		-v $(current_dir)/social_predictions/:/root/ros_ws/src/social_predictions \
 		-v $(current_dir)/people_msg/:/root/ros_ws/src/people_msg \
-		-v $(current_dir)/zed_dummy/:/root/ros_ws/src/zed_dummy \
+		-v $(current_dir)/emotion_detection/:/root/ros_ws/src/emotion_detection \
 	    --privileged \
 		--network host \
 		--name sim \
@@ -139,6 +140,37 @@ run-sim-main:
 
 run-sim-bash:
 	docker exec -it sim bash -c "cd /root/ros_ws/src && \
+		source /opt/ros/noetic/setup.bash && \
+		source ../devel/setup.bash && \
+		bash"
+
+build-ed:
+	DOCKER_BUILDKIT=1 docker build -t ed:latest \
+	-f Dockerfile.ed .
+
+run-ed-core:
+	xhost +si:localuser:root
+	docker stop ed || true && docker rm ed || true
+	docker run \
+		-e "DISPLAY" \
+		-e "QT_X11_NO_MITSHM=1" \
+		-e "XAUTHORITY=${XAUTH}" \
+		-e "MODE=sim" \
+		-v ~/.Xauthority:/root/.Xauthority:rw \
+		-v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+		-v /tmp/.docker.xauth:/tmp/.docker.xauth \
+		-v $(current_dir)/robot_main/:/root/ros_ws/src/robot_main \
+		-v $(current_dir)/navigation/:/root/ros_ws/src/navigation \
+		-v $(current_dir)/user_interface/:/root/ros_ws/src/user_interface \
+		-v $(current_dir)/emotion_detection/:/root/ros_ws/src/emotion_detection \
+	    --privileged \
+		--network host \
+		--name ed \
+		-it \
+		ed
+
+run-ed-bash:
+	docker exec -it ed bash -c "cd /root/ros_ws/src && \
 		source /opt/ros/noetic/setup.bash && \
 		source ../devel/setup.bash && \
 		bash"

@@ -1,56 +1,20 @@
-// Register the service worker
-if ('serviceWorker' in navigator)
-{window.addEventListener('load', () => {navigator.serviceWorker.register('/serviceworker.js');
-});}
+// // Register the service worker
+// if ('serviceWorker' in navigator)
+// {window.addEventListener('load', () => {navigator.serviceWorker.register('/serviceworker.js');
+// });}
 
 //-----------------------------------------roslibJS stuff ------------------------------------------------------------------------------------------------
 
-// Connect to ROS
- var ros = new ROSLIB.Ros({
-    url : 'wss://192.168.50.101:8080'
-});
+// // Example of getting button id and listening for click
+// var doorBut = document.getElementById('door');
+// var kitchenBut = document.getElementById('kitchen');
+// var tableBut = document.getElementById('table');
+// var bathroomBut = document.getElementById('bathroom');
 
-// Subscribe to a topic
-var listener = new ROSLIB.Topic({
-    ros : ros,
-    name : '/target_command',
-    messageType : 'std_msgs/String'
-});
-
-// Update the message on the web page when a new message is received
-listener.subscribe(function(message) {
-    var messageElement = document.getElementById('message');
-    messageElement.innerHTML = message.data;
-});
-
- // Create a publisher
- var publisher = new ROSLIB.Topic({
-    ros : ros,
-    name : '/my_topic',
-    messageType : 'std_msgs/String'
-});
-
-// Define the function to execute when the button is clicked
-function publishMessage(id) {
-    // Create a message
-    var message = new ROSLIB.Message({
-        data : id
-    });
-    // Publish the message
-    publisher.publish(message);
-    //publish to relevant topic
-}
-
-// Example of getting button id and listening for click
-const doorBut = document.getElementById('door');
-const kitchenBut = document.getElementById('kitchen');
-const tableBut = document.getElementById('table');
-const bathroomBut = document.getElementById('bathroom');
-
-doorBut.addEventListener('click',publishMessage('door'));
-kitchenBut.addEventListener('click',publishMessage('kitchen'));
-tableBut.addEventListener('click',publishMessage('table'));
-bathroomBut.addEventListener('click',publishMessage('bathroom'));
+// doorBut.addEventListener('click',publishMessage('door'));
+// kitchenBut.addEventListener('click',publishMessage('kitchen'));
+// tableBut.addEventListener('click',publishMessage('table'));
+// bathroomBut.addEventListener('click',publishMessage('bathroom'));
 
 
 //--------------------------------------------------------speech functions------------------------------------------------------
@@ -68,27 +32,45 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   //   speech.text = message;
   //   window.speechSynthesis.speak(speech);
   // }
+  function post_dest(_goal){
+    fetch('/goal_dest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ goal: _goal })
+    })
+    .then(response => response.text())
+    .then(result => {
+      console.log('Result:', result);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
   function door() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the door';
     window.speechSynthesis.speak(msg);
-  }
+    post_dest('door');
+    }
 
   function kitchen() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the kitchen';
     window.speechSynthesis.speak(msg);
+    post_dest('kitchen');
   }
 
   function table() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the table';
     window.speechSynthesis.speak(msg);
+    post_dest('table')
   }
   function bathroom() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the bathroom';
     window.speechSynthesis.speak(msg);
+    post_dest('bathroom')
   }
 
   //------------------------------------------- code to do speech to text might be useful after---------------------------
@@ -100,9 +82,38 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
 
     recognition.start();
 
+    recognition.addEventListener('result', event => {
+      const transcript = event.results[0][0].transcript;
+      // inputField.value = transcript;
+      // Perform action with transcript
+    });
     recognition.onresult = function(event) {
       const result = event.results[0][0].transcript;
-      inputField.value = result;
+      //inputField.value = result;
+      const keyword1 = "door";
+      const keyword2 = "bathroom";
+      const keyword3 = "table";
+      const keyword4 = "kitchen";
+      if (result.includes(keyword1)) {
+      console.log(`The string contains the keyword '${keyword1}'`);
+      inputField.value = "door " 
+      door()
+      }
+      else if (result.includes(keyword2)){
+        inputField.value = "bathroom " 
+        bathroom()
+      }
+      else if (result.includes(keyword3)){
+        inputField.value = "table" 
+        table()
+      }
+       else if (result.includes(keyword4)){
+        inputField.value = "kitchen" 
+        kitchen()
+      }
+      else {
+        inputField.value = "error" 
+      }
     };
   }
 
@@ -110,36 +121,93 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
 
   // -----------------------------------------------code to use camera---------------------------------------------------
   // Get the video element
-  let video = null
+  //let video = null
   //let canvas = null
-  let context = null
+  //let context = null
   function startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
-        videoElement.srcObject = stream;
+        
+        // videoElement.srcObject = stream;
         //video.play();
-        function saveFrame() {
-          console.log('in save frame')
-          document.getElementById('canvas').getContext('2d').drawImage(videoElement, 0, 0, document.getElementById('canvas').width, document.getElementById('canvas').height);
-          const dataURL = document.getElementById('canvas').toDataURL('image/face.jpeg', 1.0);
-          console.log(dataURL)
+        
+        // Initialize the Jeeliz Face Filter library
+       // const { JEELIZFACEFILTER } = require('./utils/jeelizFaceFilter.module.js');
+        //   const { JEELIZFACEFILTER } = requirejs(["./utils/jeelizFaceFilter.module.js"], function(util) {
+        //     //This function is called when scripts/helper/util.js is loaded.
+        //     //If util.js calls define(), then this function is not fired until
+        //     //util's dependencies have loaded, and the util argument will hold
+        //     //the module value for "helper/util".
+        // });
+        define(function (require) {
+          var namedModule = require('./utils/jeelizFaceFilter.module.js');
+        });
+        JEELIZFACEFILTER.init({
+          canvasId: 'canvas',
+          NNCpath: './static/utils/NN_4EXP_2.json',
+          maxFacesDetected: 1,
+          callbackReady: function (errCode) {
+            if (errCode) {
+              console.log('An error occurred: ', errCode);
+              return;
+            }
+            console.log('Jeeliz Face Filter initialized successfully!');
+          },
+          callbackTrack: function (detectState) {
+            // Log the detected facial expression
+            console.log(detectState.expressions);
 
-          //---send data to URL
-          fetch('/process-image', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ image_data: dataURL })
-          })
-          .then(response => response.text())
-          .then(result => {
-            console.log('Result:', result);
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-        }
-  
-        saveFrame();
+            // // Convert the expressions object to JSON
+            // let expressionsJSON = JSON.stringify(detectState.expressions);
+
+            // // Write the JSON to a text file
+            // let blob = new Blob([expressionsJSON], { type: 'text/plain' });
+            // let url = URL.createObjectURL(blob);
+            // let link = document.createElement('a');
+            // link.download = 'facial-expressions.txt';
+            // link.href = url;
+            // link.click();
+            // URL.revokeObjectURL(url);
+          }
+        });
+
+        // Set the video stream as the source for the Jeeliz Face Filter library
+        var videoElement = document.createElement('video');
+        videoElement.srcObject = stream;
+        videoElement.play();
+        JEELIZFACEFILTER.set_video(videoElement);
+
+        // function saveFrame() {
+        //   console.log('in save frame')
+        //   const canvas = document.createElement('canvas');
+        //   const ctx = canvas.getContext('2d');
+        //   canvas.width = videoElement.videoWidth;
+        //   canvas.height = videoElement.videoHeight;
+        //   ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        //   // console.log(document.getElementById('canvas').getContext('2d').drawImage(videoElement, 0, 0, document.getElementById('canvas').width, document.getElementById('canvas').height));
+        //   const dataURL = canvas.toDataURL('image/face.jpeg', 1.0);
+        //   // console.log(dataURL)
+        //   // const data = document.getElementById('canvas').getContext("2d").getImageData(10, 10, 50, 50);
+        //   // console.log(data)
+        //   //---send data to URL
+        //   fetch('/process-image', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({ image_data: dataURL })
+        //   })
+        //   .then(response => response.text())
+        //   .then(result => {
+        //     console.log('Result:', result);
+        //   })
+        //   .catch(error => {
+        //     console.error('Error:', error);
+        //   });
+        // }
+        // saveFrame();
+
+        // function detectExpression() {
+
+        // }
 
       })
       .catch(error => {
@@ -147,71 +215,45 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
       });
   }
 
-  //------------detect FACE from CAMERA data-----------------
+  // // Get the user's camera stream
+  // navigator.mediaDevices.getUserMedia({ video: true })
+  // .then(function (stream) {
+  //   // Initialize the Jeeliz Face Filter library
+  //   Jeeliz.FaceFilter.init({
+  //     canvasId: 'canvas',
+  //     NNCpath: './jeelizFaceFilterNNC.json',
+  //     maxFacesDetected: 1,
+  //     callbackReady: function (errCode) {
+  //       if (errCode) {
+  //         console.log('An error occurred: ', errCode);
+  //         return;
+  //       }
+  //       console.log('Jeeliz Face Filter initialized successfully!');
+  //     },
+  //     callbackTrack: function (detectState) {
+  //       // Log the detected facial expression
+  //       console.log(detectState.expressions);
 
-// Get the canvas element
-const canvas = document.getElementById('canvas');
+  //       // Convert the expressions object to JSON
+  //       const expressionsJSON = JSON.stringify(detectState.expressions);
 
-// Create a Three.js scene
-const scene = new THREE.Scene();
+  //       // Write the JSON to a text file
+  //       const blob = new Blob([expressionsJSON], { type: 'text/plain' });
+  //       const url = URL.createObjectURL(blob);
+  //       const link = document.createElement('a');
+  //       link.download = 'facial-expressions.txt';
+  //       link.href = url;
+  //       link.click();
+  //       URL.revokeObjectURL(url);
+  //     }
+  //   });
 
-// Create a camera
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-// Create a renderer
-const renderer = new THREE.WebGLRenderer({ canvas });
-
-// Create a directional light
-const light = new THREE.DirectionalLight(0xffffff);
-light.position.set(1, 1, 1).normalize();
-scene.add(light);
-
-// Create a face mesh materials
-const material = new THREE.MeshPhongMaterial({
-  color: 0xffffff,
-  specular: 0x050505,
-  shininess: 100
-});
-
-// Load the pre-built face mesh model
-const loader = new THREE.BufferGeometryLoader();
-loader.load('/path/to/face-mesh.json', function (geometry) {
-  // Create a face mesh object
-  const mesh = new THREE.Mesh(geometry, material);
-
-  // Add the face mesh object to the scene
-  scene.add(mesh);
-});
-
-// Create an ARKit session
-const session = new ARKit.Session();
-
-// Create a face tracking configuration
-const configuration = new ARKit.FaceTrackingConfiguration();
-
-// Start the ARKit session
-session.run(configuration, { device: 'iPad' });
-
-// Render the scene
-function render() {
-  // Update the camera matrix from the ARKit session
-  camera.matrix.fromArray(session.currentFrame.camera.transform);
-
-  // Update the face mesh geometry from the ARKit session
-  const faceAnchor = session.currentFrame.anchors[0];
-  if (faceAnchor) {
-    const geometry = mesh.geometry;
-    geometry.attributes.position.array = faceAnchor.geometry.vertices;
-    geometry.attributes.position.needsUpdate = true;
-    geometry.computeVertexNormals();
-  }
-
-  // Render the scene
-  renderer.render(scene, camera);
-
-  // Request the next frame
-  requestAnimationFrame(render);
-}
-
-// Start rendering the scene
-requestAnimationFrame(render);
+  //   // Set the video stream as the source for the Jeeliz Face Filter library
+  //   const videoElement = document.createElement('video');
+  //   videoElement.srcObject = stream;
+  //   videoElement.play();
+  //   Jeeliz.FaceFilter.set_video(videoElement);
+  // })
+  // .catch(function (err) {
+  //   console.log('An error occurred: ', err);
+  // });

@@ -1,14 +1,13 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-project(path_planning)
+project(emotion_detection)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   rospy
-  geometry_msgs
-  std_msgs
+  sensor_msgs
   roslaunch
 )
 #roslaunch_add_file_check(launch)
@@ -29,18 +28,13 @@ include_directories(
 
 #############
 ## Install ##
-#############
-catkin_install_python(PROGRAMS scripts/path_planning.py
+#############scripts/deepface_script.py deepface_ui.py
+catkin_install_python(PROGRAMS scripts/cam_pub.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-catkin_install_python(PROGRAMS scripts/odom.py
+catkin_install_python(PROGRAMS scripts/deepface_script.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-catkin_install_python(PROGRAMS scripts/pose.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-catkin_install_python(PROGRAMS scripts/point_cloud_transform.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-catkin_install_python(PROGRAMS scripts/map_stitching.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+<<<<<<< HEAD
+# catkin_install_python(PROGRAMS scripts/deepface_ui.py
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+=======
+>>>>>>> 2a4ed8047d257b3f58c6f47c28512d43e4ff88e2

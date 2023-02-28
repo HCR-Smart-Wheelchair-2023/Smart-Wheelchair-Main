@@ -38,7 +38,7 @@ while not rospy.is_shutdown():
         odom_msg.odom.twist.twist.linear = Point(random.uniform(-2, 2), random.uniform(-2, 2), 0.0)
         
         b = random.choice([True, False])
-        odom_msg.static.data = b
+        odom_msg.static.data = False
         if b:
             odom_msg.odom.pose.pose.orientation.x = random.uniform(0, math.pi)
             

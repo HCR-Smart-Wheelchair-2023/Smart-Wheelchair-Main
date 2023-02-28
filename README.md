@@ -63,4 +63,51 @@ roslaunch wheele_gazebo wheele.launch
 - Set the map-odom to make the map-base equal pose from pose topic
 
 - Set up a topic that allows setting of the current pose
-- 
+-
+
+
+- PI  prl@192.168.50.100 password: HCRrnet1
+- Orin prl@192.168.50.102 password: prl
+
+Laptop
+make run-external core
+make run-external-main
+
+Orin Intruction (First start roscore on laptop)
+cd human....
+sudo ./start_docker....
+./start.sh
+
+
+
+
+
+
+<!--
+    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
+        <param name="frame_id" type="string" value="base_link"/>
+
+        <param name="subscribe_depth" type="bool" value="false"/>
+        <param name="subscribe_rgbd" type="bool" value="false"/>
+        <param name="subscribe_scan" type="bool" value="true"/>
+
+        <remap from="odom" to="/odom"/>
+        <remap from="scan" to="/scan"/>
+        <!-- <remap from="rgbd_image" to="rgbd_image"/> -->
+
+        <param name="queue_size" type="int" value="10"/>
+
+        <!-- RTAB-Map's parameters -->
+        <!-- <param name="RGBD/NeighborLinkRefining" type="string" value="true"/>
+        <param name="RGBD/ProximityBySpace"     type="string" value="true"/>
+        <param name="RGBD/AngularUpdate"        type="string" value="0.01"/>
+        <param name="RGBD/LinearUpdate"         type="string" value="0.01"/>
+        <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/> -->
+        <param name="Grid/FromDepth"            type="string" value="false"/> <!-- occupancy grid from lidar -->
+        <param name="Reg/Force3DoF"             type="string" value="true"/>
+        <param name="Reg/Strategy"              type="string" value="1"/> <!-- 1=ICP -->
+
+        <!-- ICP parameters -->
+        <param name="Icp/VoxelSize"                 type="string" value="0.05"/>
+        <param name="Icp/MaxCorrespondenceDistance" type="string" value="0.1"/>
+  </node> -->

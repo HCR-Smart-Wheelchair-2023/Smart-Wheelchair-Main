@@ -4,21 +4,20 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
   name="wheele">
-
   <link
     name="base_link">
     <inertial>
       <origin
-        xyz="-0.0527414453514239 -1.08270102171577E-06 0.207668676561577"
+        xyz="-0.0527414453514239 -1.08270102171606E-06 0.207668676561577"
         rpy="0 0 0" />
       <mass
         value="91.1648574707324" />
       <inertia
         ixx="3.16732019149984"
-        ixy="4.74759163822904E-05"
+        ixy="4.74759163822853E-05"
         ixz="-0.32026788285614"
         iyy="3.23556377175086"
-        iyz="1.49370499763123E-05"
+        iyz="1.49370499763038E-05"
         izz="3.88981086562858" />
     </inertial>
     <visual>
@@ -46,89 +45,27 @@
     </collision>
   </link>
   <link
-    name="back_right">
+    name="wheel_back_left">
     <inertial>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <mass
-        value="6.60646736275211" />
-      <inertia
-        ixx="0.0537384278699751"
-        ixy="-2.83245372789545E-19"
-        ixz="5.75494615143155E-06"
-        iyy="0.102710694072585"
-        iyz="2.79438793816295E-21"
-        izz="0.0551658293551905" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <cylinder length="0.075" radius="0.1725"/>
-        <!-- <mesh
-          filename="package://wheele_description/meshes/back_right.STL" /> -->
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <cylinder length="0.075" radius="0.1725"/>
-        <!-- <mesh
-          filename="package://wheele_description/meshes/back_right.STL" /> -->
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="back_right_joint"
-    type="continuous">
-    <origin
-      xyz="-0.18900826298859 -0.2925 0.0865540661871362"
-      rpy="1.570796 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="back_right" />
-    <axis
-      xyz="0 0 -1" />
-    <limit
-      lower="0"
-      upper="0"
-      effort="30"
-      velocity="30" />
-  </joint>
-  <link
-    name="back_left">
-    <inertial>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="0.000123919025762947 -0.0375 -0.00194200173946403"
+        rpy="1.570796 0 0" />
       <mass
         value="6.60646736275211" />
       <inertia
         ixx="0.0537442322482938"
-        ixy="2.17176629849951E-19"
+        ixy="2.16892957827706E-19"
         ixz="-9.1019815591947E-05"
         iyy="0.102710694072585"
-        iyz="8.13484965324198E-20"
+        iyz="8.57940734504454E-20"
         izz="0.0551600249768718" />
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="0.000123919025762947 -0.0375 -0.00194200173946403"
+        rpy="1.570796 0 0" />
       <geometry>
-        <cylinder length="0.075" radius="0.1725"/>
-        <!-- <mesh
-          filename="package://wheele_description/meshes/back_left.STL" /> -->
+        <cylinder length="0.075" radius="0.1725" />
       </geometry>
       <material
         name="">
@@ -138,30 +75,80 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="0.000123919025762947 -0.0375 -0.00194200173946403"
+        rpy="1.570796 0 0" />
       <geometry>
-        <cylinder length="0.075" radius="0.1725"/>
-        <!-- <mesh
-          filename="package://wheele_description/meshes/back_left.STL" /> -->
+        <cylinder length="0.075" radius="0.1725" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="back_left_joint"
+    name="joint_wheel_back_left"
     type="continuous">
     <origin
-      xyz="-0.188876080974237 0.2925 0.086557998260536"
-      rpy="1.570796 0 0" />
+      xyz="-0.189 0.33 0.0885"
+      rpy="0 0 0" />
     <parent
       link="base_link" />
     <child
-      link="back_left" />
+      link="wheel_back_left" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 1 0" />
     <limit
-      lower="0"
-      upper="0"
+      effort="30"
+      velocity="30" />
+  </joint>
+  <link
+    name="wheel_back_right">
+    <inertial>
+      <origin
+        xyz="-8.2629885896357E-06 0.0375 -0.00194593381286387"
+        rpy="1.570796 0 0" />
+      <mass
+        value="6.60646736275211" />
+      <inertia
+        ixx="0.0537384278699751"
+        ixy="-2.83252785110274E-19"
+        ixz="5.75494615143155E-06"
+        iyy="0.102710694072585"
+        iyz="-5.47735900067466E-22"
+        izz="0.0551658293551905" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="-8.2629885896357E-06 0.0375 -0.00194593381286387"
+        rpy="1.570796 0 0" />
+      <geometry>
+        <cylinder length="0.075" radius="0.1725" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="-8.2629885896357E-06 0.0375 -0.00194593381286387"
+        rpy="1.570796 0 0" />
+      <geometry>
+        <cylinder length="0.075" radius="0.1725" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_wheel_back_right"
+    type="continuous">
+    <origin
+      xyz="-0.189 -0.33 0.0885"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel_back_right" />
+    <axis
+      xyz="0 1 0" />
+    <limit
       effort="30"
       velocity="30" />
   </joint>
@@ -169,16 +156,16 @@
     name="front_right">
     <inertial>
       <origin
-        xyz="0 0 0"
+        xyz="-0.00796967411895133 1.34484746663888E-05 -0.169078862100503"
         rpy="0 0 0" />
       <mass
         value="0.912192812599195" />
       <inertia
         ixx="0.0138058169636317"
-        ixy="5.46192947538798E-07"
-        ixz="-0.001500259510951"
+        ixy="5.46192947538833E-07"
+        ixz="-0.00150025951095099"
         iyy="0.0140839705934447"
-        iyz="2.76870935230357E-06"
+        iyz="2.76870935230375E-06"
         izz="0.00126687371083358" />
     </inertial>
     <visual>
@@ -206,47 +193,40 @@
     </collision>
   </link>
   <joint
-    name="front_right_joint"
+    name="jont_front_right"
     type="continuous">
     <origin
-      xyz="0.420280325881049 -0.210737844390247 0.224921137899497"
+      xyz="0.42825 -0.21075 0.394"
       rpy="0 0 0" />
     <parent
       link="base_link" />
     <child
       link="front_right" />
     <axis
-      xyz="0 0 1" />
-    <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      xyz="0 0 -1" />
   </joint>
   <link
-    name="front_right_wheel">
+    name="wheel_front_right">
     <inertial>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="-0.000134044498266039 0.0325 -0.00152009362232607"
+        rpy="1.570796 0 0" />
       <mass
         value="1.54915886155044" />
       <inertia
         ixx="0.00448990415075851"
-        ixy="-1.72978181410294E-14"
+        ixy="-2.74052534042467E-18"
         ixz="1.41226640854449E-05"
         iyy="0.00849384204724026"
-        iyz="6.12208093531569E-17"
+        iyz="2.18087529975426E-19"
         izz="0.00464942075546111" />
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="-0.000134044498266039 0.0325 -0.00152009362232607"
+        rpy="1.570796 0 0" />
       <geometry>
-        <cylinder length="0.05" radius="0.1025"/>
-        <!-- <mesh
-          filename="package://wheele_description/meshes/front_right_wheel.STL" /> -->
+        <cylinder length="0.05" radius="0.1025" />
       </geometry>
       <material
         name="">
@@ -256,44 +236,37 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="-0.000134044498266039 0.0325 -0.00152009362232607"
+        rpy="1.570796 0 0" />
       <geometry>
-        <cylinder length="0.05" radius="0.1025"/>
-        <!-- <mesh
-          filename="package://wheele_description/meshes/front_right_wheel.STL" /> -->
+        <cylinder length="0.05" radius="0.1025" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="front_right_wheel_joint"
+    name="joint_wheel_front_right"
     type="continuous">
     <origin
-        xyz="0.353115955501745 -0.213251292865238 0.016979906377674"
-        rpy="1.570796 0 0" />
+      xyz="-0.075 -0.035 -0.3755"
+      rpy="0 0 0" />
     <parent
       link="front_right" />
     <child
-      link="front_right_wheel" />
+      link="wheel_front_right" />
     <axis
-      xyz="0 0 1" />
-    <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      xyz="0 -1 0" />
   </joint>
   <link
     name="front_left">
     <inertial>
       <origin
-        xyz="0 0 0"
+        xyz="-0.00796967411880023 1.34484745151486E-05 -0.169078862100503"
         rpy="0 0 0" />
       <mass
         value="0.912192812599195" />
       <inertia
         ixx="0.0138058169636317"
-        ixy="5.46192947538807E-07"
+        ixy="5.46192947538824E-07"
         ixz="-0.00150025951095099"
         iyy="0.0140839705934447"
         iyz="2.76870935230368E-06"
@@ -324,47 +297,40 @@
     </collision>
   </link>
   <joint
-    name="front_left_joint"
+    name="joint_front_left"
     type="continuous">
     <origin
-      xyz="0.4202803258812 0.211263448474515 0.224921137899497"
+      xyz="0.42825 0.21125 0.394"
       rpy="0 0 0" />
     <parent
       link="base_link" />
     <child
       link="front_left" />
     <axis
-      xyz="0 0 1" />
-    <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      xyz="0 0 -1" />
   </joint>
   <link
-    name="front_left_wheel">
+    name="wheel_front_left">
     <inertial>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="-0.00106531226090795 -0.0325 -0.00109259431396592"
+        rpy="1.570796 0 0" />
       <mass
         value="1.54915886155044" />
       <inertia
         ixx="0.00456756149249647"
-        ixy="-1.70000757444159E-18"
+        ixy="-1.69951829350563E-18"
         ixz="8.09717382753578E-05"
         iyy="0.00849384204724026"
-        iyz="-5.54219037160218E-19"
+        iyz="-5.55422993037582E-19"
         izz="0.00457176341372314" />
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="-0.00106531226090795 -0.0325 -0.00109259431396592"
+        rpy="1.570796 0 0" />
       <geometry>
-        <cylinder length="0.05" radius="0.1025"/>
-        <!-- <mesh
-          filename="package://wheele_description/meshes/front_left_wheel.STL" /> -->
+        <cylinder length="0.05" radius="0.1025" />
       </geometry>
       <material
         name="">
@@ -374,34 +340,26 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="-0.00106531226090795 -0.0325 -0.00109259431396592"
+        rpy="1.570796 0 0" />
       <geometry>
-        <cylinder length="0.05" radius="0.1025"/>
-        <!-- <mesh
-          filename="package://wheele_description/meshes/front_left_wheel.STL" /> -->
+        <cylinder length="0.05" radius="0.1025" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="front_left_wheel_joint"
+    name="joint_wheel_front_left"
     type="continuous">
     <origin
-        xyz="0.353115955501745 0.213251292865238 0.016979906377674"
-        rpy="1.570796 0 0" />
+      xyz="-0.075 0.035 -0.3755"
+      rpy="0 0 0" />
     <parent
       link="front_left" />
     <child
-      link="front_left_wheel" />
+      link="wheel_front_left" />
     <axis
-      xyz="0 0 1" />
-    <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      xyz="0 -1 0" />
   </joint>
-
 
   <link name="dummy">
   </link>
@@ -482,23 +440,23 @@
     </plugin>
   </gazebo> 
 
-  <transmission name="back_right_tran">
+  <transmission name="tran_wheel_back_right">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="back_right_joint">
+    <joint name="joint_wheel_back_right">
       <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
-    <actuator name="back_right_motor">
+    <actuator name="motor_wheel_back_right">
       <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
 
-  <transmission name="back_left_tran">
+  <transmission name="tran_wheel_back_left">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="back_left_joint">
+    <joint name="joint_wheel_back_left">
       <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
-    <actuator name="back_left_motor">
+    <actuator name="motor_wheel_back_left">
       <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
@@ -510,21 +468,5 @@
     </plugin>
   </gazebo>
 
-  <!-- <gazebo>
-    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
-      <legacyMode>false</legacyMode>
-      <alwaysOn>true</alwaysOn>
-      <updateRate>10</updateRate>
-      <leftJoint>back_left_joint</leftJoint>
-      <rightJoint>back_right_joint</rightJoint>
-      <wheelSeparation>0.4</wheelSeparation>
-      <wheelDiameter>0.2</wheelDiameter>
-      <torque>10</torque>
-      <commandTopic>cmd_vel</commandTopic>
-      <odometryTopic>odom</odometryTopic>
-      <odometryFrame>odom</odometryFrame>
-      <robotBaseFrame>chassis</robotBaseFrame>
-    </plugin>
-  </gazebo> -->
 
 </robot>

@@ -2,9 +2,9 @@
   <name>wheele_description</name>
   <version>1.0.0</version>
   <description>
-    <p>URDF Description package for wheelchair_3</p>
+    <p>URDF Description package for wheele</p>
     <p>This package contains configuration data, 3D models and launch files
-for wheelchair_3 robot</p>
+for wheele robot</p>
   </description>
   <author>TODO</author>
   <maintainer email="TODO@email.com" />

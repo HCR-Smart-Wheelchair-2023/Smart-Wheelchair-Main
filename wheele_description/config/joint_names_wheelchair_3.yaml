@@ -1,1 +1,1 @@
-controller_joint_names: ['', 'back_right_joint', 'back_left_joint', 'front_right_joint', 'front_right_wheel_joint', 'front_left_joint', 'front_left_wheel_joint', ]
+controller_joint_names: ['', 'joint_wheel_back_left', 'joint_wheel_back_right', 'jont_front_right', 'joint_wheel_front_right', 'joint_front_left', 'joint_wheel_front_left', ]

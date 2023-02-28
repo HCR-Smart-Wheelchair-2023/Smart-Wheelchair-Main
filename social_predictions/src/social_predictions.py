@@ -47,7 +47,66 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     # Superposition of Gaussians
     Z = Z1+Z2
 
+    # Scaling the array 
+    # Find the minimum and maximum values in the array
+    min_val = np.min(Z)
+    max_val = np.max(Z)
+    
+    # Scale the array to the range between 0 and 100
+    Z_scaled = ((Z - min_val) * 100 / (max_val - min_val)).astype(int)
+    # print("Z: ", Z_scaled)
+    
+    z1_flat = Z_scaled.flatten().tolist()
+    grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
+    grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
+    # print(z1_flat)
+    relative_pos = []
 
+    for i in pos: 
+        for j in i:
+            x_relative = grid_x + int(j[0])
+            y_relative = grid_y + int(j[1])
+            flat_pos = int(x_relative + y_relative * costmap.info.width)
+            relative_pos.append(flat_pos)
+
+
+    return relative_pos, z1_flat
+
+def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_factor = 1, t = 5.0):
+    # Convert the object position to grid coordinatesn
+    grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
+    grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
+
+    # Predict final position of user after t seconds 
+    x_dest = (velocity.x * t)
+    y_dest = (velocity.y * t)
+
+    # Calulate orientation angle
+    theta = math.tan(velocity.y/velocity.x)
+
+    # Central position of original gaussian 
+    mu1_x = 0
+    mu1_y = 0
+
+    # Parameters TO TUNE 
+    sigma1_x = 1 * distribution_scale_factor
+    sigma1_y = 1 * distribution_scale_factor
+
+    sigma2_x = 4 * distribution_scale_factor
+    sigma2_y = 2 * distribution_scale_factor
+
+    # Create a meshgrid of points to evaluate the normal distributions
+    x, y = np.mgrid[-30:30:1, -30:30:1]
+    pos = np.empty(x.shape + (2,))
+    pos[:, :, 0] = x; pos[:, :, 1] = y
+
+
+    # Distribution of Gaussians
+    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, -theta)
+    Z2 = gaussian2d(x, y, x_dest, y_dest, sigma2_x, sigma2_y, -theta)
+
+    # Superposition of Gaussians
+    Z = Z1+Z2
 
     # Scaling the array 
     # Find the minimum and maximum values in the array
@@ -73,6 +132,7 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
 
 
     return relative_pos, z1_flat
+    
 
 
 
@@ -118,7 +178,7 @@ class MapProcessor:
     def map_callback_update(self, data):
         
         # Params to tune 
-        t = 3.0
+        t = 2.0
         distribution_scale_factor = 1
         gaus_sep = 2        
 
@@ -137,9 +197,16 @@ class MapProcessor:
                         adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
 
             else:
-                adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, t)
-                for i in adjusted_cells:
-                    adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
+                pos, vals = social_predict_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, distribution_scale_factor, t)
+                for (i, pos) in enumerate(pos):
+                    if vals[i] != 0:
+                        adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
+
+
+                # adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, t)
+                
+                # for i in adjusted_cells:
+                #     adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
                    
 
 

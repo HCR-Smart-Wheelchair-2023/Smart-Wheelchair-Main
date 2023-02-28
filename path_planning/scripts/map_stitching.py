@@ -37,7 +37,7 @@ class MapStitcher:
         x_max = int(self.dynamic_map.info.origin.position.x + ceil(self.dynamic_map.info.height/2))
         y_min = int(self.dynamic_map.info.origin.position.y - int(self.dynamic_map.info.width/2))
         y_max = int(self.dynamic_map.info.origin.position.y + ceil(self.dynamic_map.info.width/2))
-        rospy.loginfo(f'{x_min},{x_min},{y_min},{y_max}')
+        rospy.loginfo(f'{x_min},{x_min},{y_min},{y_max},{self.dynamic_map.info.height}')
         static_array[x_min:x_max,y_min:y_max] += map_array
         static_array = static_array.reshape(self.static_map.info.width*self.static_map.info.height)
         self.static_map.data = static_array

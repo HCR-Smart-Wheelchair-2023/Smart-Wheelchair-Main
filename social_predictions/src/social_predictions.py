@@ -66,7 +66,7 @@ def social_predict(costmap, object_pos, velocity, t):
 class MapProcessor:
     def __init__(self):
         self.map_sub = rospy.Subscriber('/map', OccupancyGrid, self.map_callback_map, queue_size=1)
-        self.update_sub = rospy.Subscriber('/tracked_people', ObjectsStamped, self.map_callback_update, queue_size=1)
+        self.update_sub = rospy.Subscriber('/zed2i/zed_node/obj_det/objects', ObjectsStamped, self.map_callback_update, queue_size=1)
         self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=10)
         self.latest_map = None
 
@@ -78,7 +78,7 @@ class MapProcessor:
 
         #predict for each detected object
         adjusted_cells = []
-        for person in data.Object:
+        for person in data.objects:
             adjusted_cells += social_predict(self.latest_map, person.position, person.velocity, t)
         
         

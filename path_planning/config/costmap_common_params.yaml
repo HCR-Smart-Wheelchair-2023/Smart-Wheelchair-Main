@@ -28,5 +28,6 @@ obstacle_layer:
         topic: /cloud,
         marking: true,
         clearing: true,
-        inf_is_valid: true
+        inf_is_valid: true,
+        clear_on_max_reading: true
     }

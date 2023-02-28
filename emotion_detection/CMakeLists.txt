@@ -33,5 +33,3 @@ catkin_install_python(PROGRAMS scripts/cam_pub.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 catkin_install_python(PROGRAMS scripts/deepface_script.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-catkin_install_python(PROGRAMS scripts/deepface_ui.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

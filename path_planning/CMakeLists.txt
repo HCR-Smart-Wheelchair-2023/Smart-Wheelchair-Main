@@ -41,3 +41,6 @@ catkin_install_python(PROGRAMS scripts/pose.py
 
 catkin_install_python(PROGRAMS scripts/point_cloud_transform.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/map_stitching.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

@@ -31,6 +31,7 @@ WORKDIR /root/ros_ws/src
 COPY robot_main robot_main/
 COPY navigation/ navigation/
 COPY user_interface/ user_interface/
+<<<<<<< HEAD
 COPY path_planning/ path_planning/
 COPY wheele_description/ wheele_description/
 COPY room_description/ room_description/
@@ -39,18 +40,20 @@ COPY social_predictions/ social_predictions/
 COPY people_msg/ people_msg/
 COPY emotion_detection/ emotion_detection/
 COPY zed_dummy/ zed_dummy/
+=======
+COPY emotion_detection/ emotion_detection/
+>>>>>>> 2a4ed8047d257b3f58c6f47c28512d43e4ff88e2
 
 WORKDIR /root/ros_ws/src
 RUN DEBIAN_FRONTEND=noninteractive pip install -r emotion_detection/requirements.txt
 RUN DEBIAN_FRONTEND=noninteractive pip install deepface
 
 WORKDIR /root/ros_ws/src
-
-RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
-
-RUN apt-get install ros-noetic-realsense2-camera -y 
+RUN apt-get install ros-noetic-realsense2-camera -y
 
 WORKDIR /root/ros_ws/src
+
+RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
 
 # CMD cd .. && source /opt/ros/noetic/setup.bash && source ./devel/setup.bash && roscore
 CMD cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build && source ./devel/setup.bash && roscore

@@ -72,6 +72,12 @@ WORKDIR /root/ros_ws/src
 
 RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
 
+#L515 RealSense Camera Installs
+
+WORKDIR /root/ros_ws/src
+
+RUN apt-get install ros-noetic-realsense2-camera -y 
+
 WORKDIR /root/ros_ws/src
 
 # CMD cd .. && source /opt/ros/noetic/setup.bash && source ./devel/setup.bash && roscore

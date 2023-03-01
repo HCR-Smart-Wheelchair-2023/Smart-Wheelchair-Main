@@ -124,42 +124,58 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   let video = null
   let canvas = null
   let context = null
+
+  function startStream(){
+    
+    function getImage(){
+      //Webcam.attach( 'videoElement' );
+      Webcam.snap( function(data_uri) {
+      // display results in page
+      //document.getElementById('results').innerHTML = '<img src="'+data_uri+'"/>';
+      console.log(data_uri)
+      fetch('/process-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image_data: data_uri , width: videoElement.videoWidth, heigth:  videoElement.videoHeight})
+      })
+      .then(response => response.text())
+      .then(result => {
+        console.log('Result fetch:', result);
+      })
+      .catch(error => {
+        console.error('Error fetch:', error);
+      }); 
+      })
+    };
+
+    setInterval(getImage, 1000 /1) 
+ };
+
+
+
   function startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
-        videoElement.srcObject = stream;
+        //videoElement.srcObject = stream;
         //video.play();
-        function saveFrame() {
-          console.log('in save frame')
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          canvas.width = videoElement.videoWidth;
-          canvas.height = videoElement.videoHeight;
-          ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-          // console.log(document.getElementById('canvas').getContext('2d').drawImage(videoElement, 0, 0, document.getElementById('canvas').width, document.getElementById('canvas').height));
-          const dataURL = canvas.toDataURL('image/face.jpeg', 1.0);
-          // console.log(dataURL)
-          // const data = document.getElementById('canvas').getContext("2d").getImageData(10, 10, 50, 50);
-          // console.log(data)
-          //---send data to URL
-          fetch('/process-image', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ image_data: dataURL })
-          })
-          .then(response => response.text())
-          .then(result => {
-            console.log('Result:', result);
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-        }
 
-        saveFrame();
-
+        //var data_uri = Webcam.snap();
+        console.log(videoElement)
+        Webcam.set({
+          width: videoElement.videoWidth,
+          height: videoElement.videoHeight,
+          image_format: 'png',
+          png_quality: 90
+        });
+        Webcam.attach( 'videoElement' );
+        console.log('Now iterate...')
+        startStream()
       })
       .catch(error => {
         console.error('Error accessing camera:', error);
       });
   }
+
+
+
+

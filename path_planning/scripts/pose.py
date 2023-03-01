@@ -19,12 +19,12 @@ class ArUcoCameraController:
 
         # Use the ArUco marker's position and orientation to update the camera pose
         success = self.set_pose_service(
-            X=aruco_position.x,
-            Y=aruco_position.y,
-            Z=aruco_position.z,
-            R=aruco_orientation.x,
-            P=aruco_orientation.y,
-            Y=aruco_orientation.z,
+            aruco_position.x,
+            aruco_position.y,
+            aruco_position.z,
+            aruco_orientation.x,
+            aruco_orientation.y,
+            aruco_orientation.z,
         )
 
         if success:

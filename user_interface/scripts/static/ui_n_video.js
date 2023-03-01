@@ -76,9 +76,10 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   //------------------------------------------- code to do speech to text might be useful after---------------------------
   function startListening() {
     const recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
     recognition.lang = 'en-UK';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
+    //recognition.maxAlternatives = 1;
 
     recognition.start();
 
@@ -88,7 +89,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
       // Perform action with transcript
     });
     recognition.onresult = function(event) {
-      const result = event.results[0][0].transcript;
+      const result = event.results[event.results.length - 1][0].transcript;
       //inputField.value = result;
       const keyword1 = "door";
       const keyword2 = "bathroom";

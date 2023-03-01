@@ -10,7 +10,10 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 class GoalController:
 
     GOALS = {
-        'Kitchen' : [0,0]
+        'kitchen' : [1126,576],
+        'bathroom' : [1126,1076],
+        'table' : [1126,376],
+        'door' : [1126,176]
     }
 
     def __init__(self) -> None:

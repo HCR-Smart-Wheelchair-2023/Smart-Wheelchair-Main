@@ -45,12 +45,20 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y python3-pip && pip install fla
 RUN DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-pointcloud-to-laserscan ros-noetic-gmapping
 
 WORKDIR /root/ros_ws/src
-RUN apt-get install -y ros-noetic-aruco-ros
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ros-noetic-aruco-ros
+RUN pip install scipy
+
 
 WORKDIR /root/ros_ws/src
 
 RUN git clone https://github.com/stereolabs/zed-ros-interfaces.git
 RUN cd .. && rosdep install --from-paths src --ignore-src -r -y
+
+#L515 RealSense Camera Installs
+
+WORKDIR /root/ros_ws/src
+
+RUN apt-get install ros-noetic-realsense2-camera -y
 
 
 WORKDIR /root/ros_ws/src
@@ -71,12 +79,6 @@ COPY zed_dummy/ zed_dummy/
 WORKDIR /root/ros_ws/src
 
 RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
-
-#L515 RealSense Camera Installs
-
-WORKDIR /root/ros_ws/src
-
-RUN apt-get install ros-noetic-realsense2-camera -y 
 
 WORKDIR /root/ros_ws/src
 

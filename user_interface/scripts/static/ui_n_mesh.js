@@ -1,34 +1,34 @@
 // Register the service worker
-if ('serviceWorker' in navigator) 
+if ('serviceWorker' in navigator)
 {window.addEventListener('load', () => {navigator.serviceWorker.register('/serviceworker.js');
 });}
 
 //-----------------------------------------roslibJS stuff ------------------------------------------------------------------------------------------------
 
 // Connect to ROS
- var ros = new ROSLIB.Ros({
-    url : 'ws://192.168.50.101:8080'
-});
+//  var ros = new ROSLIB.Ros({
+//     url : 'ws://192.168.50.101:8080'
+// });
 
-// Subscribe to a topic
-var listener = new ROSLIB.Topic({
-    ros : ros,
-    name : '/target_command',
-    messageType : 'std_msgs/String'
-});
+// // Subscribe to a topic
+// var listener = new ROSLIB.Topic({
+//     ros : ros,
+//     name : '/target_command',
+//     messageType : 'std_msgs/String'
+// });
 
-// Update the message on the web page when a new message is received
-listener.subscribe(function(message) {
-    var messageElement = document.getElementById('message');
-    messageElement.innerHTML = message.data;
-});
+// // Update the message on the web page when a new message is received
+// listener.subscribe(function(message) {
+//     var messageElement = document.getElementById('message');
+//     messageElement.innerHTML = message.data;
+// });
 
- // Create a publisher
- var publisher = new ROSLIB.Topic({
-    ros : ros,
-    name : '/my_topic',
-    messageType : 'std_msgs/String'
-});
+//  // Create a publisher
+//  var publisher = new ROSLIB.Topic({
+//     ros : ros,
+//     name : '/my_topic',
+//     messageType : 'std_msgs/String'
+// });
 
 // Define the function to execute when the button is clicked
 function publishMessage(id) {
@@ -38,7 +38,7 @@ function publishMessage(id) {
     });
     // Publish the message
     publisher.publish(message);
-    //publish to relevant topic 
+    //publish to relevant topic
 }
 
 // Example of getting button id and listening for click
@@ -61,7 +61,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   // button1.addEventListener('click', () => {
   //   speak('Hello, this is button 1.');
   // });
-  
+
   // // Function to speak the message using the browser's SpeechSynthesis API
   // function speak(message) {
   //   const speech = new SpeechSynthesisUtterance();
@@ -91,15 +91,15 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     window.speechSynthesis.speak(msg);
   }
 
-  //------------------------------------------- code to do speech to text might be useful after---------------------------  
+  //------------------------------------------- code to do speech to text might be useful after---------------------------
   function startListening() {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'en-UK';
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-  
+
     recognition.start();
-  
+
     recognition.onresult = function(event) {
       const result = event.results[0][0].transcript;
       inputField.value = result;
@@ -129,11 +129,11 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   // const face = faces[0];
   // const faceMesh = face.landmarks.get('faceMesh');
 
-  //   
-  
+  //
+
   // -----------------------------------------------code to use LIDAR and CAMERA---------------------------------------------------
 
- 
+
 
 //------LIDAR
 
@@ -154,8 +154,8 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
 //--------CAMERA
 
 //  // Get the video element
-//   const video = document.getElementById('video'); 
-  
+//   const video = document.getElementById('video');
+
 //   function startCamera() {
 //     navigator.mediaDevices.getUserMedia({ video: true })
 //       .then(stream => {

@@ -36,11 +36,12 @@ class MapStitcher:
         # map_array = np.add(self.static_map_array, map_array)
         # self.dynamic_map.data = map_array
         map_array = map_array.reshape((self.dynamic_map.info.height, self.dynamic_map.info.width))
-        resolution = self.dynamic_map.data.info.resolution
+        # resolution = self.dynamic_map.data.info.resolution
         rospy.loginfo(str(self.dynamic_map.data.origin))
-        rospy.loginfo(f'resolution {resolution}')
-        if resolution != RESOLUTION:
-            rospy.loginfo(f'resolution {resolution}')
+        rospy.loginfo(str(self.dynamic_map.data.info))
+        # rospy.loginfo(f'resolution {resolution}')
+        # if resolution != RESOLUTION:
+        #     rospy.loginfo(f'resolution {resolution}')
 
 
 

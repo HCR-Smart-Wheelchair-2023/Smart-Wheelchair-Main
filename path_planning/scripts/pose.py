@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from geometry_msgs.msg import PoseStamped, TransformStamped
+from geometry_msgs.msg import PoseStamped, TransformStamped, String
 
 from zed_interfaces.srv import set_pose, set_poseRequest
 import tf
@@ -11,25 +11,14 @@ import numpy as np
 Set_Pose = set_pose()
 
 
-def set_zedPose(x, y, z, R, P, Y):
-    print("waiting for set pose service")
-    rospy.wait_for_service("/zed/zed_node/set_pose")
-    print("found the set_pose service!")
-    try:
-        setpose = rospy.ServiceProxy("/zed/zed_node/set_pose", Set_Pose)
-        resp = setpose(x, y, z, R, P, Y)
-        print("response of the service is: ", resp)
-        return resp
-    except rospy.ServiceException as e:
-        print("service not working yet")
-
-
 class ArUcoCameraController:
     def __init__(self):
         self.aruco_pose_sub = rospy.Subscriber(
             "/aruco_single/pose", PoseStamped, self.aruco_pose_callback
         )
         self.set_pose_service = rospy.ServiceProxy("/zed/zed_node/set_pose", set_pose)
+
+        self.pub = rospy.Publisher("/position_known", String, queue_size=10)
 
         # set the postion of the marker in the world frame as origin
         self.marker_position = np.array([0, 0, 0])
@@ -76,7 +65,7 @@ class ArUcoCameraController:
         print(f"camera orientation: {camera_orientation}")
 
         # Use the ArUco marker's position and orientation to update the camera pose
-        set_zedPose(
+        self.set_zedPose(
             camera_position.x,
             camera_position.y,
             camera_position.z,
@@ -84,6 +73,21 @@ class ArUcoCameraController:
             camera_orientation.y,
             camera_orientation.z,
         )
+
+    def set_zedPose(self, x, y, z, R, P, Y):
+        print("waiting for set pose service")
+        rospy.wait_for_service("/zed/zed_node/set_pose")
+        print("found the set_pose service!")
+
+        try:
+            setpose = rospy.ServiceProxy("/zed/zed_node/set_pose", Set_Pose)
+            resp = setpose(x, y, z, R, P, Y)
+            print("response of the service is: ", resp)
+            self.pub.publish("position_known")
+
+            return resp
+        except rospy.ServiceException as e:
+            print("service not working yet")
 
 
 if __name__ == "__main__":

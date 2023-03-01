@@ -12,6 +12,9 @@
   <depend>rospy</depend>
   <depend>geometry_msgs</depend>
   <depend>std_msgs.msg</depend>
+  <depend>std_srvs</depend>
+  <depend>zed_interfaces</depend>
+  <depend>tf</depend>
 
 
 </package>

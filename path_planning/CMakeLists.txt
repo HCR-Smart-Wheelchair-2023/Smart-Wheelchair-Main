@@ -10,6 +10,9 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   std_msgs
   roslaunch
+  std_srvs
+  zed_interfaces
+  tf
 )
 #roslaunch_add_file_check(launch)
 
@@ -38,6 +41,12 @@ catkin_install_python(PROGRAMS scripts/odom.py
 
 catkin_install_python(PROGRAMS scripts/pose.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+  
+catkin_install_python(PROGRAMS scripts/aruco_pose.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 catkin_install_python(PROGRAMS scripts/point_cloud_transform.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/map_stitching.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

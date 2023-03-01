@@ -56,25 +56,25 @@ class ArUcoCameraController:
         T = tf.transformations.inverse_matrix(T)
 
         # Apply the inverse of the translation matrix to the marker position
-        camera_position = tf.transformations.translation_from_matrix(
-            np.matmul(T, self.marker_position)
-        )
-        print(f"camera position: {camera_position}")
+        # camera_position = tf.transformations.translation_from_matrix(
+        #     np.matmul(T, self.marker_position)
+        # )
+        # print(f"camera position: {camera_position}")
 
-        # Apply the inverse of the rotation matrix to the marker orientation
-        camera_orientation = tf.transformations.euler_from_matrix(
-            np.matmul(T, self.marker_orientation)
-        )
-        print(f"camera orientation: {camera_orientation}")
+        # # Apply the inverse of the rotation matrix to the marker orientation
+        # camera_orientation = tf.transformations.euler_from_matrix(
+        #     np.matmul(T, self.marker_orientation)
+        # )
+        # print(f"camera orientation: {camera_orientation}")
 
         # Use the ArUco marker's position and orientation to update the camera pose
         self.set_zedPose(
-            camera_position.x,
-            camera_position.y,
-            camera_position.z,
-            camera_orientation.x,
-            camera_orientation.y,
-            camera_orientation.z,
+            aruco_position.y,
+            aruco_position.z,
+            aruco_position.x,
+            aruco_orientation.x,
+            aruco_orientation.y,
+            aruco_orientation.z,
         )
 
     def set_zedPose(self, x, y, z, R, P, Y):

@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   roslaunch
   std_srvs
   zed_interfaces
+  people_msg
   tf
 )
 #roslaunch_add_file_check(launch)
@@ -49,4 +50,8 @@ catkin_install_python(PROGRAMS scripts/point_cloud_transform.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 catkin_install_python(PROGRAMS scripts/map_stitching.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+
+catkin_install_python(PROGRAMS scripts/body_processing.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

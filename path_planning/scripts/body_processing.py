@@ -27,7 +27,7 @@ class BodyProcessingController:
     def __init__(self) -> None:
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
-        topic = '/zed/zed_node/obj_det/objects'
+        topic = '/zed2i/zed_node/obj_det/objects'
         self.sub = rospy.Subscriber(topic, ObjectsStamped, self.receive_objects)
         self.pub = rospy.Publisher('/people', People, queue_size=10)
 

@@ -27,15 +27,15 @@ plugins:
 
 
 
-obstacle_layer:
-    observation_sources: point_cloud_sensor
-    observation_persistence: 0.0
-    point_cloud_sensor: {
-        sensor_frame: camera_link,
-        data_type: PointCloud2,
-        topic: /cloud,
-        marking: true,
-        clearing: true,
-        inf_is_valid: true,
-        clear_on_max_reading: true
-    }
+# obstacle_layer:
+#     observation_sources: point_cloud_sensor
+#     observation_persistence: 0.0
+#     point_cloud_sensor: {
+#         sensor_frame: camera_link,
+#         data_type: PointCloud2,
+#         topic: /cloud,
+#         marking: true,
+#         clearing: true,
+#         inf_is_valid: true,
+#         clear_on_max_reading: true
+#     }

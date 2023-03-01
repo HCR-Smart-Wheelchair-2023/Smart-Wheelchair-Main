@@ -25,17 +25,26 @@ def serve_static(path):
 def process_image():
     data = request.get_json()
     image_data = data['image_data']
-    print(image_data)
+    # w = int(data['width'])
+    # h = int(data['heigth'])
+    
     # Remove the "data:image/png;base64," prefix from the data URL
     image_data = image_data.replace('data:image/png;base64,', '')
-
+    image_bytes = base64.b64decode(image_data)
+    print(image_bytes)
+    stream = BytesIO(image_bytes)
     # Convert the base64-encoded data to bytes
-    image_bytes = BytesIO(base64.b64decode(image_data))
-    # print(len(image_bytes))
+    image = Image.open(stream).convert('RGBA')
+    # print(image)
+    stream.close()
+
+
+    # image_bytes = (base64.b64decode(image_data))
+    print(type(image))
     # with open("output.png", "wb") as f:
     #     f.write(image_bytes)
     # Open the image using PIL
-    image = Image.open(image_bytes)
+    # image = Image.open(image_bytes)
     image.save('./face.png')
     # Do some processing on the image
     # ...

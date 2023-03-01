@@ -257,3 +257,34 @@
   // .catch(function (err) {
   //   console.log('An error occurred: ', err);
   // });
+
+  const video = document.getElementById('myVideo');
+      const canvas = document.getElementById('myCanvas');
+      const ctx = canvas.getContext('2d');
+
+      function saveFrame() {
+        // Draw current frame from video on canvas
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Convert canvas image to blob
+        canvas.toBlob((blob) => {
+          // Create new form data object
+          const formData = new FormData();
+          formData.append('image', blob, 'frame.png');
+
+          // Send POST request to server-side script
+          fetch('/saveFrame.php', {
+            method: 'POST',
+            body: formData
+          }).then(response => {
+            console.log('Frame saved to server');
+          }).catch(error => {
+            console.error('Error saving frame to server:', error);
+          });
+        }, 'image/png');
+      }
+
+      // Start capturing frames when video is playing
+      video.addEventListener('play', () => {
+        setInterval(saveFrame, 1000 / 30); // Capture 30 frames per second
+      });

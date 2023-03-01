@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import rospy
-from geometry_msgs.msg import PoseStamped, TransformStamped, String
+from geometry_msgs.msg import PoseStamped, TransformStamped
+from std_msgs.msg import String
 
 from zed_interfaces.srv import set_pose, set_poseRequest
 import tf

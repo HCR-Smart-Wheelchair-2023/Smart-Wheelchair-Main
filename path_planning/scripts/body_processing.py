@@ -6,6 +6,7 @@ This Node takes person detection data from the zed, converts it to the world fra
 import rospy
 import tf
 import tf2_ros
+import tf2_geometry_msgs
 import sys
 import numpy as np
 from nav_msgs.msg import Odometry
@@ -27,13 +28,14 @@ class BodyProcessingController:
     def __init__(self) -> None:
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
-        topic = '/NA'
+        topic = '/zed/zed_node/obj_det/objects'
         self.sub = rospy.Subscriber(topic, ObjectStamped, self.receive_objects)
         self.pub = rospy.Publisher('/people', People, queue_size=10)
 
+
     def receive_objects(self, message : ObjectStamped):
         objects = message.objects
-        people = [self.process_person(person) for person in message.objects]
+        people = [self.process_person(person) for person in message.objects if person.label == '']
         people_msg = People()
         people_msg.header.frame_id = 'map'
         people_msg.header.stamp = rospy.Time.now()
@@ -57,17 +59,21 @@ class BodyProcessingController:
         velocity = np.array(person.velocity)
 
         # calculate orientation from velocity
-        static = np.linalg.norm(velocity) < 0.2
-        if static:
-            theta = self.calculate_orientation(skeleton)
-        else:
-            theta = np.arctan(velocity[0]/velocity[1])
+        # static = np.linalg.norm(velocity) < 0.2
+        # if static:
+        #     theta = self.calculate_orientation(skeleton)
+        # else:
+        #     theta = np.arctan(velocity[0]/velocity[1])
+        theta = np.arctan(velocity[0]/velocity[1])
 
         odom = Odometry()
         odom.header.stamp = rospy.Time.now()
         odom.header.frame_id = "map"
         odom.child_frame_id = "map"
+
+        transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(1.0))
         odom.pose.pose = Pose(Point(position[0], position[1], 0.0), Quaternion(0,0,theta,0))
+        tf2_geometry_msgs.do_transform_odometry(odom, transform)
         odom.twist.twist = Twist(Vector3(velocity[0], velocity[1], 0), Vector3(0, 0, 0))
         new_person = Person()
         new_person.header.frame_id = "map"

@@ -34,11 +34,13 @@ class BodyProcessingController:
 
     def receive_objects(self, message : ObjectsStamped):
         objects = message.objects
-        people = [self.process_person(person) for person in message.objects if person.label == '']
+        print("Number of objects detected: ", len(message.objects))
+        people = [self.process_person(person) for person in message.objects]
         people_msg = People()
         people_msg.header.frame_id = 'map'
         people_msg.header.stamp = rospy.Time.now()
         people_msg.person = people
+        print("Number of People: ", len(people_msg.person))
         self.pub.publish(people_msg)
 
 

@@ -1,4 +1,4 @@
-FROM ros:noetic
+FROM personalroboticsimperial/prl:ub2004-noetic-openCV420wContrib
 # If you have a GPU with an architecture up to Turing (not included), use this to enable CUDA with OpenCV
 # FROM personalroboticsimperial/prl:ub2004-noetic-cu101-openCV420
 SHELL ["/bin/bash", "-c"]
@@ -31,18 +31,7 @@ WORKDIR /root/ros_ws/src
 COPY robot_main robot_main/
 COPY navigation/ navigation/
 COPY user_interface/ user_interface/
-<<<<<<< HEAD
-COPY path_planning/ path_planning/
-COPY wheele_description/ wheele_description/
-COPY room_description/ room_description/
-COPY wheele_gazebo/ wheele_gazebo/
-COPY social_predictions/ social_predictions/
-COPY people_msg/ people_msg/
 COPY emotion_detection/ emotion_detection/
-COPY zed_dummy/ zed_dummy/
-=======
-COPY emotion_detection/ emotion_detection/
->>>>>>> 2a4ed8047d257b3f58c6f47c28512d43e4ff88e2
 
 WORKDIR /root/ros_ws/src
 RUN DEBIAN_FRONTEND=noninteractive pip install -r emotion_detection/requirements.txt

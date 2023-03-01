@@ -6,7 +6,7 @@ footprint: [[0.4475, 0.235], [0.4475, -0.235], [-0.4475, -0.235], [-0.4475, 0.23
 
 # Correct:
 # footprint: [[0.5475, 0.335], [0.5475, -0.335], [-0.5475, -0.335], [-0.5475, 0.335]]
-map_topic: /merged_map
+map_topic: /staticmap
 subscribe_to_updates: true
 global_frame: map
 robot_base_frame: base_link

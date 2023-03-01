@@ -34,6 +34,7 @@ class BodyProcessingController:
 
     def receive_objects(self, message : ObjectsStamped):
         objects = message.objects
+        print("Number of objects detected: ", len(message.objects))
         people = [self.process_person(person) for person in message.objects if person.label == '']
         people_msg = People()
         people_msg.header.frame_id = 'map'

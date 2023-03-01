@@ -92,7 +92,7 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     sigma1_x = 1 * distribution_scale_factor
     sigma1_y = 1 * distribution_scale_factor
 
-    sigma2_x = 4 * distribution_scale_factor
+    sigma2_x = 8 * distribution_scale_factor
     sigma2_y = 2 * distribution_scale_factor
 
     # Create a meshgrid of points to evaluate the normal distributions
@@ -176,7 +176,7 @@ class MapProcessor:
         self.latest_map = data
 
     def map_callback_update(self, data):
-        
+        print("Number of objects detected: ", len(data.person))
         # Params to tune 
         t = 3.0
         distribution_scale_factor = 1

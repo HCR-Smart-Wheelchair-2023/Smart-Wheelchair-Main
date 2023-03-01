@@ -12,7 +12,6 @@ find_package(catkin REQUIRED COMPONENTS
   roslaunch
   std_srvs
   zed_interfaces
-  numpy
   tf
 )
 #roslaunch_add_file_check(launch)

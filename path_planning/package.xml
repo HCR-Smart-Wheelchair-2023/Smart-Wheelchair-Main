@@ -13,8 +13,13 @@
   <depend>geometry_msgs</depend>
   <depend>std_msgs.msg</depend>
   <depend>std_srvs</depend>
-  <depend>zed_interfaces</depend>
   <depend>tf</depend>
+  <depend>people_msg</depend>
+
+  <build_depend>zed_interfaces</build_depend> 
+  
+  <exec_depend>zed_interfaces</exec_depend>
+  <exec_depend>zed_wrapper</exec_depend>
 
 
 </package>

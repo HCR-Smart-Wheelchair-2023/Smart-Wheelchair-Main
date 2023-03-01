@@ -52,8 +52,8 @@ class MapStitcher:
         # y_max = int(self.dynamic_map.info.origin.position.y + ceil(self.dynamic_map.info.width/2))
         x_min = int(float(self.dynamic_map.info.origin.position.x + 1) / 0.05)
         x_max = int(float(self.dynamic_map.info.origin.position.x + 1) / 0.05 + self.dynamic_map.info.height)
-        y_min = int(float(self.dynamic_map.info.origin.position.y - 1) / 0.05)
-        y_max = int(float(self.dynamic_map.info.origin.position.y - 1) / 0.05 + self.dynamic_map.info.width)
+        y_min = int(float(self.dynamic_map.info.origin.position.y - 0.8) / 0.05)
+        y_max = int(float(self.dynamic_map.info.origin.position.y - 0.8) / 0.05 + self.dynamic_map.info.width)
 
 
         rospy.loginfo(f'{x_min},{x_max},{y_min},{y_max},{self.dynamic_map.info.height}')

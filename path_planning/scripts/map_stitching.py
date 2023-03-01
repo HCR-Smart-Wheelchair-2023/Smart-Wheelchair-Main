@@ -56,11 +56,6 @@ class MapStitcher:
         y_max = int(self.dynamic_map.info.origin.position.y / 0.05 + self.dynamic_map.info.width)
 
 
-        -2 m
-        0.05 m per pixel
-        -2 / 0.05
-
-
         rospy.loginfo(f'{x_min},{x_max},{y_min},{y_max},{self.dynamic_map.info.height}')
         x_offset = (x_max-x_min) - map_array.shape[0]
         y_offset = (y_max-y_min) - map_array.shape[1]

@@ -1,32 +1,31 @@
 '''Keep Track of goal target'''
 
 import rospy
-
-
+from std_msgs.msg import String
+import actionlib
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 # sub to the topic that subscribes to marker positions
-
-Coordinate = tuple[float,float]
 
 
 class GoalController:
 
     GOALS = {
-
+        'Kitchen' : [0,0]
     }
 
     def __init__(self) -> None:
-        ...
-        # create sub to the marker position
-        # create sub to the goal label
-        # create sub to the stop topic ?
-        # create pub to the goal topic
-
-        self.marker_sub = rospy.Subscriber(topic, ObjectStamped, self.receive_objects)
-        self.goal_label_sub  = rospy.Subscriber(topic, ObjectStamped, self.receive_objects)
-        self.pub = rospy.Publisher('/people', People, queue_size=10)
+        self.goal_label_sub  = rospy.Subscriber('/goal_dest', String, self.receive_goal_label_sub)
+        self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
+        self.client.wait_for_server()
 
     def receive_marker(self, marker):
         ...
 
     def receive_goal_label_sub(self, goal_label):
-        ...
+        goal = MoveBaseGoal()
+        goal.target_pose.header.frame_id = "map"
+        goal.target_pose.header.stamp = rospy.Time.now()
+        goal.target_pose.pose.position.x = self.GOALS[goal_label][0]
+        goal.target_pose.pose.position.y = self.GOALS[goal_label][1]
+        self.client.send_goal(goal)
+        wait = self.client.wait_for_result()

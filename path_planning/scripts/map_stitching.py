@@ -65,7 +65,7 @@ class MapStitcher:
         y_offset = (y_max-y_min) - map_array.shape[1]
         static_array[(x_min+500+x_offset):(x_max+500),(y_min+500+y_offset):(y_max+500)] += map_array
         static_array = static_array.reshape(self.static_map.info.width*self.static_map.info.height)
-        self.static_map.data = np.clip(static_array,-125,125)
+        self.static_map.data = np.clip(static_array,0,100)
         self.pub.publish(self.static_map)
         rospy.loginfo(f'publioshed')
         # map_array = np.pad(map_array, pad_width=((int(self.dynamic_map))))

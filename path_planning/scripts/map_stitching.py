@@ -5,6 +5,8 @@ import numpy as np
 from math import ceil
 from nav_msgs.msg import OccupancyGrid
 
+RESOLUTION = 0.05
+
 class MapStitcher:
     def __init__(self):
         self.known_position = True
@@ -32,11 +34,24 @@ class MapStitcher:
         # map_array = np.add(self.static_map_array, map_array)
         # self.dynamic_map.data = map_array
         map_array = map_array.reshape((self.dynamic_map.info.height, self.dynamic_map.info.width))
+        resolution = self.dynamic_map.data.info.resolution
+        rospy.loginfo(str(self.dynamic_map.data.origin))
+        rospy.loginfo(f'resolution {resolution}')
+        if resolution != RESOLUTION:
+            rospy.loginfo(f'resolution {resolution}')
+
+
+
         static_array = self.static_array
-        x_min = int(self.dynamic_map.info.origin.position.x - int(self.dynamic_map.info.height/2))
-        x_max = int(self.dynamic_map.info.origin.position.x + ceil(self.dynamic_map.info.height/2))
-        y_min = int(self.dynamic_map.info.origin.position.y - int(self.dynamic_map.info.width/2))
-        y_max = int(self.dynamic_map.info.origin.position.y + ceil(self.dynamic_map.info.width/2))
+        # x_min = int(self.dynamic_map.info.origin.position.x - int(self.dynamic_map.info.height/2))
+        # x_max = int(self.dynamic_map.info.origin.position.x + ceil(self.dynamic_map.info.height/2))
+        # y_min = int(self.dynamic_map.info.origin.position.y - int(self.dynamic_map.info.width/2))
+        # y_max = int(self.dynamic_map.info.origin.position.y + ceil(self.dynamic_map.info.width/2))
+        x_min = self.dynamic_map.info.origin.position.x
+        x_max = self.dynamic_map.info.origin.position.x + self.dynamic_map.info.height
+        y_min = self.dynamic_map.info.origin.position.y
+        y_max = self.dynamic_map.info.origin.position.y + self.dynamic_map.info.width
+
         rospy.loginfo(f'{x_min},{x_max},{y_min},{y_max},{self.dynamic_map.info.height}')
         x_offset = (x_max-x_min) - map_array.shape[0]
         y_offset = (y_max-y_min) - map_array.shape[1]

@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   roslaunch
   std_srvs
+  zed_interfaces
 )
 #roslaunch_add_file_check(launch)
 

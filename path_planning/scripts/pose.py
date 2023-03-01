@@ -56,7 +56,9 @@ class ArUcoCameraController:
         T = tf.transformations.inverse_matrix(T)
 
         # Apply the inverse of the translation matrix to the marker position
-        camera_position = tf.translation_from_matrix(np.matmul(T, self.marker_position))
+        camera_position = tf.transformations.translation_from_matrix(
+            np.matmul(T, self.marker_position)
+        )
         print(f"camera position: {camera_position}")
 
         # Apply the inverse of the rotation matrix to the marker orientation

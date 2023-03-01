@@ -34,10 +34,9 @@ def process_image():
     print(image_bytes)
     stream = BytesIO(image_bytes)
     # Convert the base64-encoded data to bytes
-    image = Image.open(stream).convert('RGBA')
+    image = Image.open(stream).convert('RGB')
     # print(image)
     stream.close()
-
 
     # image_bytes = (base64.b64decode(image_data))
     print(type(image))
@@ -45,7 +44,7 @@ def process_image():
     #     f.write(image_bytes)
     # Open the image using PIL
     # image = Image.open(image_bytes)
-    image.save('./face.png')
+    image.save('../../emotion_detection/scripts/image/face.jpg')
     # Do some processing on the image
     # ...
 
@@ -57,7 +56,7 @@ def get_goal():
     data = request.get_json()
     goal = data['goal']
     print('Goal: '+goal)
-    with open("goal.txt", "w") as f:
+    with open("./goal.txt", "w") as f:
         f.write(goal)
     return 'New goal'
 

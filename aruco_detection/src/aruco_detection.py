@@ -155,11 +155,10 @@ class ArUcoCameraController:
         camera_position = tf.transformations.translation_from_matrix(
             transform_world_camera
         )
-        print(f"camera position: {camera_position}")
+
         camera_orientation = tf.transformations.euler_from_matrix(
             transform_world_camera
         )
-        print(f"camera orientation: {camera_orientation}")
 
         print(
             f"camera position: {camera_position[0], camera_position[1], camera_position[2]}"

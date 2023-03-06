@@ -82,9 +82,9 @@ class ArUcoCameraController:
 
         # Use the ArUco marker's position and orientation to update the camera pose
         self.set_zedPose(
+            aruco_position.x,
             aruco_position.y,
             aruco_position.z,
-            aruco_position.x,
             aruco_orientation.x,
             aruco_orientation.y,
             aruco_orientation.z,

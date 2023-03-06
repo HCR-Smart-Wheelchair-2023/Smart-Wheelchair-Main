@@ -99,6 +99,10 @@
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robot_main)/rviz/config.rviz" />
     <node pkg="rqt_tf_tree" type="rqt_tf_tree" name="rqt_tf_tree" />
 
+    <!-- Start Social navigation aspects -->
+    <node pkg="social_predictions" type="social_predictions.py" name="social_predictions" output="screen" />
+    <node pkg="path_planning" type="body_processing.py" name="body_processing" output="screen" />
+
     <!-- /zed/zed_node/point_cloud/cloud_registered, -->
     <group if="$(eval arg('mode') == 'robot')">
         <!-- Listen to the /cmd_vel topic and send the commands to the PI -->

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import rospy
 from geometry_msgs.msg import PoseStamped, TransformStamped
 from std_msgs.msg import String
@@ -19,7 +17,7 @@ class ArUcoCameraController:
         # )
 
         self.aruco_transform_sub = rospy.Subscriber(
-            "/my_transform_stamped", TransformStamped, self.aruco_transform_callback
+            "/aruco_single/transform", TransformStamped, self.aruco_transform_callback
         )
 
         self.set_pose_service = rospy.ServiceProxy("/zed/zed_node/set_pose", set_pose)
@@ -82,9 +80,9 @@ class ArUcoCameraController:
 
         # Use the ArUco marker's position and orientation to update the camera pose
         self.set_zedPose(
+            aruco_position.x,
             aruco_position.y,
             aruco_position.z,
-            aruco_position.x,
             aruco_orientation.x,
             aruco_orientation.y,
             aruco_orientation.z,
@@ -157,11 +155,10 @@ class ArUcoCameraController:
         camera_position = tf.transformations.translation_from_matrix(
             transform_world_camera
         )
-        print(f"camera position: {camera_position}")
+
         camera_orientation = tf.transformations.euler_from_matrix(
             transform_world_camera
         )
-        print(f"camera orientation: {camera_orientation}")
 
         print(
             f"camera position: {camera_position[0], camera_position[1], camera_position[2]}"

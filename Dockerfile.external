@@ -13,12 +13,12 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -y  && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
-        software-properties-common \
-        ros-noetic-joy \
-        ros-noetic-teleop-twist-joy \
-        ros-noetic-rqt \
-        ros-noetic-rqt-common-plugins \
-        ros-noetic-octomap && \
+    software-properties-common \
+    ros-noetic-joy \
+    ros-noetic-teleop-twist-joy \
+    ros-noetic-rqt \
+    ros-noetic-rqt-common-plugins \
+    ros-noetic-octomap && \
     DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:borglab/gtsam-release-4.0 && \
     DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y libgtsam-dev libgtsam-unstable-dev \
@@ -72,6 +72,7 @@ COPY wheele_gazebo/ wheele_gazebo/
 COPY social_predictions/ social_predictions/
 COPY people_msg/ people_msg/
 COPY zed_dummy/ zed_dummy/
+COPY aruco_detection/ aruco_detection/
 
 
 

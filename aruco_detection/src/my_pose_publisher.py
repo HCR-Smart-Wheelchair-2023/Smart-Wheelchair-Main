@@ -27,7 +27,8 @@ if __name__ == "__main__":
 
             # create a PoseStamped message for the marker
             marker_pose = PoseStamped()
-            marker_pose.header.frame_id = "/map"
+            marker_pose.header.frame_id = "map"
+            marker_pose.header.stamp = rospy.Time.now()
             marker_pose.pose.position.x = 0.87
             marker_pose.pose.position.y = 7.74
             marker_pose.pose.position.z = 1.42

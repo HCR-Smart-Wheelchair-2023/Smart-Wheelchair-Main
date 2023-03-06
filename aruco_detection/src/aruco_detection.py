@@ -28,9 +28,9 @@ class ArUcoCameraController:
         self.marker_transform = TransformStamped()
         self.marker_transform.header.frame_id = "/camera_link"
         self.marker_transform.child_frame_id = "/aruco_marker"
-        self.marker_transform.transform.translation.x = 5
-        self.marker_transform.transform.translation.y = 5
-        self.marker_transform.transform.translation.z = 0.0
+        self.marker_transform.transform.translation.x = 0.87
+        self.marker_transform.transform.translation.y = 7.74
+        self.marker_transform.transform.translation.z = 1.42
         self.marker_transform.transform.rotation.x = 0.0
         self.marker_transform.transform.rotation.y = 0.0
         self.marker_transform.transform.rotation.z = 0.0

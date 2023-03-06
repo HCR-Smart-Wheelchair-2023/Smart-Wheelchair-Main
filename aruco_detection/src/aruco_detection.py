@@ -22,7 +22,7 @@ class ArUcoCameraController:
 
         self.set_pose_service = rospy.ServiceProxy("/zed/zed_node/set_pose", set_pose)
 
-        self.pub = rospy.Publisher("/my_marker/posey", PoseStamped, queue_size=10)
+        self.pub = rospy.Publisher("/my_marker/pose", PoseStamped, queue_size=10)
 
         # create a TransformStamped message for the marker
         self.marker_transform = TransformStamped()

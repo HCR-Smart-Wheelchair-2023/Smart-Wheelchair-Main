@@ -36,7 +36,7 @@ class ArUcoCameraController:
         self.marker_transform.transform.rotation.x = 0.0
         self.marker_transform.transform.rotation.y = 0.0
         self.marker_transform.transform.rotation.z = 0.0
-        self.marker_transform.transform.rotation.w = 1.0
+        self.marker_transform.transform.rotation.w = 0.0
 
         # create a PoseStamped message for the marker
         self.marker_pose = PoseStamped()

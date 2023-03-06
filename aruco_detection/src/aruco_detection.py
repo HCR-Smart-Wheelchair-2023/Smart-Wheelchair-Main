@@ -22,7 +22,7 @@ class ArUcoCameraController:
 
         self.set_pose_service = rospy.ServiceProxy("/zed/zed_node/set_pose", set_pose)
 
-        self.pub = rospy.Publisher("/my_marker/pose", PoseStamped, queue_size=10)
+        self.pub = rospy.Publisher("/my_marker/posey", PoseStamped, queue_size=10)
 
         # create a TransformStamped message for the marker
         self.marker_transform = TransformStamped()
@@ -50,16 +50,70 @@ class ArUcoCameraController:
         # publish the marker pose
         self.pub.publish(self.marker_pose)
 
+    def aruco_pose_callback(self, pose_stamped):
+        # Extract the position and orientation of the ArUco marker
+        aruco_position = pose_stamped.pose.position
+        print(f"aruco position: {aruco_position}")
+        aruco_orientation = pose_stamped.pose.orientation
+        print(f"aruco orientation: {aruco_orientation}")
+
+        # Compute the rotation matrix from the quaternion
+        R = tf.transformations.quaternion_matrix(
+            [
+                aruco_orientation.x,
+                aruco_orientation.y,
+                aruco_orientation.z,
+                aruco_orientation.w,
+            ]
+        )
+
+        print(f"rotation matrix: {R}")
+        # Compute the inverse of the rotation matrix
+        R = tf.transformations.inverse_matrix(R)
+
+        # Compute the translation matrix
+        T = tf.transformations.translation_matrix(
+            [aruco_position.x, aruco_position.y, aruco_position.z]
+        )
+        print(f"translation matrix: {T}")
+
+        # Compute the inverse of the translation matrix
+        T = tf.transformations.inverse_matrix(T)
+
+        # Apply the inverse of the translation matrix to the marker position
+        # camera_position = tf.transformations.translation_from_matrix(
+        #     np.matmul(T, self.marker_position)
+        # )
+        # print(f"camera position: {camera_position}")
+
+        # # Apply the inverse of the rotation matrix to the marker orientation
+        # camera_orientation = tf.transformations.euler_from_matrix(
+        #     np.matmul(T, self.marker_orientation)
+        # )
+        # print(f"camera orientation: {camera_orientation}")
+
+        # Use the ArUco marker's position and orientation to update the camera pose
+        self.set_zedPose(
+            aruco_position.x,
+            aruco_position.y,
+            aruco_position.z,
+            aruco_orientation.x,
+            aruco_orientation.y,
+            aruco_orientation.z,
+        )
+
     def set_zedPose(self, x, y, z, R, P, Y):
         print("waiting for set pose service")
         rospy.wait_for_service("/zed/zed_node/set_pose")
         print("found the set_pose service!")
 
+        # publish the marker pose
+        self.pub.publish(self.marker_pose)
+
         try:
             setpose = rospy.ServiceProxy("/zed/zed_node/set_pose", Set_Pose)
             resp = setpose(x, y, z, R, P, Y)
             print("response of the service is: ", resp)
-            self.pub.publish("position_known")
 
             return resp
         except rospy.ServiceException as e:

@@ -42,7 +42,7 @@ with open(os.path.dirname(__file__) + '/../map/map.pgm', 'wb') as pgm_file:
     for y in range(height):
         print(y)
         # bnd = list(img[j,:])
-        bnd = [255 if polygon.contains(Point(x, y)) else 0 for x in range(width)]
+        bnd = [100 if polygon.contains(Point(x, y)) else 0 for x in range(width)]
         # print(bnd)
         pgm_file.write(bytearray(bnd)) # for 8-bit data only
 

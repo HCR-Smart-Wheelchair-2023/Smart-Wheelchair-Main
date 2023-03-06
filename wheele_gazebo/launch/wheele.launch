@@ -8,6 +8,11 @@
     <!-- more default parameters can be changed here -->
   </include>
 
+  <rosparam>
+    wheele/mobile_base_controller:
+      enable_odom_tf: False
+  </rosparam>
+
   <!-- Spawn the room model -->
   <node name="spawn_room" pkg="gazebo_ros" type="spawn_model" args="-file $(find room_description)/urdf/room_1.urdf -urdf -z 0 -x 4 -y 4.3
   -Y -1.57 -model room_description" />

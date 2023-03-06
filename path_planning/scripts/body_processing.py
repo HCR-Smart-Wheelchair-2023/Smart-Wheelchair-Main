@@ -27,7 +27,7 @@ class BodyProcessingController:
     def __init__(self) -> None:
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
-        topic = '/zed2i/zed_node/obj_det/objects'
+        topic = '/zed/zed_node/obj_det/objects'
         self.sub = rospy.Subscriber(topic, ObjectsStamped, self.receive_objects)
         self.pub = rospy.Publisher('/people', People, queue_size=10)
 
@@ -73,14 +73,14 @@ class BodyProcessingController:
         odom.child_frame_id = "map"
 
         transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(1.0))
-        
+
         v = Vector3Stamped()
         v.vector.x = person.velocity[0]
         v.vector.y = person.velocity[1]
-        v.vector.z = person.velocity[2] 
+        v.vector.z = person.velocity[2]
 
         vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
-        
+
         p = PoseStamped()
         p.pose.position.x = position[0]
         p.pose.position.y = position[1]
@@ -92,7 +92,7 @@ class BodyProcessingController:
 
         odom.pose.pose = pose_transformed.pose
         odom.twist.twist.linear = vt.vector
-        
+
 
         new_person = Person()
         new_person.header.frame_id = "map"

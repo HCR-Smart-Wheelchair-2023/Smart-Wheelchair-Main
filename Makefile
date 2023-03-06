@@ -126,6 +126,7 @@ run-sim-core:
 		-v $(current_dir)/social_predictions/:/root/ros_ws/src/social_predictions \
 		-v $(current_dir)/people_msg/:/root/ros_ws/src/people_msg \
 		-v $(current_dir)/emotion_detection/:/root/ros_ws/src/emotion_detection \
+		-v $(current_dir)/wheele_sim_control/:/root/ros_ws/src/wheele_sim_control \
 	    --privileged \
 		--network host \
 		--name sim \

@@ -19,7 +19,7 @@ class ArUcoCameraController:
         # )
 
         self.aruco_transform_sub = rospy.Subscriber(
-            "/my_transform_stamped", TransformStamped, self.aruco_transform_callback
+            "/aruco_single/transform", TransformStamped, self.aruco_transform_callback
         )
 
         self.set_pose_service = rospy.ServiceProxy("/zed/zed_node/set_pose", set_pose)

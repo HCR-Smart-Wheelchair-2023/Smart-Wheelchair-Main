@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import rospy
 from geometry_msgs.msg import PoseStamped, TransformStamped
 from std_msgs.msg import String
@@ -92,11 +90,11 @@ class ArUcoCameraController:
 
     def set_zedPose(self, x, y, z, R, P, Y):
         print("waiting for set pose service")
-        rospy.wait_for_service("/zed/zed_node/set_pose")
+        rospy.wait_for_service("/zed2i/zed_node/set_pose")
         print("found the set_pose service!")
 
         try:
-            setpose = rospy.ServiceProxy("/zed/zed_node/set_pose", Set_Pose)
+            setpose = rospy.ServiceProxy("/zed2i/zed_node/set_pose", Set_Pose)
             resp = setpose(x, y, z, R, P, Y)
             print("response of the service is: ", resp)
             self.pub.publish("position_known")

@@ -34,7 +34,7 @@ if __name__ == "__main__":
             marker_pose.pose.position.z = 1.42
             marker_pose.pose.orientation.x = 0.0
             marker_pose.pose.orientation.y = 0.0
-            marker_pose.pose.orientation.z = 0.0
+            marker_pose.pose.orientation.z = 1.57
             marker_pose.pose.orientation.w = 1.0
             # Publish the message
             pub.publish(marker_pose)

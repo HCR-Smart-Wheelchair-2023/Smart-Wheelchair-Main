@@ -31,6 +31,7 @@
         <!-- <node pkg="path_planning" type="map_stitching.py" name="map_stitching" output="screen" /> -->
         <!-- No need to publish Odom -->
         <!-- Set the coordinate of the camera from the base_link -->
+        <include file="$(find path_planning)/launch/goal.launch"></include>
         <node pkg="tf" type="static_transform_publisher" name="camera_link"
             args="0.5 0 0.6 0 0 0 base_link camera_link 100" />
         <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster" args=".0.5 0 0.6 0 0 0 1 zed2i_base_link zed_camera_center 100"/>

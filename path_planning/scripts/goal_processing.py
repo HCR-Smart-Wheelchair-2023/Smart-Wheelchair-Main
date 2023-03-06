@@ -26,10 +26,11 @@ class GoalController:
         ...
 
     def receive_goal_label_sub(self, goal_label):
-        goal = MoveBaseGoal()
-        goal.target_pose.header.frame_id = "map"
-        goal.target_pose.header.stamp = rospy.Time.now()
-        goal.target_pose.pose.position.x = self.GOALS[goal_label][0]
-        goal.target_pose.pose.position.y = self.GOALS[goal_label][1]
-        self.client.send_goal(goal)
-        wait = self.client.wait_for_result()
+        if goal_label == 'kitchen':
+            goal = MoveBaseGoal()
+            goal.target_pose.header.frame_id = "map"
+            goal.target_pose.header.stamp = rospy.Time.now()
+            goal.target_pose.pose.position.x = 1126
+            goal.target_pose.pose.position.y = 576
+            self.client.send_goal(goal)
+            wait = self.client.wait_for_result()

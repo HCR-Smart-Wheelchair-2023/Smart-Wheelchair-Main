@@ -1,0 +1,45 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+    <actor name="actor1">
+      <skin>
+        <filename>walk.dae</filename>
+      </skin>
+      <animation name="walking">
+        <filename>walk.dae</filename>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <script>
+        <trajectory id="0" type="walking">
+          <waypoint>
+            <time>0</time>
+            <pose>0.5 5 0 0 0 -0.245</pose>
+          </waypoint>
+          <waypoint>
+            <time>2</time>
+            <pose>4.5 4 0 0 0 -0.245</pose>
+          </waypoint>
+          <waypoint>
+            <time>2.5</time>
+            <pose>4.5 4 0 0 0 3.38657</pose>
+          </waypoint>
+          <waypoint>
+            <time>9</time>
+            <pose>0.5 5 0 0 0 3.38657</pose>
+          </waypoint>
+          <waypoint>
+            <time>9.5</time>
+            <pose>0.5 5 0 0 0 -0.245</pose>
+          </waypoint>
+        </trajectory>
+      </script>
+      <plugin name="odom_actor_plugin" filename="libgazebo_ros_p3d.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>50.0</updateRate>
+        <bodyName>Spine</bodyName>
+        <topicName>/odom_actor</topicName>
+        <gaussianNoise>0.0</gaussianNoise>
+        <frameName>map</frameName>
+        <rpyOffsets>0 0 -1.57</rpyOffsets>
+      </plugin>
+    </actor>
+</sdf>

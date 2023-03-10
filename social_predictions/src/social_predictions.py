@@ -41,7 +41,7 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     mu2_y = mu1_y + (gaus_sep * math.sin(orientation.x))
 
     # Distribution of Gaussians
-    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, -orientation.x)
+    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, orientation.x)
     Z2 = gaussian2d(x, y, mu2_x, mu2_y, sigma2_x, sigma2_y, -orientation.x)
 
     # Superposition of Gaussians

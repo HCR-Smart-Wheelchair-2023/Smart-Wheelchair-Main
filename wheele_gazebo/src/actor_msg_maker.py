@@ -1,22 +1,9 @@
 #! /usr/bin/env python3
 
 import rospy
-import tf
-import tf2_ros
-import tf2_geometry_msgs
-import sys
-import numpy as np
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import PoseStamped, Quaternion, Vector3, TransformStamped, Transform, Vector3Stamped
-from zed_interfaces.msg import ObjectsStamped
 from people_msg.msg import People, Person
 from std_msgs.msg import Header
-from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3
-from time import sleep
-import time
-
-
 
 class actor_information_conversion:
 

@@ -193,23 +193,23 @@ class MapProcessor:
             
             
             
-            # if person.static.data:
-            #     pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.pose.pose.orientation, distribution_scale_factor, gaus_sep)
-            #     for (i, pos) in enumerate(pos):
-            #         if vals[i] != 0:
-            #             adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
+            if person.static.data:
+                pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.pose.pose.orientation, distribution_scale_factor, gaus_sep)
+                for (i, pos) in enumerate(pos):
+                    if vals[i] != 0:
+                        adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
 
-            # else:
-            #     pos, vals = social_predict_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, distribution_scale_factor, t)
-            #     for (i, pos) in enumerate(pos):
-            #         if vals[i] != 0:
-            #             adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
+            else:
+                pos, vals = social_predict_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, distribution_scale_factor, t)
+                for (i, pos) in enumerate(pos):
+                    if vals[i] != 0:
+                        adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
 
 
-            adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, t)
+            # adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, t)
             
-            for i in adjusted_cells:
-                adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
+            # for i in adjusted_cells:
+            #     adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
                    
 
 

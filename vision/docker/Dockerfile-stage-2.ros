@@ -51,8 +51,6 @@ WORKDIR /
 COPY ./single.launch /opt/ros/noetic/share/aruco_ros/launch/single.launch
 COPY ./aruco.sh ./aruco.sh
 COPY ./common.yaml /opt/ros_ws/src/zed-ros-wrapper/zed_wrapper/params/common.yaml
-COPY ./zed.yaml   /opt/ros_ws/src/zed-ros-wrapper/zed_wrapper/params/zed.yaml
-COPY ./zed2.yaml   /opt/ros_ws/src/zed-ros-wrapper/zed_wrapper/params/zed2.yaml
 COPY ./zed2i.yaml   /opt/ros_ws/src/zed-ros-wrapper/zed_wrapper/params/zed2i.yaml
 COPY ./start.sh /start.sh
 COPY ./objects_performance_2.2.model /usr/local/zed/resources/objects_performance_2.2.model

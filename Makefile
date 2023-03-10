@@ -8,10 +8,10 @@ build-external:
 	DOCKER_BUILDKIT=1 docker build -t amiga_base_external:latest -f Dockerfile.external .
 
 build-jetson:
-	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision/docker && sudo ./build-ros-desktop-image.sh"
+	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision/docker && sudo -S ./build-ros-desktop-image.sh"
 
 run-jetson:
-	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision && sudo ./run_ros_container.sh"
+	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision && sudo -S ./run_ros_container.sh"
 
 run-external-core:
 	xhost +si:localuser:root

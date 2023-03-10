@@ -43,6 +43,9 @@ class BodyProcessingController:
         # print("Number of People: ", len(people_msg.person))
         self.pub.publish(people_msg)
 
+        rate = rospy.Rate(2.5) # 2.5 Hz (same as global map update)
+        rate.sleep()
+
 
     def calculate_orientation(self, skeleton) -> float:
         left_shoulder = np.array(skeleton.keypoints[2])

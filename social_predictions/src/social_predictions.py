@@ -176,7 +176,7 @@ class MapProcessor:
         self.latest_map = data
 
     def map_callback_update(self, data):
-        print("Number of objects detected: ", len(data.person))
+        # print("Number of objects detected: ", len(data.person))
         # Params to tune 
         t = 2.0
         distribution_scale_factor = 1

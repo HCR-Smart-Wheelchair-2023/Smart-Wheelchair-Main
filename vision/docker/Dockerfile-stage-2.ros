@@ -44,7 +44,8 @@ RUN  . ./devel/setup.sh
 
 # Install QR detection
 WORKDIR /
-RUN sudo apt-get install ros-noetic-aruco-ros -y
+# @Leo:
+# RUN sudo apt-get install --fix-missing -y ros-noetic-aruco-ros
 
 # Copy over all relevant configuration files
 COPY ./single.launch /opt/ros/noetic/share/aruco_ros/launch/single.launch
@@ -56,4 +57,5 @@ COPY ./objects_performance_2.2.model /usr/local/zed/resources/objects_performanc
 
 # Run the start.sh file to launch 
 RUN chmod +x start.sh
-CMD ["bash start.sh"]
+# CMD ["bash ./start.sh"]
+ENTRYPOINT ["bash", "/start.sh"]

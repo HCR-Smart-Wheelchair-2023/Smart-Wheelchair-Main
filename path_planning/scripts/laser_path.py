@@ -8,20 +8,16 @@ import tf
 import tf2_ros
 import tf2_geometry_msgs
 import sys
-from nav_msgs.msg import PathMessage
+from nav_msgs.msg import Path
 import random
 import numpy
 import numpy as np
-from paho.mqtt import client as mqtt_client
 import json
-from json import JSONEncoder
 import matplotlib.pyplot as mp
 import serial
 import time
 from time import sleep
-import serial.tools.list_ports
-import math
-import keyboard
+# import serial.tools.list_ports
 
 matrix = []
 off = numpy.zeros(400, dtype=object)
@@ -29,7 +25,7 @@ off = numpy.zeros(400, dtype=object)
 binary_list = numpy.zeros(400, dtype=object)
 tuple_list = numpy.zeros((400,4), dtype=object)
 
-arduino = serial.Serial(port='/dev/cu.usbserial-14410', baudrate=9600, timeout=0.01)
+arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, timeout=0.01)
 
 DIST = 400
 
@@ -44,14 +40,14 @@ DIST = 400
 def frameByte(xstep, ystep, xdir, ydir):
     return ((xstep<<3) + (ystep<<2) + (xdir<<1) + ydir)
 
-def find_arduino(port=None):
-    """Get the name of the port that is connected to Arduino."""
-    if port is None:
-        ports = serial.tools.list_ports.comports()
-        for p in ports:
-            if p.manufacturer is not None and "Arduino" in p.manufacturer:
-                port = p.device
-    return port
+# def find_arduino(port=None):
+#     """Get the name of the port that is connected to Arduino."""
+#     if port is None:
+#         ports = serial.tools.list_ports.comports()
+#         for p in ports:
+#             if p.manufacturer is not None and "Arduino" in p.manufacturer:
+#                 port = p.device
+#     return port
 
 
 def direction(xdir,ydir):
@@ -70,8 +66,8 @@ class LaserPathController:
     MAX_DISTANCE = 1
 
     def __init__(self) -> None:
-        topic = '/zed/zed_node/obj_det/objects'
-        self.sub = rospy.Subscriber(topic, PathMessage, self.receive_path)
+        topic = '/move_base/TrajectoryPlannerROS/local_plan'
+        self.sub = rospy.Subscriber(topic, Path, self.receive_path)
 
     def receive_path(self, path):
 

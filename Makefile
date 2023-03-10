@@ -108,6 +108,7 @@ run-sim-core:
 	xhost +si:localuser:root
 	docker stop sim || true && docker rm sim || true
 	docker run \
+		--device=/dev/ttyUSB0 \
 		-e "DISPLAY" \
 		-e "QT_X11_NO_MITSHM=1" \
 		-e "XAUTHORITY=${XAUTH}" \

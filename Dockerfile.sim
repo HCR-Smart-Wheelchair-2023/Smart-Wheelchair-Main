@@ -43,7 +43,8 @@ WORKDIR /root/ros_ws/src
 RUN git clone https://github.com/stereolabs/zed-ros-interfaces.git
 RUN cd .. && rosdep install --from-paths src --ignore-src -r -y
 
-# RUN apt-get install -y python3-pip
+RUN apt-get install -y python3-pip
+RUN pip install pyserial
 # RUN pip install deepface
 
 WORKDIR /root/ros_ws/src
@@ -60,7 +61,7 @@ COPY people_msg/ people_msg/
 COPY zed_dummy/ zed_dummy/
 COPY emotion_detection/ emotion_detection/
 COPY aruco_detection/ aruco_detection/
-COPY wheele_sim_controler/ wheele_sim_controler/
+COPY wheele_sim_control/ wheele_sim_control/
 
 RUN source /opt/ros/noetic/setup.bash && cd .. && catkin config --cmake-args -DRTABMAP_SYNC_MULTI_RGBD=ON
 

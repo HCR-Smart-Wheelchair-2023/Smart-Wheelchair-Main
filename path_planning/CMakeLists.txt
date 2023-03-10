@@ -59,3 +59,6 @@ catkin_install_python(PROGRAMS scripts/body_processing.py
 
 catkin_install_python(PROGRAMS scripts/goal_processing.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/laser_path.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

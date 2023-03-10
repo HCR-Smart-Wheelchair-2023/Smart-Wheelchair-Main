@@ -82,7 +82,7 @@ class BodyProcessingController:
         v.vector.y = person.velocity[1]
         v.vector.z = person.velocity[2]
 
-        vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
+        # vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
 
         p = PoseStamped()
         p.pose.position.x = position[0]
@@ -91,10 +91,10 @@ class BodyProcessingController:
         p.pose.orientation.x = theta
 
 
-        pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
+        # pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
 
-        odom.pose.pose = pose_transformed.pose
-        odom.twist.twist.linear = vt.vector
+        odom.pose.pose = v.pose #pose_transformed.pose
+        odom.twist.twist.linear = p.vector #vt.vector
 
 
         new_person = Person()

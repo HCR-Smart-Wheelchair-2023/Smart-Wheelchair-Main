@@ -41,24 +41,21 @@ RUN rosdep install --from-paths src --ignore-src -r -y \
     && . /opt/ros/noetic/setup.sh \
     && catkin_make -DCMAKE_BUILD_TYPE=Release
 RUN  . ./devel/setup.sh
-#RUN sudo apt-get install --fix-missing -y ros-noetic-aruco-ros
-# Setup entrypoint
+
+# Install QR detection
 WORKDIR /
-COPY ./ros_entrypoint.sh /
-RUN chmod a+x /ros_entrypoint.sh
-#ENTRYPOINT ["/ros_entrypoint.sh"]
+# @Leo:
+# RUN sudo apt-get install --fix-missing -y ros-noetic-aruco-ros
+
+# Copy over all relevant configuration files
+COPY ./single.launch /opt/ros/noetic/share/aruco_ros/launch/single.launch
+COPY ./aruco.sh ./aruco.sh
 COPY ./common.yaml /opt/ros_ws/src/zed-ros-wrapper/zed_wrapper/params/common.yaml
 COPY ./zed2i.yaml   /opt/ros_ws/src/zed-ros-wrapper/zed_wrapper/params/zed2i.yaml
 COPY ./start.sh /start.sh
 COPY ./objects_performance_2.2.model /usr/local/zed/resources/objects_performance_2.2.model
 
-#aruco QR detection
-RUN sudo apt-get install ros-noetic-aruco-ros -y
-COPY ./single.launch /opt/ros/noetic/share/aruco_ros/launch/single.launch
-COPY ./aruco.sh ./aruco.sh
-
+# Run the start.sh file to launch 
 RUN chmod +x start.sh
-CMD ["bash"]
-#CMD ["bash -c \"source /opt/ros/noetic/setup.bash && source  source /opt/ros_ws/devel/setup.bash && \
-#bash\""]
-#CMD ["bash -c \"source /opt/ros/noetic/setup.bash && bash\""]
+# CMD ["bash ./start.sh"]
+ENTRYPOINT ["bash", "/start.sh"]

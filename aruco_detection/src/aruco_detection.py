@@ -28,7 +28,7 @@ class ArUcoCameraController:
         self.pub = rospy.Publisher("/my_marker/pose", PoseStamped, queue_size=10)
 
         # angle is in radians
-        angle = math.pi / 2
+        angle = math.pi / 2 + math.pi
         quaternion = tf.transformations.quaternion_from_euler(0, 0, angle)
 
         # create a TransformStamped message for the marker

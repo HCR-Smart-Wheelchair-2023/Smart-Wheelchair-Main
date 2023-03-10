@@ -22,7 +22,7 @@ if __name__ == "__main__":
     time.sleep(2)
 
     # angle is in radians
-    angle = math.pi / 2
+    angle = math.pi / 2 + math.pi
     quaternion = tf.transformations.quaternion_from_euler(0, 0, angle)
     print(quaternion)
     while not rospy.is_shutdown():

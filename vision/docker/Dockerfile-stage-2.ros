@@ -57,4 +57,5 @@ COPY ./objects_performance_2.2.model /usr/local/zed/resources/objects_performanc
 
 # Run the start.sh file to launch 
 RUN chmod +x start.sh
-CMD ["bash start.sh"]
+# CMD ["bash ./start.sh"]
+ENTRYPOINT ["bash", "/start.sh"]

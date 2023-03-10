@@ -1,61 +1,44 @@
-#!/usr/bin/env python
+#! /usr/bin/env python3
+
 import rospy
-import random
-import math
-
-from std_msgs.msg import String
-from people_msg.msg import People, Person
-from zed_interfaces.msg import ObjectsStamped, Object
-
+import tf
+import tf2_ros
+import tf2_geometry_msgs
+import sys
+import numpy as np
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import PoseStamped, Quaternion, Vector3, TransformStamped, Transform, Vector3Stamped
+from zed_interfaces.msg import ObjectsStamped
+from people_msg.msg import People, Person
+from std_msgs.msg import Header
+from nav_msgs.msg import Odometry
+from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3
+from time import sleep
+import time
 
 
 
-rospy.init_node('actor_msg_maker')
-
-pub = rospy.Publisher('/zed/zed_node/obj_det/objects', ObjectsStamped, queue_size=10)
-rate = rospy.Rate(0.1)
+class actor_information_conversion:
 
 
-while not rospy.is_shutdown():
-
-    
-
-    object_pos1 = Point(1.0, 2.0, 0.0)
-    velocity1 = Point(random.uniform(-2, 2), random.uniform(-2, 2), 0.0)
-    object_pos2 = Point(5.0, 2.0, 0.0)
-    velocity2 = Point(random.uniform(-2, 2), random.uniform(-2, 2), 0.0)
-    object_pos3 = Point(10.0, 3.0, 0.0)
-    velocity3 = Point(random.uniform(-2, 2), random.uniform(-2, 2), 0.0)
-
-    objs = [[object_pos1, velocity1], [object_pos2, velocity2], [object_pos3, velocity3]]
+    def __init__(self) -> None:
+        self.sub = rospy.Subscriber('/odom_actor', Odometry, self.receive_objects)
+        self.pub = rospy.Publisher('/people', People, queue_size=10)
 
 
-    # people_msg = People()
+    def receive_objects(self, message : Odometry):
+        actor = Person()
+        actor.odom = message
+        actor.static.data = False
+        actor.label.data = " "
 
-    # for obj in range(1, 6):
-    #     odom_msg = Person()
-    #     # Fill in the data for the odom_msg object
-    #     odom_msg.odom.pose.pose.position = Point(random.uniform(-5, 5), random.uniform(-5, 5), 0.0)
-    #     odom_msg.odom.twist.twist.linear = Point(random.uniform(-2, 2), random.uniform(-2, 2), 0.0)
-        
-    #     b = random.choice([True, False])
-    #     odom_msg.static.data = b
-    #     if b:
-    #         odom_msg.odom.pose.pose.orientation.x = random.uniform(0, math.pi)
-            
+        actors = People()
+        actors.person = [actor]
 
-    #     people_msg.person.append(odom_msg)
+        self.pub.publish(actors)
 
-    people_msg = ObjectsStamped()
-    for obj in range(1, 6):
-        odom_msg = Object()
 
-        odom_msg.position = [random.uniform(-5, 5), random.uniform(-5, 5), 0.0]
-        odom_msg.velocity = [random.uniform(-2, 2), random.uniform(-2, 2), 0.0]
-
-        people_msg.objects.append(odom_msg)
-
-    pub.publish(people_msg)
-    rate.sleep()
+if __name__ == '__main__':
+    rospy.init_node('actor_msg_maker')
+    mp = actor_information_conversion()
+    rospy.spin()

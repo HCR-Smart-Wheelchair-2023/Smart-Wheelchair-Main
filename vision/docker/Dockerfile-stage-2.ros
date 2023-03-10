@@ -44,7 +44,7 @@ RUN  . ./devel/setup.sh
 
 # Install QR detection
 WORKDIR /
-RUN sudo apt-get install ros-noetic-aruco-ros -y
+RUN sudo apt-get install ros-noetic-aruco-ros --fix-missing -y 
 
 # Copy over all relevant configuration files
 COPY ./single.launch /opt/ros/noetic/share/aruco_ros/launch/single.launch

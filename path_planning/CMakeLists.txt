@@ -10,6 +10,10 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   std_msgs
   roslaunch
+  std_srvs
+  zed_interfaces
+  people_msg
+  tf
 )
 #roslaunch_add_file_check(launch)
 
@@ -31,4 +35,30 @@ include_directories(
 ## Install ##
 #############
 catkin_install_python(PROGRAMS scripts/path_planning.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/odom.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/pose.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/aruco_pose.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/point_cloud_transform.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/map_stitching.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+
+catkin_install_python(PROGRAMS scripts/body_processing.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+
+catkin_install_python(PROGRAMS scripts/goal_processing.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS scripts/laser_path.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

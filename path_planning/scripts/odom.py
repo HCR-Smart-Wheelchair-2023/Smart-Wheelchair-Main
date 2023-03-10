@@ -11,49 +11,33 @@ from nav_msgs.msg import Odometry
 from time import sleep
 import time
 
-# prev_transform = np.array((-1,-1,-1))
-# prev_rotation = np.array((0,0,0,0))
+
 last_time = 0
 def odom_callback(msg):
     global pub
-    # print(msg)
-    global prev_transform
     global sim
-    global prev_rotation
     global last_time
-    # transform = np.array((msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z))
-    # rotation = np.array((msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w))
-    # if np.linalg.norm(transform-prev_transform) < 0.04 and np.linalg.norm(rotation-prev_rotation) < 0.04:
-    #     return
-    if time.time() - last_time < 0.2:
+    if time.time() - last_time < 0.1:
         return
     last_time = time.time()
-    # print(msg)
-    # prev_transform = transform
-    # prev_rotation = rotation
     br = tf.TransformBroadcaster()
-    print('publishing transform')
-    msg.pose.pose.position.x += 10
-    msg.pose.pose.position.y += 10
     br.sendTransform((msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z),
                      (msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w),
                      rospy.Time.now(),
                      "base_link",
                      "odom")
-    if not sim:
-        # print('sending')
-        msg.header.frame_id = 'odom'
-        pub.publish(msg)
+    # if not sim:
+    #     msg.header.frame_id = 'odom'
+    #     pub.publish(msg)
 
 
 
 if __name__ == '__main__':
     rospy.init_node('odom_to_base_link_transform')
-    print('################')
     sim = rospy.get_param("mode") == 'sim'
-    print(sim)
     # TODO change topic based on value of sim
     topic = '/odom' if sim else '/zed2i/zed_node/odom'
+    # topic = '/odom'
     rospy.Subscriber(topic, Odometry, odom_callback)
     pub = rospy.Publisher('/odom', Odometry, queue_size=10)
     rospy.spin()

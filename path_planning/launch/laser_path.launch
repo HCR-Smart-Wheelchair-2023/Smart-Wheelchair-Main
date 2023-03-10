@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <!-- Run the script that listens to the /user_intput topic and sends target to the navigation  -->
+	<node pkg="path_planning" type="laser_path.py" name="laser_path" output="screen" />
+
+</launch>

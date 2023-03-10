@@ -1,0 +1,50 @@
+FROM personalroboticsimperial/prl:ub2004-noetic-openCV420wContrib
+# If you have a GPU with an architecture up to Turing (not included), use this to enable CUDA with OpenCV
+# FROM personalroboticsimperial/prl:ub2004-noetic-cu101-openCV420
+
+SHELL ["/bin/bash", "-c"]
+
+
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
+    python3-catkin-tools \
+    ros-noetic-rtabmap ros-noetic-rtabmap-ros \
+    ros-noetic-libg2o \
+    git && \
+    apt remove -y ros-noetic-rtabmap ros-noetic-rtabmap-ros
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -y  && \
+    DEBIAN_FRONTEND=noninteractive apt install -y \
+        software-properties-common \
+        ros-noetic-joy \
+        ros-noetic-teleop-twist-joy \
+        ros-noetic-rqt \
+        ros-noetic-rqt-common-plugins \
+        ros-noetic-octomap && \
+    DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:borglab/gtsam-release-4.0 && \
+    DEBIAN_FRONTEND=noninteractive apt update && \
+    DEBIAN_FRONTEND=noninteractive apt install -y libgtsam-dev libgtsam-unstable-dev \
+    ros-noetic-teleop-twist-keyboard \
+    ros-noetic-navigation
+
+RUN DEBIAN_FRONTEND=noninteractive apt install -y python3-pip && pip install flask
+
+WORKDIR /root/ros_ws/src
+COPY robot_main robot_main/
+COPY navigation/ navigation/
+COPY user_interface/ user_interface/
+COPY emotion_detection/ emotion_detection/
+
+WORKDIR /root/ros_ws/src
+RUN DEBIAN_FRONTEND=noninteractive pip install -r emotion_detection/requirements.txt
+RUN DEBIAN_FRONTEND=noninteractive pip install deepface
+
+WORKDIR /root/ros_ws/src
+RUN apt-get install ros-noetic-realsense2-camera -y
+
+WORKDIR /root/ros_ws/src
+
+RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
+
+# CMD cd .. && source /opt/ros/noetic/setup.bash && source ./devel/setup.bash && roscore
+CMD cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build && source ./devel/setup.bash && bash
+# CMD source ../devel/setup.bash && roslaunch arnie_main main_external.launch --screen

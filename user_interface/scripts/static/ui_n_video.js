@@ -5,42 +5,6 @@ if ('serviceWorker' in navigator)
 
 //-----------------------------------------roslibJS stuff ------------------------------------------------------------------------------------------------
 
-// Connect to ROS
- var ros = new ROSLIB.Ros({
-    url : 'wss://192.168.50.101:8080'
-});
-
-// Subscribe to a topic
-var listener = new ROSLIB.Topic({
-    ros : ros,
-    name : '/target_command',
-    messageType : 'std_msgs/String'
-});
-
-// Update the message on the web page when a new message is received
-listener.subscribe(function(message) {
-    var messageElement = document.getElementById('message');
-    messageElement.innerHTML = message.data;
-});
-
- // Create a publisher
- var publisher = new ROSLIB.Topic({
-    ros : ros,
-    name : '/my_topic',
-    messageType : 'std_msgs/String'
-});
-
-// Define the function to execute when the button is clicked
-function publishMessage(id) {
-    // Create a message
-    var message = new ROSLIB.Message({
-        data : id
-    });
-    // Publish the message
-    publisher.publish(message);
-    //publish to relevant topic
-}
-
 // Example of getting button id and listening for click
 const doorBut = document.getElementById('door');
 const kitchenBut = document.getElementById('kitchen');
@@ -68,55 +32,185 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   //   speech.text = message;
   //   window.speechSynthesis.speak(speech);
   // }
+  function post_dest(_goal){
+    fetch('/goal_dest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ goal: _goal })
+    })
+    .then(response => response.text())
+    .then(result => {
+      console.log('Result:', result);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
   function door() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the door';
     window.speechSynthesis.speak(msg);
-  }
+    post_dest('door');
+    }
 
   function kitchen() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the kitchen';
     window.speechSynthesis.speak(msg);
+    post_dest('kitchen');
   }
 
   function table() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the table';
     window.speechSynthesis.speak(msg);
+    post_dest('table')
   }
   function bathroom() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the bathroom';
     window.speechSynthesis.speak(msg);
+    post_dest('bathroom')
   }
 
   //------------------------------------------- code to do speech to text might be useful after---------------------------
+  // function startListening() {
+  //   const recognition = new webkitSpeechRecognition();
+  //   recognition.continuous = true;
+  //   recognition.interimResults = true;
+  //   recognition.lang = 'en-UK';
+  //   recognition.maxAlternatives = 1;
+
+  //   recognition.start();
+
+  //   recognition.addEventListener('result', event => {
+  //     const transcript = event.results[0][0].transcript;
+  //     // inputField.value = transcript;
+  //     // Perform action with transcript
+  //   });
+  //   recognition.onresult = function(event) {
+  //     const result = event.results[event.results.length - 1][0].transcript;
+  //     //inputField.value = result;
+  //     const keyword1 = "door";
+  //     const keyword2 = "bathroom";
+  //     const keyword3 = "table";
+  //     const keyword4 = "kitchen";
+  //     if (result.includes("chair")){
+  //       if (result.includes(keyword1)) {
+  //         console.log(`The string contains the keyword '${keyword1}'`);
+  //         inputField.value = "door " 
+  //       door()
+  //       }
+  //       else if (result.includes(keyword2)){
+  //         inputField.value = "bathroom " 
+  //         bathroom()
+  //     }
+  //       else if (result.includes(keyword3)){
+  //         inputField.value = "table" 
+  //         table()
+  //     }
+  //        else if (result.includes(keyword4)){
+  //         inputField.value = "kitchen" 
+  //         kitchen()
+  //     }
+  //       else {
+  //         inputField.value = "error" 
+  //     }
+  //    }
+  //   };
+  // }
   function startListening() {
     const recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
     recognition.lang = 'en-UK';
-    recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-
-    recognition.start();
-
+  
     recognition.onresult = function(event) {
-      const result = event.results[0][0].transcript;
-      inputField.value = result;
+      const transcript = event.results[event.results.length - 1][0].transcript;
+      
+      if (transcript.includes("hello") && (transcript.includes("door"))) {
+        inputField.value = "go to door";
+        door();}
+      else if (transcript.includes("hello") && (transcript.includes("kitchen"))){
+        inputField.value = "go to kitchen";
+        kitchen();
+      }
+      else if (transcript.includes("hello") && (transcript.includes("table"))){
+        inputField.value = "go to table";
+        table();
+      }
+      else if (transcript.includes("hello") && (transcript.includes("bathroom"))){
+        inputField.value = "go to bathroom";
+        bathroom();
+      }
+      else {
+        inputField.value = "error";
+      }
     };
+    
+    recognition.onend = function() {
+      startRecognition();// start again when the recognition ends
+    };
+  
+    recognition.start();
+    stopButton.addEventListener('click', () => {
+          recognition.stop();
+        });
   }
-
 
 
   // -----------------------------------------------code to use camera---------------------------------------------------
   // Get the video element
-  const video = document.getElementById('video');
+  let video = null
+  let canvas = null
+  let context = null
+
+  function startStream(){
+    
+    function getImage(){
+      //Webcam.attach( 'videoElement' );
+      Webcam.snap( function(data_uri) {
+      // display results in page
+      //document.getElementById('results').innerHTML = '<img src="'+data_uri+'"/>';
+      console.log(data_uri)
+      fetch('/process-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image_data: data_uri , width: videoElement.videoWidth, heigth:  videoElement.videoHeight})
+      })
+      .then(response => response.text())
+      .then(result => {
+        console.log('Result fetch:', result);
+      })
+      .catch(error => {
+        console.error('Error fetch:', error);
+      }); 
+      })
+    };
+
+    setInterval(getImage, 1000 /1) 
+ };
+
+
 
   function startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
-        videoElement.srcObject = stream;
-        video.play();
+        //videoElement.srcObject = stream;
+        //video.play();
+
+        //var data_uri = Webcam.snap();
+        console.log(videoElement)
+        Webcam.set({
+          width: videoElement.videoWidth,
+          height: videoElement.videoHeight,
+          image_format: 'png',
+          png_quality: 90
+        });
+        Webcam.attach( 'videoElement' );
+        console.log('Now iterate...')
+        startStream()
       })
       .catch(error => {
         console.error('Error accessing camera:', error);
@@ -124,38 +218,5 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   }
 
 
-  //   // Get a video stream from the iPad Pro's camera
-  // const constraints = { video: true };
-  // const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
-  // // Create a video element and set the stream as its source
-  // const video = document.createElement('video');
-  // video.srcObject = stream;
-  // await video.play();
-
-  // // Create a FaceDetector object
-  // const faceDetector = new window.FaceDetector();
-
-  // // Detect faces in the video stream
-  // const faces = await faceDetector.detect(video);
-
-  // // Get the face mesh data for the first face detected
-  // const face = faces[0];
-  // const faceMesh = face.landmarks.get('faceMesh');
-
-  //   // -----------------------------------------------code to use LIDAR---------------------------------------------------
 
 
-  //   // Request an XR session with the lidar feature
-  // const xrSession = await navigator.xr.requestSession('immersive-ar', {
-  //   requiredFeatures: ['lidar'],
-  // });
-
-  // // Get an XRFrame of reference
-  // const xrFrameOfRef = await xrSession.requestFrameOfReference('eye-level');
-
-  // // Get an XRPointCloud
-  // const xrPointCloud = await xrFrameOfRef.getPointCloud();
-
-  // // Get the points from the point cloud
-  // const points = xrPointCloud.points;

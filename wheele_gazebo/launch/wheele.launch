@@ -8,13 +8,18 @@
     <!-- more default parameters can be changed here -->
   </include>
 
+  <rosparam>
+    wheele/mobile_base_controller:
+      enable_odom_tf: False
+  </rosparam>
+
   <!-- Spawn the room model -->
   <node name="spawn_room" pkg="gazebo_ros" type="spawn_model" args="-file $(find room_description)/urdf/room_1.urdf -urdf -z 0 -x 4 -y 4.3
   -Y -1.57 -model room_description" />
 
   <!-- Load the URDF wheele model desciption -->
   <param name="wheele/robot_description"
-    command="$(find xacro)/xacro --inorder '$(find wheele_description)/urdf/wheelchair_3.urdf'" /> 
+    command="$(find xacro)/xacro --inorder '$(find wheele_description)/urdf/wheelchair_3.urdf'" />
 
   <!-- Spawn the URDF wheele model -->
   <node name="spawn_robot" pkg="gazebo_ros" type="spawn_model" output="screen" ns="wheele"
@@ -24,7 +29,7 @@
   <rosparam file="$(find wheele_sim_control)/config/wheele_control.yaml" command="load"/>
 
   <!-- Relay /cmd_vel to input topic -->
-  <node name="relay" pkg="topic_tools" type="relay" respawn="false" output="screen" 
+  <node name="relay" pkg="topic_tools" type="relay" respawn="false" output="screen"
     args="/cmd_vel /wheele/mobile_base_controller/cmd_vel"/>
 
   <!-- Start controllers -->

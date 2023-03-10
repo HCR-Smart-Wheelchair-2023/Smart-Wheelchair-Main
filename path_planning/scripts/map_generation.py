@@ -6,9 +6,9 @@ import yaml
 import json
 # 83 y 213 x
 # 70 90 20
-width = 500
-height = 500
-resolution = 0.1
+width = 1000
+height = 1000
+resolution = 0.05
 # vectors_cm = [(0,774),(121,0),(0,250),(-2500,0),(0,205),(2500 + 167, 0),(0,-250-205),(221,0),(0,-774),(-121-221-167,0)]
 with open(os.path.dirname(__file__) + "/../config/room_dimensions.json", encoding='utf8') as file:
     vectors_cm = json.loads(file.read())
@@ -42,7 +42,7 @@ with open(os.path.dirname(__file__) + '/../map/map.pgm', 'wb') as pgm_file:
     for y in range(height):
         print(y)
         # bnd = list(img[j,:])
-        bnd = [255 if polygon.contains(Point(x, y)) else 0 for x in range(width)]
+        bnd = [100 if polygon.contains(Point(x, y)) else 0 for x in range(width)]
         # print(bnd)
         pgm_file.write(bytearray(bnd)) # for 8-bit data only
 

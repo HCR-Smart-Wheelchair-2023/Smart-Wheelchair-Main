@@ -41,7 +41,7 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     mu2_y = mu1_y + (gaus_sep * math.sin(orientation.x))
 
     # Distribution of Gaussians
-    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, -orientation.x)
+    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, orientation.x)
     Z2 = gaussian2d(x, y, mu2_x, mu2_y, sigma2_x, sigma2_y, -orientation.x)
 
     # Superposition of Gaussians
@@ -167,7 +167,7 @@ def social_predict(costmap, object_pos, velocity, t = 5.0):
 
 class MapProcessor:
     def __init__(self):
-        self.map_sub = rospy.Subscriber('/staticmap', OccupancyGrid, self.map_callback_map, queue_size=1)
+        self.map_sub = rospy.Subscriber('/map', OccupancyGrid, self.map_callback_map, queue_size=1)
         self.update_sub = rospy.Subscriber('/people', People, self.map_callback_update, queue_size=1)
         self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=10)
         self.latest_map = None

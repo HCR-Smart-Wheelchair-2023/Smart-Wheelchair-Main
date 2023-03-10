@@ -43,4 +43,7 @@
   <!-- Spawn the actor model -->
   <node name="spawn_actor" pkg="gazebo_ros" type="spawn_model" args="-file $(find wheele_gazebo)/models/actor.sdf -sdf -model actor1" />
 
+  <!-- Run the actor_msg_maker node to translate Odometry into People msgs -->
+  <node pkg="wheele_gazebo" type="actor_msg_maker.py" name="actor_msg_maker" output="screen" />
+
 </launch>

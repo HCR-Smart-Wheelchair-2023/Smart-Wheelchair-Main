@@ -42,6 +42,12 @@ RUN rosdep install --from-paths src --ignore-src -r -y \
     && catkin_make -DCMAKE_BUILD_TYPE=Release
 RUN  . ./devel/setup.sh
 
+# Copy over the multicamera package
+ADD ./Zed_Multi_Cam /opt/ros_ws/src/Zed_Multi_Cam
+RUN rosdep install --from-paths src --ignore-src -r -y \
+    && . /opt/ros/noetic/setup.sh \
+    && catkin_make -DCMAKE_BUILD_TYPE=Release
+
 # Install QR detection
 WORKDIR /
 # @Leo:
@@ -50,12 +56,18 @@ WORKDIR /
 # Copy over all relevant configuration files
 COPY ./single.launch /opt/ros/noetic/share/aruco_ros/launch/single.launch
 COPY ./aruco.sh ./aruco.sh
+
+# Copy over local configuration files
 COPY ./common.yaml /opt/ros_ws/src/zed-ros-wrapper/zed_wrapper/params/common.yaml
 COPY ./zed.yaml   /opt/ros_ws/src/zed-ros-wrapper/zed_wrapper/params/zed.yaml
 COPY ./zed2.yaml   /opt/ros_ws/src/zed-ros-wrapper/zed_wrapper/params/zed2.yaml
 COPY ./zed2i.yaml   /opt/ros_ws/src/zed-ros-wrapper/zed_wrapper/params/zed2i.yaml
-COPY ./start.sh /start.sh
+
+# Copy over the object detection model
 COPY ./objects_performance_2.2.model /usr/local/zed/resources/objects_performance_2.2.model
+
+# Copy over the start.sh script
+COPY ./start.sh /start.sh
 
 # Run the start.sh file to launch 
 RUN chmod +x start.sh

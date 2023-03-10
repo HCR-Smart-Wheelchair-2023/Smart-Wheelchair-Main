@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source .env
+source ../.env
 
 echo "Building '${TAG_STAGE_1}'"
 

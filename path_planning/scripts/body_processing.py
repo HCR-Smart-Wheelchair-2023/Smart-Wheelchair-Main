@@ -17,8 +17,8 @@ from std_msgs.msg import Header
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3
 from time import sleep
-import time
-
+import random
+import math
 
 
 class BodyProcessingController:
@@ -30,11 +30,12 @@ class BodyProcessingController:
         topic = '/zed/zed_node/obj_det/objects'
         self.sub = rospy.Subscriber(topic, ObjectsStamped, self.receive_objects)
         self.pub = rospy.Publisher('/people', People, queue_size=10)
+        self.odom_pub = rospy.Publisher('/people_odom', Odometry, queue_size=10)
 
 
     def receive_objects(self, message : ObjectsStamped):
         objects = message.objects
-        print("Number of objects detected: ", len(message.objects))
+        # print("Number of objects detected: ", len(message.objects))
         people = [self.process_person(person) for person in message.objects if person.label == '']
         people_msg = People()
         people_msg.header.frame_id = 'map'
@@ -59,19 +60,22 @@ class BodyProcessingController:
         velocity = np.array(person.velocity)
 
         # calculate orientation from velocity
-        # static = np.linalg.norm(velocity) < 0.2
-        # if static:
-        #     theta = self.calculate_orientation(skeleton)
-        # else:
-        #     theta = np.arctan(velocity[0]/velocity[1])
-        theta = 0
+        static = np.linalg.norm(velocity) < 0.2
+        if static:
+
+            # To Test: actual orientation 
+            # theta = self.calculate_orientation(skeleton)
+            theta = random.uniform(0, 2*math.pi)
+        else:
+            theta = np.arctan(velocity[0]/velocity[1])
+
 
         odom = Odometry()
         odom.header.stamp = rospy.Time.now()
         odom.header.frame_id = "map"
         odom.child_frame_id = "map"
 
-        transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(1.0))
+        transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(0.2))
         
         v = Vector3Stamped()
         v.vector.x = person.velocity[0]
@@ -84,7 +88,7 @@ class BodyProcessingController:
         p.pose.position.x = position[0]
         p.pose.position.y = position[1]
         p.pose.position.z = position[2]
-        p.pose.orientation.x = theta
+        (p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w) = tf.transformations.quaternion_from_euler(0, 0, theta, 'ryxz')
 
 
         pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
@@ -92,11 +96,12 @@ class BodyProcessingController:
         odom.pose.pose = pose_transformed.pose
         odom.twist.twist.linear = vt.vector
         
+        self.odom_pub.publish(odom)
 
         new_person = Person()
         new_person.header.frame_id = "map"
         new_person.label.data = person.label
-        new_person.static.data = False # static
+        new_person.static.data = static
         new_person.odom = odom
         return new_person
 

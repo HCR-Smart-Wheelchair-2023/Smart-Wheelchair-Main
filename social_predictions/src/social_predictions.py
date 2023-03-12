@@ -4,6 +4,9 @@ import math
 import numpy as np
 import cv2
 from scipy.stats import multivariate_normal
+import tf
+import tf2_ros
+import tf2_geometry_msgs
 
 from people_msg.msg import People, Person
 # from zed_interfaces.msg import ObjectsStamped
@@ -37,12 +40,12 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     pos[:, :, 0] = x; pos[:, :, 1] = y
 
     # Finding location of second Guassian
-    mu2_x = mu1_x + (gaus_sep * math.cos(orientation.x))
-    mu2_y = mu1_y + (gaus_sep * math.sin(orientation.x))
+    mu2_x = mu1_x + (gaus_sep * math.cos(orientation))
+    mu2_y = mu1_y + (gaus_sep * math.sin(orientation))
 
     # Distribution of Gaussians
-    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, -orientation.x)
-    Z2 = gaussian2d(x, y, mu2_x, mu2_y, sigma2_x, sigma2_y, -orientation.x)
+    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, orientation)
+    Z2 = gaussian2d(x, y, mu2_x, mu2_y, sigma2_x, sigma2_y, -orientation)
 
     # Superposition of Gaussians
     Z = Z1+Z2
@@ -92,7 +95,7 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     sigma1_x = 1 * distribution_scale_factor
     sigma1_y = 1 * distribution_scale_factor
 
-    sigma2_x = 8 * distribution_scale_factor
+    sigma2_x = 4 * distribution_scale_factor
     sigma2_y = 2 * distribution_scale_factor
 
     # Create a meshgrid of points to evaluate the normal distributions
@@ -102,7 +105,7 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
 
 
     # Distribution of Gaussians
-    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, -theta)
+    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, theta)
     Z2 = gaussian2d(x, y, x_dest, y_dest, sigma2_x, sigma2_y, -theta)
 
     # Superposition of Gaussians
@@ -176,9 +179,9 @@ class MapProcessor:
         self.latest_map = data
 
     def map_callback_update(self, data):
-        print("Number of objects detected: ", len(data.person))
+        # print("Number of objects detected: ", len(data.person))
         # Params to tune 
-        t = 3.0
+        t = 2.0
         distribution_scale_factor = 1
         gaus_sep = 2        
 
@@ -191,7 +194,9 @@ class MapProcessor:
         adjusted_cells = []
         for person in data.person:
             if person.static.data:
-                pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.pose.pose.orientation, distribution_scale_factor, gaus_sep)
+                (_, _, theta) = tf.transformations.euler_from_quaternion([person.odom.pose.pose.orientation.x, person.odom.pose.pose.orientation.y, person.odom.pose.pose.orientation.z, person.odom.pose.pose.orientation.w])
+                
+                pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, theta, distribution_scale_factor, gaus_sep)
                 for (i, pos) in enumerate(pos):
                     if vals[i] != 0:
                         adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])

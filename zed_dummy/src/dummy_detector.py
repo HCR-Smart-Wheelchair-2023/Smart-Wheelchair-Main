@@ -6,16 +6,20 @@ import math
 from std_msgs.msg import String
 from people_msg.msg import People, Person
 from zed_interfaces.msg import ObjectsStamped, Object
-
+from sensor_msgs.msg import Imu
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point
 
 
 
+
 rospy.init_node('zed_dummy')
 
+# sub = rospy.Subscriber('/imu', Imu, convert_and_publish)
+# TODO: ROS BAG
 pub = rospy.Publisher('/zed/zed_node/obj_det/objects', ObjectsStamped, queue_size=10)
-rate = rospy.Rate(0.1)
+
+rate = rospy.Rate(1)
 
 
 while not rospy.is_shutdown():
@@ -49,12 +53,12 @@ while not rospy.is_shutdown():
     #     people_msg.person.append(odom_msg)
 
     people_msg = ObjectsStamped()
-    for obj in range(1, 6):
+    for obj in range(1, 2):
         odom_msg = Object()
 
-        odom_msg.position = [random.uniform(-5, 5), random.uniform(-5, 5), 0.0]
-        odom_msg.velocity = [random.uniform(-2, 2), random.uniform(-2, 2), 0.0]
-
+        odom_msg.position = [0, 0, 0] #random.uniform(-5, 5), random.uniform(-5, 5), 0.0]
+        odom_msg.velocity = [random.uniform(-0.2, 0.2), random.uniform(-0.2, 0.2), 0.0]
+        
         people_msg.objects.append(odom_msg)
 
     pub.publish(people_msg)

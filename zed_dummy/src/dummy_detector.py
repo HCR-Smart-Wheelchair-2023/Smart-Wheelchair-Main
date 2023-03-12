@@ -57,7 +57,7 @@ while not rospy.is_shutdown():
         odom_msg = Object()
 
         odom_msg.position = [0, 0, 0] #random.uniform(-5, 5), random.uniform(-5, 5), 0.0]
-        odom_msg.velocity = [random.uniform(-0.2, 0.2), random.uniform(-0.2, 0.2), 0.0]
+        odom_msg.velocity = [random.uniform(-3, 3), random.uniform(-3, 3), 0.0]
         
         people_msg.objects.append(odom_msg)
 

@@ -80,23 +80,28 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
     grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
 
+    # Mean for first Gaus
+    x_z1 = (velocity.x * t)/2
+    y_z1 = (velocity.y * t)/2
+
     # Predict final position of user after t seconds 
     x_dest = (velocity.x * t)
     y_dest = (velocity.y * t)
 
     # Calulate orientation angle
-    theta = math.tan(velocity.y/velocity.x)
+    theta = math.atan2(velocity.y, velocity.x)
 
     # Central position of original gaussian 
     mu1_x = 0
     mu1_y = 0
 
     # Parameters TO TUNE 
-    sigma1_x = 1 * distribution_scale_factor
-    sigma1_y = 1 * distribution_scale_factor
+    speed = np.linalg.norm([velocity.y, velocity.x])
+    sigma1_x = 2 * speed
+    sigma1_y = 0.5 * speed
 
-    sigma2_x = 4 * distribution_scale_factor
-    sigma2_y = 2 * distribution_scale_factor
+    sigma2_x = 0.7 * speed
+    sigma2_y = 0.7 * speed
 
     # Create a meshgrid of points to evaluate the normal distributions
     x, y = np.mgrid[-30:30:1, -30:30:1]
@@ -105,7 +110,7 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
 
 
     # Distribution of Gaussians
-    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, theta)
+    Z1 = gaussian2d(x, y, x_z1, y_z1, sigma1_x, sigma1_y, -theta)
     Z2 = gaussian2d(x, y, x_dest, y_dest, sigma2_x, sigma2_y, -theta)
 
     # Superposition of Gaussians
@@ -181,7 +186,7 @@ class MapProcessor:
     def map_callback_update(self, data):
         # print("Number of objects detected: ", len(data.person))
         # Params to tune 
-        t = 2.0
+        t = 3.0
         distribution_scale_factor = 1
         gaus_sep = 2        
 
@@ -199,16 +204,16 @@ class MapProcessor:
                 pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, theta, distribution_scale_factor, gaus_sep)
                 for (i, pos) in enumerate(pos):
                     if vals[i] != 0:
-                        adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
+                        adj_map.data[pos] = min(100, vals[i]+ adj_map.data[pos])
 
             else:
                 pos, vals = social_predict_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, distribution_scale_factor, t)
                 for (i, pos) in enumerate(pos):
                     if vals[i] != 0:
-                        adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
+                        adj_map.data[pos] = min(100, vals[i]+ adj_map.data[pos])
 
 
-                # adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, t)
+                # adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, 5)
                 
                 # for i in adjusted_cells:
                 #     adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])

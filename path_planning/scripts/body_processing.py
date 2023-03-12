@@ -33,6 +33,7 @@ class BodyProcessingController:
         self.odom_pub = rospy.Publisher('/people_odom', Odometry, queue_size=10)
 
 
+
     def receive_objects(self, message : ObjectsStamped):
         objects = message.objects
         # print("Number of objects detected: ", len(message.objects))
@@ -60,15 +61,16 @@ class BodyProcessingController:
         velocity = np.array(person.velocity)
 
         # calculate orientation from velocity
-        static = np.linalg.norm(velocity) < 0.2
-        if static:
+        # static = np.linalg.norm(velocity) < 0.2
+        # if static:
 
-            # To Test: actual orientation 
-            # theta = self.calculate_orientation(skeleton)
-            theta = random.uniform(0, 2*math.pi)
-        else:
-            theta = np.arctan(velocity[0]/velocity[1])
+        #     # To Test: actual orientation 
+        #     # theta = self.calculate_orientation(skeleton)
+        #     theta = random.uniform(0, 2*math.pi)
+        # else:
+        theta = math.atan2(velocity[1], velocity[0]) #np.arctan(velocity[0]/velocity[1])
 
+        static = False
 
         odom = Odometry()
         odom.header.stamp = rospy.Time.now()

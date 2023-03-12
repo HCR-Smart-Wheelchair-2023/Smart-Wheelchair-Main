@@ -178,7 +178,7 @@ class MapProcessor:
         self.map_sub = rospy.Subscriber('/map', OccupancyGrid, self.map_callback_map, queue_size=1)
         self.update_sub = rospy.Subscriber('/people', People, self.map_callback_update, queue_size=1)
         self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=10)
-        self.latest_map = None
+        self.latest_map = OccupancyGrid()
 
     def map_callback_map(self, data):
         self.latest_map = data

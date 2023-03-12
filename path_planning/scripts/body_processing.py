@@ -30,7 +30,7 @@ class BodyProcessingController:
         topic = '/zed/zed_node/obj_det/objects'
         self.sub = rospy.Subscriber(topic, ObjectsStamped, self.receive_objects)
         self.pub = rospy.Publisher('/people', People, queue_size=10)
-        self.odom_pub = rospy.Publisher('/people_odom', Odometry, queue_size=10)
+        # self.odom_pub = rospy.Publisher('/people_odom', Odometry, queue_size=10)
 
 
 
@@ -61,16 +61,13 @@ class BodyProcessingController:
         velocity = np.array(person.velocity)
 
         # calculate orientation from velocity
-        # static = np.linalg.norm(velocity) < 0.2
-        # if static:
+        static = np.linalg.norm(velocity) < 0.2
+        if static:
+            # To Test: actual orientation 
+            theta = self.calculate_orientation(skeleton)
+        else:
+            theta = math.atan2(velocity[1], velocity[0]) 
 
-        #     # To Test: actual orientation 
-        #     # theta = self.calculate_orientation(skeleton)
-        #     theta = random.uniform(0, 2*math.pi)
-        # else:
-        theta = math.atan2(velocity[1], velocity[0]) #np.arctan(velocity[0]/velocity[1])
-
-        static = False
 
         odom = Odometry()
         odom.header.stamp = rospy.Time.now()
@@ -98,7 +95,7 @@ class BodyProcessingController:
         odom.pose.pose = pose_transformed.pose
         odom.twist.twist.linear = vt.vector
         
-        self.odom_pub.publish(odom)
+        # self.odom_pub.publish(odom)
 
         new_person = Person()
         new_person.header.frame_id = "map"
@@ -113,6 +110,3 @@ if __name__ == '__main__':
     rospy.init_node('body_processing')
     mp = BodyProcessingController()
     rospy.spin()
-    # object_pos1 = Point(1.0, 2.0, 0.0)
-
-    # draw_Gaussian(object_pos1)

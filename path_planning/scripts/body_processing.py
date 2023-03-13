@@ -93,7 +93,7 @@ class BodyProcessingController:
         # v.vector.z = person.velocity[2]
 
         # # vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
-
+        
         p = PoseStamped()
         p.pose.position.x = person.position[0]
         p.pose.position.y = person.position[1]
@@ -102,7 +102,7 @@ class BodyProcessingController:
 
 
         # # pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
-
+        odom.frame_id = '/map'
         odom.pose.pose = p.pose #pose_transformed.pose
         # odom.twist.twist.linear = v.vector #vt.vector
         

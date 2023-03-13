@@ -72,7 +72,7 @@ class BodyProcessingController:
         # velocity = np.array(person.velocity)
 
         # # calculate orientation from velocity
-        # static = False # np.linalg.norm(velocity) < 0.2
+        static = False # np.linalg.norm(velocity) < 0.2
         # if static:
         #     # To Test: actual orientation 
         #     theta = self.calculate_orientation(skeleton)
@@ -109,12 +109,12 @@ class BodyProcessingController:
         
         self.odom_pub.publish(odom)
 
-        # new_person = Person()
-        # new_person.header.frame_id = "map"
-        # new_person.label.data = person.label
-        # new_person.static.data = static
-        # new_person.odom = odom
-        # return new_person
+        new_person = Person()
+        new_person.header.frame_id = "map"
+        new_person.label.data = person.label
+        new_person.static.data = static
+        new_person.odom = odom
+        return new_person
 
 
 

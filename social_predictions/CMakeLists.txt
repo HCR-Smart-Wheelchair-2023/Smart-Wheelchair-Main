@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   people_msg
   zed_interfaces
+  tf
 )
 
 ## System dependencies are found with CMake's conventions

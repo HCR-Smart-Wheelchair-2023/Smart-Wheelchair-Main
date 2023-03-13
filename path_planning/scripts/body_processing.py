@@ -102,7 +102,7 @@ class BodyProcessingController:
 
 
         # # pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
-        odom.frame_id = '/map'
+        odom.header.frame_id = '/map'
         odom.pose.pose = p.pose #pose_transformed.pose
         # odom.twist.twist.linear = v.vector #vt.vector
         

@@ -77,7 +77,7 @@ class BodyProcessingController:
         #     # To Test: actual orientation 
         #     theta = self.calculate_orientation(skeleton)
         # else:
-        #     theta = math.atan2(velocity[1], velocity[0]) 
+        theta = math.atan2(velocity[1], velocity[0]) 
 
 
         odom = Odometry()
@@ -98,7 +98,7 @@ class BodyProcessingController:
         p.pose.position.x = person.position[0]
         p.pose.position.y = person.position[1]
         p.pose.position.z = person.position[2]
-        # (p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w) = tf.transformations.quaternion_from_euler(0, 0, theta, 'ryxz')
+        (p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w) = tf.transformations.quaternion_from_euler(0, 0, theta, 'ryxz')
 
 
         # # pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)

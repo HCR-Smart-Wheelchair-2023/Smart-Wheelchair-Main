@@ -25,8 +25,8 @@ class BodyProcessingController:
 
 
     def __init__(self) -> None:
-        self.tf_buffer = tf2_ros.Buffer()
-        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
+        # self.tf_buffer = tf2_ros.Buffer()
+        # self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         topic = '/zed/zed_node/obj_det/objects'
         self.sub = rospy.Subscriber(topic, ObjectsStamped, self.receive_objects)
         self.pub = rospy.Publisher('/people', People, queue_size=10)
@@ -36,7 +36,7 @@ class BodyProcessingController:
 
     def receive_objects(self, message : ObjectsStamped):
         objects = message.objects
-        # print("Number of objects detected: ", len(message.objects))
+        print("Number of objects detected: ", len(message.objects))
         people = [self.process_person(person) for person in message.objects]
         people_msg = People()
         people_msg.header.frame_id = 'map'

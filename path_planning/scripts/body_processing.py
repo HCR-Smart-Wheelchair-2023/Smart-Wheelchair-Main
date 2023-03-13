@@ -38,7 +38,7 @@ class BodyProcessingController:
         if message.objects != []:
             print(len(message.objects), ": ",message.header.seq )
         
-        self.process_person(message.objects[0])
+            self.process_person(message.objects[0])
         # objects = message.objects
         # print("Number of objects detected: ", len(message.objects))
         # people = [self.process_person(person) for person in message.objects]
@@ -64,7 +64,7 @@ class BodyProcessingController:
         return orientation
 
     def process_person(self, person):
-        print("person")
+        
 
 
         # skeleton = person.skeleton_3d
@@ -80,7 +80,7 @@ class BodyProcessingController:
         #     theta = math.atan2(velocity[1], velocity[0]) 
 
 
-        # odom = Odometry()
+        odom = Odometry()
         # odom.header.stamp = rospy.Time.now()
         # odom.header.frame_id = "map"
         # odom.child_frame_id = "map"
@@ -94,19 +94,19 @@ class BodyProcessingController:
 
         # # vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
 
-        # p = PoseStamped()
-        # p.pose.position.x = position[0]
-        # p.pose.position.y = position[1]
-        # p.pose.position.z = position[2]
+        p = PoseStamped()
+        p.pose.position.x = position[0]
+        p.pose.position.y = position[1]
+        p.pose.position.z = position[2]
         # (p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w) = tf.transformations.quaternion_from_euler(0, 0, theta, 'ryxz')
 
 
         # # pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
 
-        # odom.pose.pose = p.pose #pose_transformed.pose
+        odom.pose.pose = p.pose #pose_transformed.pose
         # odom.twist.twist.linear = v.vector #vt.vector
         
-        # self.odom_pub.publish(odom)
+        self.odom_pub.publish(odom)
 
         # new_person = Person()
         # new_person.header.frame_id = "map"

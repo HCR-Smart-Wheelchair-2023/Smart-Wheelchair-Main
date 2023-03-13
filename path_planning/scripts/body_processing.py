@@ -65,7 +65,7 @@ class BodyProcessingController:
         velocity = np.array(person.velocity)
 
         # calculate orientation from velocity
-        static = np.linalg.norm(velocity) < 0.2
+        static = False # np.linalg.norm(velocity) < 0.2
         if static:
             # To Test: actual orientation 
             theta = self.calculate_orientation(skeleton)

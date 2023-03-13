@@ -2,6 +2,23 @@
 
 This repository contains the basic setup needed to be able to drive the wheelchair. Currently only a "cmd_vel" topic is setup from which a subscriber sends commands to the raspberry pi to move the robot.
 
+# Running on wheel chair (13/03/2023)
+1. Power wheelchair on
+2. Start roscore 
+```bash
+cd ~/wheelchair
+make run-external-core
+```
+3. Start up zed (Note: this will take approx 10mins due to object detection)
+```bash
+cd ~/wheelchair_zed/Smart-Wheelchair-Main
+make run-jetson
+```
+4. Launch robot main
+```bash
+cd ~/wheelchair
+make run-external-main
+```
 # RNET Wheelchair base setup
 
 - Clone the repository

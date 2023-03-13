@@ -55,7 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <!-- REAR CAMERA -->
     <arg name="camera_name_2"           default="zed2_rear" /> <!-- The name you want -->
-    <arg name="camera_model_2"          default="zed2" /> <!-- 'zed' or 'zedm' or 'zed2' -->    
+    <arg name="camera_model_2"          default="zedm" /> <!-- 'zed' or 'zedm' or 'zed2' -->    
     <arg name="zed_nodelet_name_2"      default="zed_nodelet_rear" />
 
     <!-- Base frame -->
@@ -65,7 +65,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <arg name="publish_urdf_2"          default="true" />
 
     <!-- Publish odom TF -->
-    <arg name="publish_tf_2"            default="false" /> <!-- Only one node must pushish TF, unless you use a Kalman filter to fuse odometries -->
+    <arg name="publish_tf_2"            default="true" /> <!-- Only one node must pushish TF, unless you use a Kalman filter to fuse odometries -->
 
     <arg name="camera_sn_2"             default="23154724" /> <!-- Very important to be able to identify the camera uniquely-->  
     <arg name="gpu_id_2"                default="-1" />

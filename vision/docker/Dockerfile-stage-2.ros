@@ -42,8 +42,14 @@ RUN rosdep install --from-paths src --ignore-src -r -y \
     && catkin_make -DCMAKE_BUILD_TYPE=Release
 RUN  . ./devel/setup.sh
 
+# Copy over the Zed_Multi_Cam Folder
+COPY ./Zed_Multi_Cam /opt/ros_ws/src/zed-multicam
+WORKDIR /opt/ros_ws/src/zed-multicam
+RUN . /opt/ros/noetic/setup.sh && \
+    catkin_make
+
 # Install QR detection
-WORKDIR /
+WORKDIR / 
 # @Leo:
 # RUN sudo apt-get install --fix-missing -y ros-noetic-aruco-ros
 

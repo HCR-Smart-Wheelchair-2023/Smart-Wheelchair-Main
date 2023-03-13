@@ -95,9 +95,9 @@ class BodyProcessingController:
         # # vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
 
         p = PoseStamped()
-        p.pose.position.x = position[0]
-        p.pose.position.y = position[1]
-        p.pose.position.z = position[2]
+        p.pose.position.x = person.position[0]
+        p.pose.position.y = person.position[1]
+        p.pose.position.z = person.position[2]
         # (p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w) = tf.transformations.quaternion_from_euler(0, 0, theta, 'ryxz')
 
 

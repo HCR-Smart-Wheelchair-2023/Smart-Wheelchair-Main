@@ -188,7 +188,7 @@ class MapProcessor:
     def map_callback_update(self, data):
         # print("Number of objects detected: ", len(data.person))
         # Params to tune 
-        t = 4.0
+        t = 6.0
         distribution_scale_factor = 1
         gaus_sep = 2        
 

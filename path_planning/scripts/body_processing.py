@@ -36,7 +36,7 @@ class BodyProcessingController:
 
     def receive_objects(self, message : ObjectsStamped):
         if message.objects != []:
-            print(len(message.objects))
+            print(len(message.objects), ": ",message.header.seq )
         
         # objects = message.objects
         # print("Number of objects detected: ", len(message.objects))

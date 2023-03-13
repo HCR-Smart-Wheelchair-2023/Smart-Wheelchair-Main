@@ -38,16 +38,16 @@ class BodyProcessingController:
         if message.objects != []:
             print(len(message.objects), ": ",message.header.seq )
         
-            self.process_person(message.objects[0])
+        person = self.process_person(message.objects[0])
         # objects = message.objects
         # print("Number of objects detected: ", len(message.objects))
         # people = [self.process_person(person) for person in message.objects]
-        # people_msg = People()
-        # people_msg.header.frame_id = 'map'
-        # people_msg.header.stamp = rospy.Time.now()
-        # people_msg.person = people
-        # print("Number of People: ", len(people_msg.person))
-        # self.pub.publish(people_msg)
+        people_msg = People()
+        people_msg.header.frame_id = 'map'
+        people_msg.header.stamp = rospy.Time.now()
+        people_msg.person = [person]
+        print("Number of People: ", len(people_msg.person))
+        self.pub.publish(people_msg)
 
         # rate = rospy.Rate(2.5) # 2.5 Hz (same as global map update)
         # rate.sleep()

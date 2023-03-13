@@ -30,7 +30,7 @@ class BodyProcessingController:
         topic = '/zed/zed_node/obj_det/objects'
         self.sub = rospy.Subscriber(topic, ObjectsStamped, self.receive_objects)
         self.pub = rospy.Publisher('/people', People, queue_size=10)
-        # self.odom_pub = rospy.Publisher('/people_odom', Odometry, queue_size=10)
+        self.odom_pub = rospy.Publisher('/people_odom', Odometry, queue_size=10)
 
 
 
@@ -42,7 +42,7 @@ class BodyProcessingController:
         people_msg.header.frame_id = 'map'
         people_msg.header.stamp = rospy.Time.now()
         people_msg.person = people
-        # print("Number of People: ", len(people_msg.person))
+        print("Number of People: ", len(people_msg.person))
         self.pub.publish(people_msg)
 
         rate = rospy.Rate(2.5) # 2.5 Hz (same as global map update)
@@ -99,7 +99,7 @@ class BodyProcessingController:
         odom.pose.pose = pose_transformed.pose
         odom.twist.twist.linear = vt.vector
         
-        # self.odom_pub.publish(odom)
+        self.odom_pub.publish(odom)
 
         new_person = Person()
         new_person.header.frame_id = "map"

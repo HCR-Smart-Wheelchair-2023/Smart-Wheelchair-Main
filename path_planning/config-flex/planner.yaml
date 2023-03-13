@@ -1,0 +1,7 @@
+base_global_planner: NavfnROS
+base_local_planner: DWAPlannerROS
+# base_local_planner: dwa_local_planner/DWAPlannerROS
+# local_planner:
+#   type: "dwa"
+#   dwa:
+#     ...

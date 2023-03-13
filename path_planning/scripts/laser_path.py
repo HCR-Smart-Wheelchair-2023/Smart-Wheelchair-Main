@@ -5,11 +5,15 @@ This Node takes person detection data from the zed, converts it to the world fra
 
 import rospy
 import tf
+import math
 import tf2_ros
 import tf2_geometry_msgs
 import sys
 from nav_msgs.msg import Path
 import random
+import tf
+import tf2_ros
+import tf2_geometry_msgs
 import numpy
 import numpy as np
 import json
@@ -25,7 +29,7 @@ off = numpy.zeros(400, dtype=object)
 binary_list = numpy.zeros(400, dtype=object)
 tuple_list = numpy.zeros((400,4), dtype=object)
 
-arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, timeout=0.01)
+arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=0.01)
 
 DIST = 400
 
@@ -63,29 +67,46 @@ def write(x):
 
 class LaserPathController:
 
-    MAX_DISTANCE = 1
+    MAX_DISTANCE = 1000000000000000
 
     def __init__(self) -> None:
         topic = '/move_base/TrajectoryPlannerROS/local_plan'
         self.sub = rospy.Subscriber(topic, Path, self.receive_path)
+        self.tf_buffer = tf2_ros.Buffer()
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
 
     def receive_path(self, path):
-
-        points = [(pose.pose.position.x, pose.pose.position.y) for pose in path.poses]
+        # rospy.loginfo(f'{path.poses}')
+        transform =  self.tf_buffer.lookup_transform('odom', 'base_link', rospy.Time.now(), rospy.Duration(0.1))
+        points = [(
+            tf2_geometry_msgs.do_transform_pose(pose,transform)
+            # pose
+        ) for pose in path.poses]
+        rospy.loginfo('#######1')
+        rospy.loginfo(str(points))
+        rospy.loginfo('#######')
+        points = [(pose.pose.position.x * 400, pose.pose.position.y * 400) for pose in points]
         points = [ point for point in points if (
-            ((np.pow(point[0],2)+np.pow(point[1],2) )< np.pow(self.MAX_DISTANCE,2))
+            ((math.pow(point[0],2)+math.pow(point[1],2) )< math.pow(self.MAX_DISTANCE,2))
         )]
+        rospy.loginfo('#######2')
+        rospy.loginfo(str(points))
+        rospy.loginfo('#######')
+        # rospy.loginfo(str(points))
         matrix = numpy.asarray(points)
+        rospy.loginfo('#######')
+        rospy.loginfo(str(matrix))
+        rospy.loginfo('#######')
         coeff = numpy.polyfit(matrix[:,0],matrix[:,1],2)
         inc = 1
         xn = numpy.arange(matrix[0,0], (matrix[len(matrix)-1,0]) + inc, inc)
         yn = numpy.poly1d(coeff)
-        mp.plot( xn,yn(xn),matrix[:,0],matrix[:,1],'o')
-        mp.show()
+        # mp.plot( xn,yn(xn),matrix[:,0],matrix[:,1],'o')
+        # mp.show()
         yn_list = numpy.round(yn(xn))
 
-        print(yn_list)
-        print("equation= ",yn)
+        # print(yn_list)
+        # print("equation= ",yn)
         for i in range(len(xn)):
             if i <= 400:
                 binary_list[i] = (xn[i], int(yn_list[i]))
@@ -117,8 +138,8 @@ class LaserPathController:
                 final_tuple.append((0,0,0,0))
 
         if len(final_tuple) > 400:
-            print(len(final_tuple))
-            print(range(1,len(final_tuple)-3))
+            # print(len(final_tuple))
+            # print(range(1,len(final_tuple)-3))
             while len(final_tuple) > 400:
                 lim = len(final_tuple)-400
                 rand_ = numpy.random.randint(len(final_tuple), size=lim)
@@ -129,8 +150,8 @@ class LaserPathController:
                         final_tuple.pop(n)
 
 
-        print(final_tuple)
-        print(len(final_tuple))
+        # print(final_tuple)
+        # print(len(final_tuple))
         # print(tuple_list)
         # print(final_tuple)
         # print(len(final_tuple))

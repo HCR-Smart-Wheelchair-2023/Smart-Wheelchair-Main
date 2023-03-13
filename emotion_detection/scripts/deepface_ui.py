@@ -44,13 +44,16 @@ class FER():
     def start(self, _img_path):
         rr = rospy.Rate(3)
         while not rospy.is_shutdown():
-            objs = DeepFace.analyze(img_path = _img_path , actions = ['emotion'])
-            self.emotion = objs[0]['dominant_emotion']
-            self.pub.publish(self.emotion)
-            rr.sleep()
+            try:
+                objs = DeepFace.analyze(img_path = _img_path , actions = ['emotion'])
+                self.emotion = objs[0]['dominant_emotion']
+                self.pub.publish(self.emotion)
+                rr.sleep()
+            except:
+                ...
 
 
 
-img_path = '../../user_interface/face.png'
+img_path = '/root/ros_ws/src/emotion_detection/scripts/image/face.jpg'
 fer = FER()
-fer.start()
+fer.start(img_path)

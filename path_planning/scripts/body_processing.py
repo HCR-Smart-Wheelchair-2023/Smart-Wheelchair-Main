@@ -37,12 +37,16 @@ class BodyProcessingController:
     def receive_objects(self, message : ObjectsStamped):
         objects = message.objects
         # print("Number of objects detected: ", len(message.objects))
-        people = [self.process_person(person) for person in message.objects if person.label == '']
+        people = [self.process_person(person) for person in message.objects]
         people_msg = People()
         people_msg.header.frame_id = 'map'
         people_msg.header.stamp = rospy.Time.now()
         people_msg.person = people
+        # print("Number of People: ", len(people_msg.person))
         self.pub.publish(people_msg)
+
+        rate = rospy.Rate(2.5) # 2.5 Hz (same as global map update)
+        rate.sleep()
 
 
     def calculate_orientation(self, skeleton) -> float:
@@ -75,14 +79,14 @@ class BodyProcessingController:
         odom.child_frame_id = "map"
 
         transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(0.2))
-        
+
         v = Vector3Stamped()
         v.vector.x = person.velocity[0]
         v.vector.y = person.velocity[1]
-        v.vector.z = person.velocity[2] 
+        v.vector.z = person.velocity[2]
 
         vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
-        
+
         p = PoseStamped()
         p.pose.position.x = position[0]
         p.pose.position.y = position[1]

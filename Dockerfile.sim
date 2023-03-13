@@ -19,12 +19,12 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -y  && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
-        software-properties-common \
-        ros-noetic-joy \
-        ros-noetic-teleop-twist-joy \
-        ros-noetic-rqt \
-        ros-noetic-rqt-common-plugins \
-        ros-noetic-octomap && \
+    software-properties-common \
+    ros-noetic-joy \
+    ros-noetic-teleop-twist-joy \
+    ros-noetic-rqt \
+    ros-noetic-rqt-common-plugins \
+    ros-noetic-octomap && \
     DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:borglab/gtsam-release-4.0 && \
     DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y libgtsam-dev libgtsam-unstable-dev \
@@ -44,7 +44,9 @@ RUN git clone https://github.com/stereolabs/zed-ros-interfaces.git
 RUN cd .. && rosdep install --from-paths src --ignore-src -r -y
 
 RUN apt-get install -y python3-pip
-RUN pip install deepface
+RUN pip install pyserial scipy
+RUN DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-move-base-flex
+# RUN pip install deepface
 
 WORKDIR /root/ros_ws/src
 COPY robot_main robot_main/
@@ -59,6 +61,8 @@ COPY social_predictions/ social_predictions/
 COPY people_msg/ people_msg/
 COPY zed_dummy/ zed_dummy/
 COPY emotion_detection/ emotion_detection/
+COPY aruco_detection/ aruco_detection/
+COPY wheele_sim_control/ wheele_sim_control/
 
 RUN source /opt/ros/noetic/setup.bash && cd .. && catkin config --cmake-args -DRTABMAP_SYNC_MULTI_RGBD=ON
 

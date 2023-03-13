@@ -47,6 +47,7 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, orientation)
     Z2 = gaussian2d(x, y, mu2_x, mu2_y, sigma2_x, sigma2_y, -orientation)
 
+
     # Superposition of Gaussians
     Z = Z1+Z2
 
@@ -102,6 +103,7 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
 
     sigma2_x = 0.7 * speed
     sigma2_y = 0.7 * speed
+
 
     # Create a meshgrid of points to evaluate the normal distributions
     x, y = np.mgrid[-30:30:1, -30:30:1]
@@ -175,7 +177,7 @@ def social_predict(costmap, object_pos, velocity, t = 5.0):
 
 class MapProcessor:
     def __init__(self):
-        self.map_sub = rospy.Subscriber('/map', OccupancyGrid, self.map_callback_map, queue_size=1)
+        self.map_sub = rospy.Subscriber('/staticmap', OccupancyGrid, self.map_callback_map, queue_size=1)
         self.update_sub = rospy.Subscriber('/people', People, self.map_callback_update, queue_size=1)
         self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=10)
         self.latest_map = OccupancyGrid()
@@ -186,7 +188,7 @@ class MapProcessor:
     def map_callback_update(self, data):
         # print("Number of objects detected: ", len(data.person))
         # Params to tune 
-        t = 3.0
+        t = 4.0
         distribution_scale_factor = 1
         gaus_sep = 2        
 
@@ -198,6 +200,9 @@ class MapProcessor:
         #predict for each detected object
         adjusted_cells = []
         for person in data.person:
+            
+            
+            
             if person.static.data:
                 (_, _, theta) = tf.transformations.euler_from_quaternion([person.odom.pose.pose.orientation.x, person.odom.pose.pose.orientation.y, person.odom.pose.pose.orientation.z, person.odom.pose.pose.orientation.w])
                 
@@ -217,6 +222,7 @@ class MapProcessor:
                 
                 # for i in adjusted_cells:
                 #     adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
+
                    
 
 

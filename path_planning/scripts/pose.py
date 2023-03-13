@@ -14,16 +14,29 @@ Set_Pose = set_pose()
 
 class ArUcoCameraController:
     def __init__(self):
-        self.aruco_pose_sub = rospy.Subscriber(
-            "/aruco_single/pose", PoseStamped, self.aruco_pose_callback
+        # self.aruco_pose_sub = rospy.Subscriber(
+        #     "/aruco_single/pose", PoseStamped, self.aruco_pose_callback
+        # )
+
+        self.aruco_transform_sub = rospy.Subscriber(
+            "/my_transform_stamped", TransformStamped, self.aruco_transform_callback
         )
+
         self.set_pose_service = rospy.ServiceProxy("/zed/zed_node/set_pose", set_pose)
 
         self.pub = rospy.Publisher("/position_known", String, queue_size=10)
 
-        # set the postion of the marker in the world frame as origin
-        self.marker_position = np.array([0, 0, 0])
-        self.marker_orientation = np.array([0, 0, 0, 1])
+        # create a TransformStamped message for the marker
+        self.marker_transform = TransformStamped()
+        self.marker_transform.header.frame_id = "/camera_link"
+        self.marker_transform.child_frame_id = "/aruco_marker"
+        self.marker_transform.transform.translation.x = 5
+        self.marker_transform.transform.translation.y = 5
+        self.marker_transform.transform.translation.z = 0.0
+        self.marker_transform.transform.rotation.x = 0.0
+        self.marker_transform.transform.rotation.y = 0.0
+        self.marker_transform.transform.rotation.z = 0.0
+        self.marker_transform.transform.rotation.w = 1.0
 
     def aruco_pose_callback(self, pose_stamped):
         # Extract the position and orientation of the ArUco marker
@@ -91,6 +104,80 @@ class ArUcoCameraController:
             return resp
         except rospy.ServiceException as e:
             print("service not working yet")
+
+    def aruco_transform_callback(self, transform_stamped):
+        # Extract the position and orientation of the ArUco marker
+
+        aruco_position = transform_stamped.transform.translation
+        print(f"aruco position: {aruco_position}")
+        aruco_orientation = transform_stamped.transform.rotation
+        print(f"aruco orientation: {aruco_orientation}")
+
+        transform_camera_aruco = tf.transformations.concatenate_matrices(
+            tf.transformations.translation_matrix(
+                [aruco_position.x, aruco_position.y, aruco_position.z]
+            ),
+            tf.transformations.quaternion_matrix(
+                [
+                    aruco_orientation.x,
+                    aruco_orientation.y,
+                    aruco_orientation.z,
+                    aruco_orientation.w,
+                ]
+            ),
+        )
+        print(f"transform_camera_aruco: {transform_camera_aruco}")
+        transform_aruco_camera = tf.transformations.inverse_matrix(
+            transform_camera_aruco
+        )
+
+        transfrom_world_aruco = tf.transformations.concatenate_matrices(
+            tf.transformations.translation_matrix(
+                [
+                    self.marker_transform.transform.translation.x,
+                    self.marker_transform.transform.translation.y,
+                    self.marker_transform.transform.translation.z,
+                ]
+            ),
+            tf.transformations.quaternion_matrix(
+                [
+                    self.marker_transform.transform.rotation.x,
+                    self.marker_transform.transform.rotation.y,
+                    self.marker_transform.transform.rotation.z,
+                    self.marker_transform.transform.rotation.w,
+                ]
+            ),
+        )
+        print(f"transfrom_world_aruco: {transfrom_world_aruco}")
+
+        transform_world_camera = tf.transformations.concatenate_matrices(
+            transfrom_world_aruco, transform_aruco_camera
+        )
+
+        camera_position = tf.transformations.translation_from_matrix(
+            transform_world_camera
+        )
+        print(f"camera position: {camera_position}")
+        camera_orientation = tf.transformations.euler_from_matrix(
+            transform_world_camera
+        )
+        print(f"camera orientation: {camera_orientation}")
+
+        print(
+            f"camera position: {camera_position[0], camera_position[1], camera_position[2]}"
+        )
+        print(
+            f"camera orientation: {camera_orientation[0], camera_orientation[1], camera_orientation[2]}"
+        )
+
+        self.set_zedPose(
+            camera_position[0],
+            camera_position[1],
+            camera_position[2],
+            camera_orientation[0],
+            camera_orientation[1],
+            camera_orientation[2],
+        )
 
 
 if __name__ == "__main__":

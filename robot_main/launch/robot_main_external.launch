@@ -17,25 +17,29 @@
     <!-- Publish messages on the odom topic to the odom frame -->
     <include file="$(find path_planning)/launch/odom.launch">
     </include>
-    <include file="$(find path_planning)/launch/pose.launch">
-    </include>
+    <!-- <include file="$(find path_planning)/launch/pose.launch">
+    </include> -->
 
     <group if="$(eval arg('mode') == 'sim')">
         <!-- Odom is always correct to no need for correction between odom and maps -->
         <node pkg="tf" type="static_transform_publisher" name="odom" args="0 0 0 0 0 0 map odom 100" />
         <!-- Offset of camera fromt the robot base_link -->
         <node pkg="tf" type="static_transform_publisher" name="camera_link"
-            args="0 0 0 1.57 3.14 1.57 base_link camera_link 100" />
+            args="0.38 0 0.48 1.57 3.14 1.57 base_link camera_link 100" />
     </group>
     <group if="$(eval arg('mode') == 'robot')">
-        <node pkg="path_planning" type="map_stitching.py" name="map_stitching" output="screen" />
+        <!-- <node pkg="path_planning" type="map_stitching.py" name="map_stitching" output="screen" /> -->
         <!-- No need to publish Odom -->
         <!-- Set the coordinate of the camera from the base_link -->
         <node pkg="tf" type="static_transform_publisher" name="camera_link"
             args="0.5 0 0.6 0 0 0 base_link camera_link 100" />
-        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster" args=".0.5 0 0.6 0 0 0 1 zed_base_link zed_camera_center" />
-        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster2" args="0 0 0 0 0 0 1 base_link zed_base_link" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster" args=".0.5 0 0.6 0 0 1 zed2i_base_link zed_camera_center 100"/>
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster2" args="0 0 0 0 0 1 base_link zed2i_base_link 100" />
+
+        <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster" args=".0.5 0 0.6 0 0 0 1 base_link zed2i_camera_center 100" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster" args=".0.5 0 0.6 0 0 0 1 base_link zed_camera_center 100" /> -->
     </group>
+    <include file="$(find path_planning)/launch/goal.launch"></include>
 
     <!-- Should be configured differently for the jetson that for the  -->
     <include file="$(find path_planning)/launch/point_cloud_transform.launch" />
@@ -92,14 +96,18 @@
 
     <!-- Start Rviz -->
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robot_main)/rviz/config.rviz" />
-    <node pkg="rqt_tf_tree" type="rqt_tf_tree" name="rqt_tf_tree" />
+    <!-- <node pkg="rqt_tf_tree" type="rqt_tf_tree" name="rqt_tf_tree" /> -->
+
+    <!-- Start Social navigation aspects -->
+    <node pkg="social_predictions" type="social_predictions.py" name="social_predictions" output="screen" />
+    <node pkg="path_planning" type="body_processing.py" name="body_processing" output="screen" />
 
     <!-- /zed/zed_node/point_cloud/cloud_registered, -->
     <group if="$(eval arg('mode') == 'robot')">
         <!-- Listen to the /cmd_vel topic and send the commands to the PI -->
-        <include file="$(find navigation)/launch/pi_interface.launch">
+        <!-- <include file="$(find navigation)/launch/pi_interface.launch">
 
-        </include>
+        </include> -->
 
         <!-- <include file="$(find user_interface)/launch/user_interface.launch">
 

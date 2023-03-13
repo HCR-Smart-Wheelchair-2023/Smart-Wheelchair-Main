@@ -65,6 +65,7 @@ run-external-core:
 		-v $(current_dir)/social_predictions/:/root/ros_ws/src/social_predictions \
 		-v $(current_dir)/people_msg/:/root/ros_ws/src/people_msg \
 		-v $(current_dir)/zed_dummy/:/root/ros_ws/src/zed_dummy \
+		-v $(current_dir)/aruco_detection/:/root/ros_ws/src/aruco_detection \
 	    --privileged \
 		--network host \
 		--name external \
@@ -107,6 +108,7 @@ run-sim-core:
 	xhost +si:localuser:root
 	docker stop sim || true && docker rm sim || true
 	docker run \
+		--device=/dev/ttyACM0 \
 		-e "DISPLAY" \
 		-e "QT_X11_NO_MITSHM=1" \
 		-e "XAUTHORITY=${XAUTH}" \
@@ -126,6 +128,8 @@ run-sim-core:
 		-v $(current_dir)/social_predictions/:/root/ros_ws/src/social_predictions \
 		-v $(current_dir)/people_msg/:/root/ros_ws/src/people_msg \
 		-v $(current_dir)/emotion_detection/:/root/ros_ws/src/emotion_detection \
+		-v $(current_dir)/aruco_detection/:/root/ros_ws/src/aruco_detection \
+		-v $(current_dir)/wheele_sim_control/:/root/ros_ws/src/wheele_sim_control \
 	    --privileged \
 		--network host \
 		--name sim \

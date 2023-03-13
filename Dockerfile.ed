@@ -46,5 +46,5 @@ WORKDIR /root/ros_ws/src
 RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
 
 # CMD cd .. && source /opt/ros/noetic/setup.bash && source ./devel/setup.bash && roscore
-CMD cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build && source ./devel/setup.bash && roscore
+CMD cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build && source ./devel/setup.bash && bash
 # CMD source ../devel/setup.bash && roslaunch arnie_main main_external.launch --screen

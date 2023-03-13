@@ -13,10 +13,13 @@ class GoalPublish():
     def start(self):
         rr = rospy.Rate(3)
         while not rospy.is_shutdown():
-            with open("goal.txt", "w") as f:
+            # TODO: update the way we read file paths using os paths
+            with open("./goal.txt", "r") as f:
                 goal = f.read()
                 self.pub.publish(goal)
             rr.sleep()
+        # TODO: once shutdown, clear the file -- will probably need a try-except
+        
 
 goal = GoalPublish()
 goal.start()

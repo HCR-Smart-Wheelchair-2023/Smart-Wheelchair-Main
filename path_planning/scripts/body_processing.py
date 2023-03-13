@@ -78,7 +78,7 @@ class BodyProcessingController:
         odom.header.frame_id = "map"
         odom.child_frame_id = "map"
 
-        transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(1))
+        transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Time.now())
 
         v = Vector3Stamped()
         v.vector.x = person.velocity[0]

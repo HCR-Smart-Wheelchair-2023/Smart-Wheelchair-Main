@@ -98,11 +98,11 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
 
     # Parameters TO TUNE 
     speed = np.linalg.norm([velocity.y, velocity.x])
-    sigma1_x = 2 * speed
-    sigma1_y = 0.5 * speed
+    sigma1_x = 4 * speed
+    sigma1_y = 2 * speed
 
-    sigma2_x = 0.7 * speed
-    sigma2_y = 0.7 * speed
+    sigma2_x = 2 * speed
+    sigma2_y = 2 * speed
 
 
     # Create a meshgrid of points to evaluate the normal distributions

@@ -77,7 +77,7 @@ class BodyProcessingController:
         #     # To Test: actual orientation 
         #     theta = self.calculate_orientation(skeleton)
         # else:
-        theta = math.atan2(velocity[1], velocity[0]) 
+        theta = math.atan2(person.velocity[1], person.velocity[0]) 
 
 
         odom = Odometry()

@@ -75,7 +75,7 @@ class BodyProcessingController:
         odom.header.frame_id = "map"
         odom.child_frame_id = "map"
 
-        transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(1.0))
+        transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(0.2))
 
         v = Vector3Stamped()
         v.vector.x = person.velocity[0]
@@ -93,8 +93,8 @@ class BodyProcessingController:
 
         pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
 
-        odom.pose.pose = pose_transformed.pose
-        odom.twist.twist.linear = vt.vector
+        odom.pose.pose = v.pose #pose_transformed.pose
+        odom.twist.twist.linear = p.vector #vt.vector
 
 
         new_person = Person()

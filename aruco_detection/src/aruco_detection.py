@@ -7,6 +7,7 @@ from std_msgs.msg import String
 from zed_interfaces.srv import set_pose, set_poseRequest
 import tf
 import numpy as np
+import math
 
 
 Set_Pose = set_pose()
@@ -26,6 +27,10 @@ class ArUcoCameraController:
 
         self.pub = rospy.Publisher("/my_marker/pose", PoseStamped, queue_size=10)
 
+        # angle is in radians
+        angle = math.pi / 2 + math.pi
+        quaternion = tf.transformations.quaternion_from_euler(0, 0, angle)
+
         # create a TransformStamped message for the marker
         self.marker_transform = TransformStamped()
         self.marker_transform.header.frame_id = "/camera_link"
@@ -33,10 +38,10 @@ class ArUcoCameraController:
         self.marker_transform.transform.translation.x = 0.87
         self.marker_transform.transform.translation.y = 7.74
         self.marker_transform.transform.translation.z = 1.42
-        self.marker_transform.transform.rotation.x = 0.0
-        self.marker_transform.transform.rotation.y = 0.0
-        self.marker_transform.transform.rotation.z = 0.0
-        self.marker_transform.transform.rotation.w = 0.0
+        self.marker_transform.transform.rotation.x = quaternion[0]
+        self.marker_transform.transform.rotation.y = quaternion[1]
+        self.marker_transform.transform.rotation.z = quaternion[2]
+        self.marker_transform.transform.rotation.w = quaternion[3]
 
         # create a PoseStamped message for the marker
         self.marker_pose = PoseStamped()

@@ -41,7 +41,7 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     mu2_y = mu1_y + (gaus_sep * math.sin(orientation.x))
 
     # Distribution of Gaussians
-    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, -orientation.x)
+    Z1 = gaussian2d(x, y, mu1_x, mu1_y, sigma1_x, sigma1_y, orientation.x)
     Z2 = gaussian2d(x, y, mu2_x, mu2_y, sigma2_x, sigma2_y, -orientation.x)
 
     # Superposition of Gaussians
@@ -178,7 +178,7 @@ class MapProcessor:
     def map_callback_update(self, data):
         # print("Number of objects detected: ", len(data.person))
         # Params to tune 
-        t = 2.0
+        t = 4.0
         distribution_scale_factor = 1
         gaus_sep = 2        
 
@@ -190,6 +190,9 @@ class MapProcessor:
         #predict for each detected object
         adjusted_cells = []
         for person in data.person:
+            
+            
+            
             if person.static.data:
                 pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.pose.pose.orientation, distribution_scale_factor, gaus_sep)
                 for (i, pos) in enumerate(pos):
@@ -203,10 +206,10 @@ class MapProcessor:
                         adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
 
 
-                # adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, t)
-                
-                # for i in adjusted_cells:
-                #     adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
+            # adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, t)
+            
+            # for i in adjusted_cells:
+            #     adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
                    
 
 

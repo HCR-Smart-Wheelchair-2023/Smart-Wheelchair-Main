@@ -81,18 +81,18 @@ class BodyProcessingController:
 
 
         odom = Odometry()
-        # odom.header.stamp = rospy.Time.now()
+        odom.header.stamp = rospy.Time.now()
         # odom.header.frame_id = "map"
         # odom.child_frame_id = "map"
 
-        # # transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(1))
+        transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(1))
 
         v = Vector3Stamped()
         v.vector.x = person.velocity[0]
         v.vector.y = person.velocity[1]
         v.vector.z = person.velocity[2]
 
-        # # vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
+        vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
         
         p = PoseStamped()
         p.pose.position.x = person.position[0]
@@ -101,10 +101,11 @@ class BodyProcessingController:
         (p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w) = tf.transformations.quaternion_from_euler(0, 0, theta, 'ryxz')
 
 
-        # # pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
+        pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
+        
         odom.header.frame_id = "map"
-        odom.pose.pose = p.pose #pose_transformed.pose
-        odom.twist.twist.linear = v.vector #vt.vector
+        odom.pose.pose = pose_transformed.pose
+        odom.twist.twist.linear = vt.vector
         
         self.odom_pub.publish(odom)
 

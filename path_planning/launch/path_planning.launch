@@ -9,7 +9,7 @@
     </node>
 
     <node pkg="move_base" type="move_base" name="move_base" output="screen">
-        <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>
+        <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/> -->
         <!-- <param name="base_global_planner" value="carrot_planner/CarrotPlanner"/> -->
         <param name="controller_frequency" value="10.0" />
         <rosparam file="$(find path_planning)/config/costmap_common_params.yaml" command="load"

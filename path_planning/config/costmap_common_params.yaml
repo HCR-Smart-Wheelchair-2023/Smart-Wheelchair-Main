@@ -22,9 +22,9 @@ static_layer:
     map_topic: /staticmap
     subscribe_to_updates: true
 
-# mapping_layer:
-#     map_topic: /zedA/map
-#     subscribe_to_updates: true
+mapping_layer:
+    map_topic: /zedA/map
+    subscribe_to_updates: true
 
 # obstacle_layer:
 #     observation_sources: laser_scan_sensor

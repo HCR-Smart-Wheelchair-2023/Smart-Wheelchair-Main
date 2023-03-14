@@ -28,7 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <!-- CAMERA 1 -->
     <arg name="node_name_1"          default="zed_node_A" />
-    <arg name="camera_model_1"       default="zed2" />    
+    <arg name="camera_model_1"       default="zed2i" />    
     <arg name="camera_name_1"        default="zedA" />
     <arg name="cam_pos_x_1"          default="0.0" /> <!-- Position respect to base frame (i.e. "base_link) -->
     <arg name="cam_pos_y_1"          default="0.0" /> <!-- Position respect to base frame (i.e. "base_link) -->
@@ -39,7 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <!-- CAMERA 2 -->
     <arg name="node_name_2"          default="zed_node_B" />
-    <arg name="camera_model_2"       default="zed" />
+    <arg name="camera_model_2"       default="zedm" />
     <arg name="camera_name_2"        default="zedB" />
     <arg name="cam_pos_x_2"          default="0.0" /> <!-- Position respect to base frame (i.e. "base_link) -->
     <arg name="cam_pos_y_2"          default="-0.28" /> <!-- Position respect to base frame (i.e. "base_link) -->

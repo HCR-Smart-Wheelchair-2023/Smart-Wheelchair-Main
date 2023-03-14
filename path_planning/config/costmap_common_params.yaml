@@ -14,9 +14,9 @@ global_frame: map
 robot_base_frame: base_link
 always_send_full_costmap: true
 
-# static_layer:
-#     map_topic: /staticmap
-#     subscribe_to_updates: true
+static_layer:
+    map_topic: /staticmap
+    subscribe_to_updates: true
 
 mapping_layer:
     map_topic: /zedA/map

@@ -39,7 +39,7 @@
 
     <!-- RTABmap -->
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)" launch-prefix="">
-        <rosparam command="load" file="$(find zed_rtabmap_example)/params/rtabmap.yaml" />
+        <rosparam command="load" file="$(find zed_rtabmap_twocam)/params/rtabmap.yaml" />
     
         <remap from="rgb/image"         to="$(arg rgb_topic)"/>
         <remap from="depth/image"       to="$(arg depth_topic)"/>

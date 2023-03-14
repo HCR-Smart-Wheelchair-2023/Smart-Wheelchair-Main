@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.7)
 
-project(zed_multicamera_example)
+project(zed_multicamera_example_with_rtabmap)
 
 find_package(catkin REQUIRED)
 

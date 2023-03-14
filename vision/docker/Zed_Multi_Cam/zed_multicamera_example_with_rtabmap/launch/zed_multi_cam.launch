@@ -17,11 +17,18 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <launch>
+<!-- General -->
     <arg name="publish_urdf"         default="true" />
+
+    <!-- RTABMAP -->
+    <arg name="svo_file"             default="" /> <!-- <arg name="svo_file" default="path/to/svo/file.svo"> -->
+    <arg name="stream"               default="" /> <!-- <arg name="stream" default="<ip_address>:<port>"> -->
+    <!-- <arg name="base_frame"           default="base_link" /> -->
+
 
     <!-- CAMERA 1 -->
     <arg name="node_name_1"          default="zed_node_A" />
-    <arg name="camera_model_1"       default="zed2" />    
+    <arg name="camera_model_1"       default="zed2i" />    
     <arg name="camera_name_1"        default="zedA" />
     <arg name="cam_pos_x_1"          default="0.0" /> <!-- Position respect to base frame (i.e. "base_link) -->
     <arg name="cam_pos_y_1"          default="0.0" /> <!-- Position respect to base frame (i.e. "base_link) -->
@@ -32,7 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <!-- CAMERA 2 -->
     <arg name="node_name_2"          default="zed_node_B" />
-    <arg name="camera_model_2"       default="zed" />
+    <arg name="camera_model_2"       default="zedm" />
     <arg name="camera_name_2"        default="zedB" />
     <arg name="cam_pos_x_2"          default="0.0" /> <!-- Position respect to base frame (i.e. "base_link) -->
     <arg name="cam_pos_y_2"          default="-0.28" /> <!-- Position respect to base frame (i.e. "base_link) -->
@@ -42,18 +49,33 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <arg name="cam_yaw_2"            default="0.0" /> <!-- Orientation respect to base frame (i.e. "base_link) -->
 
     <group ns="$(arg camera_name_1)">
-        <include file="$(find zed_multicamera_example)/launch/include/zed_camera_mod.launch">
+        <!-- Camera 1 -->
+        <include file="$(find zed_multicamera_example_with_rtabmap)/launch/include/zed_camera_mod.launch">
             <arg name="camera_name"         value="$(arg camera_name_1)" />
             <arg name="node_name"           value="$(arg node_name_1)" />
             <arg name="camera_model"        value="$(arg camera_model_1)" />
             <arg name="publish_urdf"        value="$(arg publish_urdf)" />
             <arg name="publish_tf"          value="true" />
             <arg name="camera_id"           value="0" />
+            
+            <arg name="svo_file"            value="$(arg svo_file)" />
+            <arg name="stream"              value="$(arg stream)" />
+            <!-- <arg name="base_frame"          value="$(arg base_frame)" /> -->
+        </include>
+
+        <!-- RTAB-Map with Camera 1 -->
+        <arg name="custom_rtabmap_launch_file" default="$(find zed_rtabmap_example)/launch/include/sl_rtabmap.launch.xml"/>
+        <include file="$(arg custom_rtabmap_launch_file)">
+            <arg name="odom_topic"              default="$(arg node_name_1)/odom" />
+            <arg name="rgb_topic"               default="$(arg node_name_1)/rgb/image_rect_color" />
+            <arg name="depth_topic"             default="$(arg node_name_1)/depth/depth_registered" />
+            <arg name="camera_info_topic"       default="$(arg node_name_1)/rgb/camera_info" />
+            <arg name="depth_camera_info_topic" default="$(arg node_name_1)/depth/camera_info" />
         </include>
     </group>
 
     <group ns="$(arg camera_name_2)">
-        <include file="$(find zed_multicamera_example)/launch/include/zed_camera_mod.launch">
+        <include file="$(find zed_multicamera_example_with_rtabmap)/launch/include/zed_camera_mod.launch">
             <arg name="camera_name"         value="$(arg camera_name_2)" />
             <arg name="node_name"           value="$(arg node_name_2)" />
             <arg name="camera_model"        value="$(arg camera_model_2)" />
@@ -71,5 +93,5 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </group>
 
 <!-- Launch rivz display -->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find zed_multicamera_example)/rviz/multi_cam.rviz" output="screen" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find zed_multicamera_example_with_rtabmap)/rviz/multi_cam.rviz" output="screen" />
 </launch>

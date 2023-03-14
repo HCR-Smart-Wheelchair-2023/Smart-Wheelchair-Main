@@ -73,7 +73,7 @@ map_frame = 'map'
 # Define a callback function for the point cloud subscriber
 def callback(point_cloud_msg: PointCloud2):
     transformed_cloud = point_cloud_msg
-    transformed_cloud.header.frame_id = camera_frame
+    # transformed_cloud.header.frame_id = camera_frame
     pub.publish(transformed_cloud)
     # pub_laser.publish(pointcloud_to_laserscan(transformed_cloud))
     # create laser scan data
@@ -88,7 +88,7 @@ def callback(point_cloud_msg: PointCloud2):
     intensities = []
 
 # Subscribe to the point cloud topic
-topic = '/camera/depth/points' if sim else '/zed/zed_node/point_cloud/cloud_registered'
+topic = '/camera/depth/points' if sim else '/zedA/zed_node_A/point_cloud/cloud_registered'
 sub = rospy.Subscriber(topic, PointCloud2, callback)
 # Create a publisher for the transformed point cloud
 pub = rospy.Publisher('cloud', PointCloud2, queue_size=10)

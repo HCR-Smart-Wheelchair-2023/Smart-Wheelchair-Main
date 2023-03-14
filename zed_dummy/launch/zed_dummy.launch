@@ -3,5 +3,5 @@
 
     <!-- Run the script that listens to the /user_intput topic and sends target to the navigation  -->
 	<node pkg="zed_dummy" type="dummy_detector.py" name="zed_dummy" output="screen" />
-    <node pkg="tf" type="static_transform_publisher" name="odom" args="10 0 0 0 0 0 map camera_link 100" />
+    <node pkg="tf" type="static_transform_publisher" name="odom" args="3 3 0 0 0 0 map camera_link 100" />
 </launch>

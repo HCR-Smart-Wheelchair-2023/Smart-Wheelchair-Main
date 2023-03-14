@@ -18,7 +18,7 @@ sensors:
     publish_imu_tf:             true            # publish `IMU -> <cam_name>_left_camera_frame` TF
 
 object_detection:
-    od_enabled:                 false           # True to enable Object Detection [not available for>
+    od_enabled:                 true           # True to enable Object Detection [not available for>
     model:                      0               # '0': MULTI_CLASS_BOX - '1': MULTI_CLASS_BOX_ACCURA>
     confidence_threshold:       50              # Minimum value of the detection confidence of an ob>
     max_range:                  15.             # Maximum detection range

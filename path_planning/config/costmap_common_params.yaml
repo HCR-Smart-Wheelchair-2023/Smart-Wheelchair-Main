@@ -49,6 +49,7 @@ obstacle_layer:
   observation_sources: scan
   scan:
     data_type: LaserScan
+    sensor_frame: camera_link,
     topic: /scan # Your LaserScan topic
     marking: true
     clearing: true

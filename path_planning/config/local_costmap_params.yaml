@@ -15,4 +15,5 @@ local_costmap:
   plugins:
       # - {name: obstacle_layer,        type: "costmap_2d::VoxelLayer"}
       - {name: static_layer,        type: "costmap_2d::StaticLayer"}
-      - {name: mapping_layer,        type: "costmap_2d::StaticLayer"}
+      # - {name: mapping_layer,        type: "costmap_2d::StaticLayer"}
+      # - {name: rgbd_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}

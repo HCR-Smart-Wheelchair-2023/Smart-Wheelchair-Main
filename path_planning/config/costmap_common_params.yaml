@@ -50,7 +50,7 @@ obstacle_layer:
   scan:
     data_type: LaserScan
     sensor_frame: camera_link,
-    topic: /scan # Your LaserScan topic
+    topic: scan # Your LaserScan topic
     marking: true
     clearing: true
     inf_is_valid: true # This parameter does the trick!

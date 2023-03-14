@@ -73,7 +73,7 @@ map_frame = 'map'
 # Define a callback function for the point cloud subscriber
 def callback(point_cloud_msg: PointCloud2):
     transformed_cloud = point_cloud_msg
-    transformed_cloud.header.frame_id = camera_frame
+    # transformed_cloud.header.frame_id = camera_frame
     pub.publish(transformed_cloud)
     # pub_laser.publish(pointcloud_to_laserscan(transformed_cloud))
     # create laser scan data

@@ -14,6 +14,10 @@
     <!-- <node pkg="tf" type="static_transform_publisher" name="camera_link"
     args="0 0 0 1.57 3.14 1.57 base_link camera_link 100" /> -->
 
+    <!-- NEW: Sensor fusion simulation -->
+    <include file="$(find robot_localization)/launch/zed_fusion.launch">
+    </include>
+
     <!-- Publish messages on the odom topic to the odom frame -->
     <include file="$(find path_planning)/launch/odom.launch">
     </include>

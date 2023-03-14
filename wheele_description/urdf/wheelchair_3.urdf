@@ -427,13 +427,30 @@
   </gazebo> 
 
   <gazebo> 
-    <plugin name="odom_plugin" filename="libgazebo_ros_p3d.so">
+    <plugin name="odom_a_plugin" filename="libgazebo_ros_p3d.so">
       <alwaysOn>true</alwaysOn>
       <updateRate>50.0</updateRate>
       <bodyName>base_link</bodyName>
-      <topicName>/odom</topicName>
+      <topicName>/zed_node_A/odom</topicName>
       <gaussianNoise>0.0</gaussianNoise>
       <frameName>map</frameName>
+      <xyzOffset>0 -0.25 0</xyzOffset>
+      <rpyOffset>0 0 0</rpyOffset>
+    </plugin>
+  </gazebo> 
+
+  <gazebo> 
+    <plugin name="odom_b_plugin" filename="libgazebo_ros_p3d.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>50.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>/zed_node_B/odom</topicName>
+      <gaussianNoise>0.0</gaussianNoise>
+      <frameName>map</frameName>
+      <!-- FIXME: create two cameras instead of of using XYZ offset -->
+      <!-- Then have to define two transforms (as for the camera_link to base_link) -->
+      <xyzOffset>0 0.25 0</xyzOffset>
+      <rpyOffset>0 0 0</rpyOffset>
     </plugin>
   </gazebo> 
 

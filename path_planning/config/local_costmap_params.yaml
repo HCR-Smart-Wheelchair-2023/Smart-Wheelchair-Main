@@ -4,7 +4,7 @@ local_costmap:
   publish_frequency: 5
   transform_tolerance: 0.25
   robot_base_frame: base_link
-  static_map: false
+  # static_map: false
   rolling_window: true
   width: 7
   height: 7

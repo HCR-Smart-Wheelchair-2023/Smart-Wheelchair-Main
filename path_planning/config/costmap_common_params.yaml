@@ -17,8 +17,13 @@ static_layer:
     map_topic: /map
     subscribe_to_updates: true
 
+mapping_layer:
+    map_topic: /zedA/map
+    subscribe_to_updates: true
+
 plugins:
     - {name: static_layer,           type: "costmap_2d::StaticLayer"}
+    - {name: mapping_layer,           type: "costmap_2d::StaticLayer"}
     # - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
     - {name: obstacle_layer,         type: "costmap_2d::VoxelLayer"}
 # obstacle_layer:

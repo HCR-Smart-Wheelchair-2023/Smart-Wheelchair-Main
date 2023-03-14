@@ -10,5 +10,5 @@ global_costmap:
   inflation_radius: 1
   resolution: 0.05
   plugins:
-   - {name: static_layer,        type: "costmap_2d::StaticLayer"}
+  #  - {name: static_layer,        type: "costmap_2d::StaticLayer"}
    - {name: mapping_layer,        type: "costmap_2d::StaticLayer"}

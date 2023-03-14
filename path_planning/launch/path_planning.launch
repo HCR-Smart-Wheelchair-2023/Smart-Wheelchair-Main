@@ -9,6 +9,8 @@
     </node>
 
     <node pkg="move_base" type="move_base" name="move_base" output="screen">
+        <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>
+        <param name="base_global_planner" value="carrot_planner/CarrotPlanner"/>
         <param name="controller_frequency" value="10.0" />
         <rosparam file="$(find path_planning)/config/costmap_common_params.yaml" command="load"
             ns="global_costmap" />
@@ -16,7 +18,7 @@
             ns="local_costmap" />
         <rosparam file="$(find path_planning)/config/local_costmap_params.yaml" command="load" />
         <rosparam file="$(find path_planning)/config/global_costmap_params.yaml" command="load" />
-        <rosparam file="$(find path_planning)/config/trajectory_planner.yaml" command="load" />
+        <!-- <rosparam file="$(find path_planning)/config/trajectory_planner.yaml" command="load" /> -->
     </node>
 
      <!-- <node name="move_base_flex" pkg="mbf_costmap_nav" type="mbf_costmap_nav" required="true" output="screen">

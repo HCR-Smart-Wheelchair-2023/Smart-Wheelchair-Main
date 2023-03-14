@@ -8,13 +8,14 @@ base_local_planner: dwa_local_planner/DWAPlannerROS
 footprint: [[-0.35, -0.35], [1,-0.35], [1,0.35], [-0.35, 0.35]]
 # Correct:
 # footprint: [[0.5475, 0.335], [0.5475, -0.335], [-0.5475, -0.335], [-0.5475, 0.335]]
-map_topic: /staticmap
-subscribe_to_updates: true
+# map_topic: /staticmap
+# subscribe_to_updates: true
 global_frame: map
 robot_base_frame: base_link
 always_send_full_costmap: true
+
 static_layer:
-    map_topic: /map
+    map_topic: /staticmap
     subscribe_to_updates: true
 
 mapping_layer:

@@ -44,7 +44,7 @@ RUN  . ./devel/setup.sh
 
 # Copy over the Zed_Multi_Cam Folder
 COPY ./Zed_Multi_Cam /opt/ros_ws/src/zed-multicam
-WORKDIR /opt/ros_ws/src/zed-multicam
+WORKDIR /opt/ros_ws/
 RUN . /opt/ros/noetic/setup.sh && \
     catkin_make
 

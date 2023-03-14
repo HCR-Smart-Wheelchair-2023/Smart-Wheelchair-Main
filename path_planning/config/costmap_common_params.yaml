@@ -15,12 +15,12 @@ robot_base_frame: base_link
 always_send_full_costmap: true
 
 
-map_topic: /staticmap
-subscribe_to_updates: true
+# map_topic: /staticmap
+# subscribe_to_updates: true
 
-# static_layer:
-#     map_topic: /staticmap
-#     subscribe_to_updates: true
+static_layer:
+    map_topic: /staticmap
+    subscribe_to_updates: true
 
 # mapping_layer:
 #     map_topic: /zedA/map
@@ -84,8 +84,8 @@ subscribe_to_updates: true
 #   mark_threshold:        0      #voxel height ...
 
 
-# plugins:
-#     - {name: static_layer,           type: "costmap_2d::StaticLayer"}
+plugins:
+    - {name: static_layer,           type: "costmap_2d::StaticLayer"}
 #     - {name: mapping_layer,           type: "costmap_2d::StaticLayer"}
     # - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
     # - {name: obstacle_layer,         type: "costmap_2d::VoxelLayer"}

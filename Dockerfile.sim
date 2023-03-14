@@ -45,6 +45,7 @@ RUN cd .. && rosdep install --from-paths src --ignore-src -r -y
 
 RUN apt-get install -y python3-pip
 RUN pip install pyserial scipy
+RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-move-base-flex
 # RUN pip install deepface
 

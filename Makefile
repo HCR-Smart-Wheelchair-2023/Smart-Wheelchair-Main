@@ -8,14 +8,10 @@ build-external:
 	DOCKER_BUILDKIT=1 docker build -t amiga_base_external:latest -f Dockerfile.external .
 
 build-jetson:
-	DOCKER_BUILDKIT=1 docker build -t jetson_base:latest -f Dockerfile.jetson .
+	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision/docker && sudo -S ./build-ros-desktop-image.sh"
 
 run-jetson:
-	docker run \
-		-it \
-		--name jetson \
-		--gpus all \
-		jetson_base:latest
+	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision && sudo -S ./run_ros_container.sh"
 
 
 run-jetson-core:

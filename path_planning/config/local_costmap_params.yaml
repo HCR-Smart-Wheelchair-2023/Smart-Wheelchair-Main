@@ -14,5 +14,5 @@ local_costmap:
   inflation_radius: 0.1
   plugins:
       # - {name: obstacle_layer,        type: "costmap_2d::VoxelLayer"}
-      # - {name: static_layer,        type: "costmap_2d::StaticLayer"}
+      - {name: static_layer,        type: "costmap_2d::StaticLayer"}
       - {name: mapping_layer,        type: "costmap_2d::StaticLayer"}

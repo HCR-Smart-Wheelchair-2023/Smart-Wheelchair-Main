@@ -66,11 +66,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <!-- RTAB-Map with Camera 1 -->
         <arg name="custom_rtabmap_launch_file" default="$(find zed_rtabmap_example)/launch/include/sl_rtabmap.launch.xml"/>
         <include file="$(arg custom_rtabmap_launch_file)">
-            <arg name="odom_topic"              default="$(arg zed_node_name)/odom" />
-            <arg name="rgb_topic"               default="$(arg zed_node_name)/rgb/image_rect_color" />
-            <arg name="depth_topic"             default="$(arg zed_node_name)/depth/depth_registered" />
-            <arg name="camera_info_topic"       default="$(arg zed_node_name)/rgb/camera_info" />
-            <arg name="depth_camera_info_topic" default="$(arg zed_node_name)/depth/camera_info" />
+            <arg name="odom_topic"              default="$(arg zed_node_name_1)/odom" />
+            <arg name="rgb_topic"               default="$(arg zed_node_name_1)/rgb/image_rect_color" />
+            <arg name="depth_topic"             default="$(arg zed_node_name_1)/depth/depth_registered" />
+            <arg name="camera_info_topic"       default="$(arg zed_node_name_1)/rgb/camera_info" />
+            <arg name="depth_camera_info_topic" default="$(arg zed_node_name_1)/depth/camera_info" />
         </include>
     </group>
 

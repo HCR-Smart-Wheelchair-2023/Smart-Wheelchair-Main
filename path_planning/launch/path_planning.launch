@@ -8,7 +8,7 @@
         <remap from="map" to="/staticmap" />
     </node>
 
-    <!-- <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <node pkg="move_base" type="move_base" name="move_base" output="screen">
         <param name="controller_frequency" value="10.0" />
         <rosparam file="$(find path_planning)/config/costmap_common_params.yaml" command="load"
             ns="global_costmap" />
@@ -17,9 +17,9 @@
         <rosparam file="$(find path_planning)/config/local_costmap_params.yaml" command="load" />
         <rosparam file="$(find path_planning)/config/global_costmap_params.yaml" command="load" />
         <rosparam file="$(find path_planning)/config/trajectory_planner.yaml" command="load" />
-    </node> -->
+    </node>
 
-     <node name="move_base_flex" pkg="mbf_costmap_nav" type="mbf_costmap_nav" required="true" output="screen">
+     <!-- <node name="move_base_flex" pkg="mbf_costmap_nav" type="mbf_costmap_nav" required="true" output="screen">
         <rosparam file="$(find path_planning)/config-flex/planner.yaml" command="load"/>
         <rosparam file="$(find path_planning)/config-flex/movebase.yaml" command="load" />
         <param name="controller_frequency" value="10.0" />
@@ -29,7 +29,7 @@
             ns="local_costmap" />
         <rosparam file="$(find path_planning)/config/local_costmap_params.yaml" command="load" />
         <rosparam file="$(find path_planning)/config/global_costmap_params.yaml" command="load" />
-      </node>
+      </node> -->
 
     <!-- <node name="move_base_flex" pkg="mbf_costmap_nav" type="mbf_costmap_nav" required="true" output="screen">
         <rosparam file="$(find path_planning)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />

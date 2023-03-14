@@ -38,6 +38,9 @@
 
         <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster3" args="0.7 0.6 0.77 0 0 1 base_link zed2i_camera_center 100" />
         <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster4" args="0.7 0.6 0.77 0 0 1 base_link zed_camera_center 100" />
+
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster5" args="0.7 0.6 0.77 0 0 1 base_link zedA_camera_center 100" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster6" args="0.7 0.6 0.77 0 0 1 base_link zedA_camera_center 100" />
     </group>
     <include file="$(find path_planning)/launch/goal.launch"></include>
 

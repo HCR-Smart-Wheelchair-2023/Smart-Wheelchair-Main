@@ -86,6 +86,6 @@ static_layer:
 
 plugins:
     - {name: static_layer,           type: "costmap_2d::StaticLayer"}
-#     - {name: mapping_layer,           type: "costmap_2d::StaticLayer"}
+    - {name: mapping_layer,           type: "costmap_2d::StaticLayer"}
     # - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
     # - {name: obstacle_layer,         type: "costmap_2d::VoxelLayer"}

@@ -10,21 +10,17 @@ Before starting, check this:
 ### Starting the ZED2i ROS Node
 
 ```bash
-# On the laptop
+# To build the docker image for vision (do this once)
+make build-jetson
 
-# Otherwise get the IP address by connecting a screen to the Jetson.
-# IP likely is 192.168.50.102
-ssh <ip address of jetson> -X 
-# user prl; password prl
-
-cd human-centered-robotics-vision/
-./run_ros_container.sh  # Start the docker container
-
-# Inside the container
-source /opt/ros/noetic/setup.bash
-source /opt/ros_ws/devel/setup.bash
-
-roslaunch zed_wrapper zed2i.launch
-
-# The zed2i camera should now run and the ros node should publish the data via ros topics
+# To run the docker vision container
+# Sometimes this needs multiple attempts to work
+make run-jetson
 ```
+
+### Perception / Vision Topics
+
+The following topics are published by the ZED2i ROS node:
+
+- `/zedA/...` - PRIMARY CAMERA, All the topics of the Zed 2i camera (includes the rtabmap topics, like occupancy grid)
+- `/zedB/...` - SECONDARY CAMERA, All the topics of the Zed Mini camera

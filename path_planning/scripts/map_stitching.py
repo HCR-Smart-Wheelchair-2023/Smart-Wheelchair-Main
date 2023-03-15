@@ -14,7 +14,7 @@ class MapStitcher:
         self.dynamic_map = None
         self.static_map_array = None
         self.sub1 = rospy.Subscriber('/staticmap', OccupancyGrid, self.static_map_callback)
-        self.sub2 = rospy.Subscriber('/zed/grid_prob_map', OccupancyGrid, self.dynamic_map_callback)
+        self.sub2 = rospy.Subscriber('/zedA/map', OccupancyGrid, self.dynamic_map_callback)
         self.pub = rospy.Publisher('/merged_map', OccupancyGrid, queue_size=1)
         rospy.spin()
 
@@ -63,11 +63,15 @@ class MapStitcher:
         rospy.loginfo(f'{x_min},{x_max},{y_min},{y_max},{self.dynamic_map.info.height}')
         x_offset = (x_max-x_min) - map_array.shape[0]
         y_offset = (y_max-y_min) - map_array.shape[1]
+
+        static_array = np.vectorize(lambda x : 255 - x)(static_array)
+        map_array = np.vectorize(lambda x : 255 - x)(map_array)
         static_array[(x_min+500+x_offset):(x_max+500),(y_min+500+y_offset):(y_max+500)] += map_array
         static_array = static_array.reshape(self.static_map.info.width*self.static_map.info.height)
-        self.static_map.data = np.clip(static_array,0,100)
+        static_array = np.vectorize(lambda x : 255 if x > 10 else 0)(static_array)
+        self.static_map.data = np.clip(static_array,0,255)
         self.pub.publish(self.static_map)
-        rospy.loginfo(f'publioshed')
+        rospy.loginfo(f'published')
         # map_array = np.pad(map_array, pad_width=((int(self.dynamic_map))))
         # self.static_map_array.reshape((map_data.info.height, map_data.info.width))
         #     padding = max(int(map_data.info.height - self.dynamic_map.info.height), 0)

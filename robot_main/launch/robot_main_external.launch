@@ -52,14 +52,13 @@
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan_node">
         <remap from="cloud_in" to="cloud" />
         <rosparam>
-            target_frame: camera_link
-            min_height: 0
-            max_height: 1
+            target_frame: base_link
+            min_height: 0.3
+            max_height: 2
             angle_increment: 0.006038462
-            scan_time: 0.3333
+            scan_time: 0.1
             use_inf: true
             linearUpdate: 0.1
-            occ_thresh: 0.1
             range_min: 0.45
             range_max: 4.0
         </rosparam>

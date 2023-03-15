@@ -42,6 +42,12 @@ RUN rosdep install --from-paths src --ignore-src -r -y \
     && catkin_make -DCMAKE_BUILD_TYPE=Release
 RUN  . ./devel/setup.sh
 
+# Install ROS ZED Examples
+WORKDIR /opt/ros_ws/
+COPY ./zed_rtabmap_example /opt/ros_ws/src/zed_rtabmap_example/
+RUN . /opt/ros/noetic/setup.sh \
+    && catkin_make -DCMAKE_BUILD_TYPE=Release
+RUN  . ./devel/setup.sh
 
 
 # Install QR detection

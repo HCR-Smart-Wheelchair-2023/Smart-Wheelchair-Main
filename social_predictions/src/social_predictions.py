@@ -14,6 +14,13 @@ from nav_msgs.msg import OccupancyGrid
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
 
+def threshold_array(arr, threshold):
+    below_threshold = arr < threshold
+    above_threshold = arr >= threshold
+    arr[below_threshold] = 255
+    arr[above_threshold] = 0
+    return arr
+
 def gaussian2d(x, y, x0, y0, sigma_x, sigma_y, theta):
     a = np.cos(theta)**2/(2*sigma_x**2) + np.sin(theta)**2/(2*sigma_y**2)
     b = -np.sin(2*theta)/(4*sigma_x**2) + np.sin(2*theta)/(4*sigma_y**2)
@@ -59,6 +66,9 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     # Scale the array to the range between 0 and 100
     Z_scaled = ((Z - min_val) * 100 / (max_val - min_val)).astype(int)
     # print("Z: ", Z_scaled)
+
+    # Setting values to 0:occupied, 255:free for move_base
+    Z_scaled = threshold_array(Z_scaled, 50)
     
     z1_flat = Z_scaled.flatten().tolist()
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
@@ -126,6 +136,9 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     # Scale the array to the range between 0 and 100
     Z_scaled = ((Z - min_val) * 100 / (max_val - min_val)).astype(int)
     # print("Z: ", Z_scaled)
+
+    # Setting values to 0:occupied, 255:free for move_base
+    Z_scaled = threshold_array(Z_scaled, 50)
     
     z1_flat = Z_scaled.flatten().tolist()
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)

@@ -234,14 +234,14 @@ class ArUcoCameraController:
             f"camera orientation: {camera_orientation[0], camera_orientation[1], camera_orientation[2]}"
         )
 
-        # self.set_zedPose(
-        #     camera_position[0],
-        #     camera_position[1],
-        #     camera_position[2],
-        #     camera_orientation[0],
-        #     camera_orientation[1],
-        #     camera_orientation[2],
-        # )
+        self.set_zedPose(
+            camera_position[0],
+            camera_position[1],
+            camera_position[2],
+            camera_orientation[0],
+            camera_orientation[1],
+            camera_orientation[2],
+        )
 
 
 if __name__ == "__main__":

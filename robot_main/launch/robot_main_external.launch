@@ -122,7 +122,7 @@
     <arg name="corner_refinement" default="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
 
 
-    <!-- <node pkg="aruco_ros" type="single" name="aruco_single">
+    <node pkg="aruco_ros" type="single" name="aruco_single">
         <remap from="/camera_info" to="/zed/zed_node/left/camera_info" />
         <remap from="/image" to="/zed/zed_node/left/image_rect_color" />
         <param name="image_is_rectified" value="True"/>
@@ -132,7 +132,7 @@
         <param name="camera_frame"       value="camera_link"/>
         <param name="marker_frame"       value="$(arg marker_frame)" />
         <param name="corner_refinement"  value="$(arg corner_refinement)" />
-    </node> -->
+    </node>
 
     <!-- /zed/zed_node/point_cloud/cloud_registered, -->
     <group if="$(eval arg('mode') == 'robot')">

@@ -23,6 +23,8 @@ class ArUcoCameraController:
         #     "/aruco_single/transform", TransformStamped, self.aruco_transform_callback
         # )
 
+        print("IN ARUCOCAMERACONTROLLER")
+
         self.aruco_markerArray_sub = rospy.Subscriber(
             "/aruco_marker_publisher/markers", MarkerArray, self.aruco_markerArray_callback
         )

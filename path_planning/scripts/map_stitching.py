@@ -59,14 +59,14 @@ class MapStitcher:
 
         map_array = np.vectorize(lambda x : 255 if x > 1 or x < 0 else 0)(map_array)
         rospy.loginfo(f'{map_array}')
-        static_array = np.vectorize(lambda x : 0 if x > 100 else 255)(static_array)
+        # static_array = np.vectorize(lambda x : 0 if x > 100 else 255)(static_array)
         map_array = np.vectorize(lambda x : 0 if x > 100 else 255)(map_array)
 
         # static_array[(x_min+500+x_offset):(x_max+500),(y_min+500+y_offset):(y_max+500)] += map_array
 
         static_array = static_array.reshape(self.static_map.info.width*self.static_map.info.height)
-        static_array = np.vectorize(lambda x : 255 if x < 10 else 0)(static_array)
-        self.static_map.data = [int(x) for x in np.clip(static_array,0,255)]
+        # static_array = np.vectorize(lambda x : 255 if x < 10 else 0)(static_array)
+        self.static_map.data = [int(x) for x in static_array]
         self.pub.publish(self.static_map)
         rospy.loginfo(f'published')
         # map_array = np.pad(map_array, pad_width=((int(self.dynamic_map))))

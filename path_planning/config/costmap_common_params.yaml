@@ -22,6 +22,10 @@ static_layer:
     map_topic: /staticmap
     subscribe_to_updates: true
 
+dynamic_layer:
+  map_topic: /merged_map
+  subscribe_to_updates: true
+
 # mapping_layer:
 #     map_topic: /zedA/map
 #     subscribe_to_updates: true
@@ -86,6 +90,7 @@ obstacle_layer:
 
 plugins:
     - {name: static_layer,           type: "costmap_2d::StaticLayer"}
+    - {name: dynamic_layer,           type: "costmap_2d::StaticLayer"}
     # - {name: mapping_layer,           type: "costmap_2d::StaticLayer"}
     # - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
     - {name: obstacle_layer,         type: "costmap_2d::VoxelLayer"}

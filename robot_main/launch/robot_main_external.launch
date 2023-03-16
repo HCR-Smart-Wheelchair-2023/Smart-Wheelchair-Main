@@ -114,12 +114,13 @@
     <!-- Start the aruco_detection node -->
     <node pkg="aruco_detection" type="aruco_detection.py" name="aruco_detection" output="screen" />
 
+    <!--
     <arg name="markerId"        default="582"/>
-    <arg name="markerSize"      default="0.17"/>    <!-- in m -->
+    <arg name="markerSize"      default="0.17"/>    
     <arg name="eye"             default="left"/>
     <arg name="marker_frame"    default="aruco_marker_frame"/>
-    <arg name="ref_frame"       default=""/>  <!-- leave empty and the pose will be published wrt param parent_name -->
-    <arg name="corner_refinement" default="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
+    <arg name="ref_frame"       default=""/>   leave empty and the pose will be published wrt param parent_name
+    <arg name="corner_refinement" default="LINES" /> 
 
 
     <node pkg="aruco_ros" type="single" name="aruco_single">
@@ -133,6 +134,24 @@
         <param name="marker_frame"       value="$(arg marker_frame)" />
         <param name="corner_refinement"  value="$(arg corner_refinement)" />
     </node>
+
+    -->
+ 
+
+    <arg name="markerSize"      default="0.17"/>    <!-- in m -->
+    <arg name="side"             default="left"/>
+    <arg name="ref_frame"       default="base"/>  <!-- leave empty and the pose will be published wrt param parent_name -->
+
+
+    <node pkg="aruco_ros" type="marker_publisher" name="aruco_marker_publisher">
+        <remap from="/camera_info" to="/zed/zed_node/left/camera_info" />
+        <remap from="/image" to="/zed/zed_node/left/image_rect_color" />
+        <param name="image_is_rectified" value="True"/>
+        <param name="marker_size"        value="$(arg markerSize)"/>
+        <param name="reference_frame"    value="$(arg ref_frame)"/>   <!-- frame in which the marker pose will be refered -->
+        <param name="camera_frame"       value="camera_link"/>
+    </node>
+
 
     <!-- /zed/zed_node/point_cloud/cloud_registered, -->
     <group if="$(eval arg('mode') == 'robot')">

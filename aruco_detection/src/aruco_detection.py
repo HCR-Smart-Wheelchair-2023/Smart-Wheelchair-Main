@@ -3,7 +3,7 @@
 import rospy
 from geometry_msgs.msg import PoseStamped, TransformStamped
 from std_msgs.msg import String
-form aruco_ros.msg import MarkerArray, Marker
+from aruco_ros.msg import MarkerArray, Marker
 from zed_interfaces.srv import set_pose, set_poseRequest
 import tf
 import numpy as np
@@ -26,7 +26,9 @@ class ArUcoCameraController:
         print("IN ARUCOCAMERACONTROLLER")
 
         self.aruco_markerArray_sub = rospy.Subscriber(
-            "/aruco_marker_publisher/markers", MarkerArray, self.aruco_markerArray_callback
+            "/aruco_marker_publisher/markers",
+            MarkerArray,
+            self.aruco_markerArray_callback,
         )
 
         self.set_pose_service = rospy.ServiceProxy("/zed/zed_node/set_pose", set_pose)
@@ -227,7 +229,6 @@ class ArUcoCameraController:
         #     camera_orientation[1],
         #     camera_orientation[2],
         # )
-
 
 
 if __name__ == "__main__":

@@ -36,7 +36,7 @@ class ArUcoCameraController:
         self.pub = rospy.Publisher("/my_marker/pose", PoseStamped, queue_size=10)
 
         # angle is in radians
-        angle = math.pi / 2 + math.pi
+        angle = math.pi / 2
         quaternion = tf.transformations.quaternion_from_euler(0, 0, angle)
 
         # create a TransformStamped message for the marker
@@ -52,18 +52,18 @@ class ArUcoCameraController:
         self.marker_transform.transform.rotation.w = quaternion[3]
 
         # create a PoseStamped message for the marker
-        self.marker_pose = PoseStamped()
-        self.marker_pose.header.frame_id = "/camera_link"
-        self.marker_pose.pose.position.x = 0.87
-        self.marker_pose.pose.position.y = 7.74
-        self.marker_pose.pose.position.z = 1.42
-        self.marker_pose.pose.orientation.x = 0.0
-        self.marker_pose.pose.orientation.y = 0.0
-        self.marker_pose.pose.orientation.z = 0.0
-        self.marker_pose.pose.orientation.w = 1.0
+        # self.marker_pose = PoseStamped()
+        # self.marker_pose.header.frame_id = "/camera_link"
+        # self.marker_pose.pose.position.x = 0.87
+        # self.marker_pose.pose.position.y = 7.74
+        # self.marker_pose.pose.position.z = 1.42
+        # self.marker_pose.pose.orientation.x = 0.0
+        # self.marker_pose.pose.orientation.y = 0.0
+        # self.marker_pose.pose.orientation.z = 0.0
+        # self.marker_pose.pose.orientation.w = 1.0
 
-        # publish the marker pose
-        self.pub.publish(self.marker_pose)
+        # # publish the marker pose
+        # self.pub.publish(self.marker_pose)
 
     def set_zedPose(self, x, y, z, R, P, Y):
         print("waiting for set pose service")
@@ -71,7 +71,7 @@ class ArUcoCameraController:
         print("found the set_pose service!")
 
         # publish the marker pose
-        self.pub.publish(self.marker_pose)
+        # self.pub.publish(self.marker_pose)
 
         try:
             setpose = rospy.ServiceProxy("/zed/zed_node/set_pose", Set_Pose)

@@ -24,7 +24,7 @@ class ArUcoCameraController:
         # )
 
         self.aruco_markerArray_sub = rospy.Subscriber(
-            "/aruco_single/markers", MarkerArray, self.aruco_markerArray_callback
+            "/aruco_marker_publisher/markers", MarkerArray, self.aruco_markerArray_callback
         )
 
         self.set_pose_service = rospy.ServiceProxy("/zed/zed_node/set_pose", set_pose)

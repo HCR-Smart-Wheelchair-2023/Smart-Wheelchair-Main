@@ -66,7 +66,7 @@ class MapStitcher:
 
         static_array = static_array.reshape(self.static_map.info.width*self.static_map.info.height)
         # static_array = np.vectorize(lambda x : 255 if x < 200 else 0)(static_array)
-        self.static_map.data = [x for x in np.clip(static_array,0,255)]
+        self.static_map.data = [int(x) for x in np.clip(static_array,0,255)]
         self.pub.publish(self.static_map)
         rospy.loginfo(f'published')
         # map_array = np.pad(map_array, pad_width=((int(self.dynamic_map))))

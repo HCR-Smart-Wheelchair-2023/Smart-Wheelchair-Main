@@ -19,7 +19,7 @@ always_send_full_costmap: true
 # subscribe_to_updates: true
 
 static_layer:
-    map_topic: /merged_map
+    map_topic: /staticmap
     subscribe_to_updates: true
 
 # mapping_layer:

@@ -85,7 +85,9 @@ class ArUcoCameraController:
                     rospy.loginfo("Pose is too far from average, discarding...")
                     return
                 else:
-                    aruco_position = average_pose
+                    aruco_position.x = average_pose.position.x
+                    aruco_position.y = average_pose.position.y
+                    aruco_position.z = average_pose.position.z
 
         aruco_orientation = markerArray.markers[0].pose.pose.orientation
         aruco_orientation_euler = tf.transformations.euler_from_quaternion(

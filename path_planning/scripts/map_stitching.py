@@ -47,7 +47,7 @@ class MapStitcher:
         # map_array = np.array(self.dynamic_map.data)
         # map_array = np.vectorize(lambda x : 255 if x > 50 else 0)(map_array)
         # map_array = np.clip(map_array,0,255)
-        map_array = [int(127 if int(x) > 0 else 0) for x in self.dynamic_map.data]
+        map_array = [int(127 if int(x) > 0 or x < 0 else 0) for x in self.dynamic_map.data]
         self.dynamic_map.data = map_array
         self.pub.publish(self.dynamic_map)
         rospy.loginfo(f'published')

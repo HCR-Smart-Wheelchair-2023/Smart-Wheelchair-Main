@@ -45,43 +45,13 @@ class MapStitcher:
 
 
         map_array = np.array(self.dynamic_map.data)
-        # map_array = np.vectorize(lambda x : 255 if x > 50 else 0)(map_array)
-        # map_array = np.clip(map_array,0,255)
-
-        # map_array = [int(127 if int(x) > 0 else 0) for x in self.dynamic_map.data]
-        # self.dynamic_map.data = map_array
-        # self.pub.publish(self.dynamic_map)
-        # rospy.loginfo(f'published')
-        # # rospy.loginfo(f'{map_array}')
-        # return
-
-
-        # map_array = np.add(self.static_map_array, map_array)
-        # self.dynamic_map.data = map_array
         map_array = map_array.reshape((self.dynamic_map.info.height, self.dynamic_map.info.width))
-        # resolution = self.dynamic_map.data.info.resolution
-        # rospy.loginfo(str(self.dynamic_map.origin))
         rospy.loginfo(str(self.dynamic_map.info))
-        # rospy.loginfo(f'resolution {resolution}')
-        # if resolution != RESOLUTION:
-        #     rospy.loginfo(f'resolution {resolution}')
-
-
-
         static_array = self.static_array
-        # x_min = int(self.dynamic_map.info.origin.position.x - int(self.dynamic_map.info.height/2))
-        # x_max = int(self.dynamic_map.info.origin.position.x + ceil(self.dynamic_map.info.height/2))
-        # y_min = int(self.dynamic_map.info.origin.position.y - int(self.dynamic_map.info.width/2))
-        # y_max = int(self.dynamic_map.info.origin.position.y + ceil(self.dynamic_map.info.width/2))
-        # x_min = int(float(self.dynamic_map.info.origin.position.x + 0.9) / 0.05)
-        # x_max = int(float(self.dynamic_map.info.origin.position.x + 0.9) / 0.05 + self.dynamic_map.info.height)
-        # y_min = int(float(self.dynamic_map.info.origin.position.y - 0.9) / 0.05)
-        # y_max = int(float(self.dynamic_map.info.origin.position.y - 0.9) / 0.05 + self.dynamic_map.info.width)
         x_min = int(float(self.dynamic_map.info.origin.position.y) / 0.05)
         x_max = int(float(self.dynamic_map.info.origin.position.y) / 0.05 + self.dynamic_map.info.height)
         y_min = int(float(self.dynamic_map.info.origin.position.x) / 0.05)
         y_max = int(float(self.dynamic_map.info.origin.position.x) / 0.05 + self.dynamic_map.info.width)
-
 
         rospy.loginfo(f'{x_min},{x_max},{y_min},{y_max},{self.dynamic_map.info.height}')
         x_offset = (x_max-x_min) - map_array.shape[0]
@@ -95,7 +65,7 @@ class MapStitcher:
         static_array[(x_min+500+x_offset):(x_max+500),(y_min+500+y_offset):(y_max+500)] += map_array
 
         static_array = static_array.reshape(self.static_map.info.width*self.static_map.info.height)
-        static_array = np.vectorize(lambda x : 255 if x < 200 else 0)(static_array)
+        # static_array = np.vectorize(lambda x : 255 if x < 200 else 0)(static_array)
         self.static_map.data = np.clip(static_array,0,255)
         self.pub.publish(self.static_map)
         rospy.loginfo(f'published')

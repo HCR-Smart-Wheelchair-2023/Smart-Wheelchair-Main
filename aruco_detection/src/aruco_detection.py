@@ -3,7 +3,7 @@
 import rospy
 from geometry_msgs.msg import PoseStamped, TransformStamped
 from std_msgs.msg import String
-
+form aruco_ros.msg import MarkerArray, Marker
 from zed_interfaces.srv import set_pose, set_poseRequest
 import tf
 import numpy as np
@@ -21,6 +21,10 @@ class ArUcoCameraController:
 
         self.aruco_transform_sub = rospy.Subscriber(
             "/aruco_single/transform", TransformStamped, self.aruco_transform_callback
+        )
+
+        self.aruco_markerArray_sub = rospy.Subscriber(
+            "/aruco_single/markers", MarkerArray, self.aruco_markerArray_callback
         )
 
         self.set_pose_service = rospy.ServiceProxy("/zed/zed_node/set_pose", set_pose)
@@ -138,15 +142,18 @@ class ArUcoCameraController:
             f"camera orientation: {camera_orientation[0], camera_orientation[1], camera_orientation[2]}"
         )
 
-        self.set_zedPose(
-            camera_position[0],
-            camera_position[1],
-            camera_position[2],
-            camera_orientation[0],
-            camera_orientation[1],
-            camera_orientation[2],
-        )
+        # self.set_zedPose(
+        #     camera_position[0],
+        #     camera_position[1],
+        #     camera_position[2],
+        #     camera_orientation[0],
+        #     camera_orientation[1],
+        #     camera_orientation[2],
+        # )
 
+    def aruco_markerArray_callback(self, markerArray):
+        print("markerArray: ", markerArray)
+        print("markerArray id of first marker: ", markerArray.markers[0].id)
 
 if __name__ == "__main__":
     rospy.init_node("aruco_camera_controller")

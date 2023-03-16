@@ -81,19 +81,19 @@ class ArUcoCameraController:
         print(f"aruco position: {aruco_position}")
 
         # moving average filter
-        # self.buffer.append(aruco_pose)
-        # if len(self.buffer) > self.buffer_size:
-        #     self.buffer.pop(0)
+        self.buffer.append(aruco_pose)
+        if len(self.buffer) > self.buffer_size:
+            self.buffer.pop(0)
 
-        #     if len(self.buffer) == self.buffer_size:
-        #         average_pose = self.calculate_average_pose()
-        #         if self.is_pose_noise(aruco_pose, average_pose, 0.3):
-        #             rospy.loginfo("Pose is too far from average, discarding...")
-        #             return
-        #         else:
-        #             aruco_position.x = average_pose.position.x
-        #             aruco_position.y = average_pose.position.z
-        #             aruco_position.z = average_pose.position.y
+            if len(self.buffer) == self.buffer_size:
+                average_pose = self.calculate_average_pose()
+                if self.is_pose_noise(aruco_pose, average_pose, 0.3):
+                    rospy.loginfo("Pose is too far from average, discarding...")
+                    return
+                else:
+                    aruco_position.x = average_pose.position.x
+                    aruco_position.y = average_pose.position.z
+                    aruco_position.z = average_pose.position.y
 
         aruco_orientation = markerArray.markers[0].pose.pose.orientation
         aruco_orientation_euler = tf.transformations.euler_from_quaternion(

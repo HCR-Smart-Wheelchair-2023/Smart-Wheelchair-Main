@@ -74,8 +74,8 @@ class ArUcoCameraController:
         aruco_position = markerArray.markers[0].pose.pose.position
 
         aruco_position.x, aruco_position.y, aruco_position.z = (
-            aruco_position.x,
             aruco_position.z,
+            aruco_position.x,
             aruco_position.y,
         )
         print(f"aruco position: {aruco_position}")

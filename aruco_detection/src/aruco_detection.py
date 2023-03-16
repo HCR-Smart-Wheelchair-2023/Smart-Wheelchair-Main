@@ -152,6 +152,7 @@ class ArUcoCameraController:
     #     )
 
     def aruco_markerArray_callback(self, markerArray):
+        rospy.loginfo("aruco_markerArray_callback")
         print("markerArray: ", markerArray)
         print("markerArray id of first marker: ", markerArray.markers[0].id)
 

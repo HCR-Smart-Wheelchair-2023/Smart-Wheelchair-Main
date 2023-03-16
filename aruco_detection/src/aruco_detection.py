@@ -81,7 +81,7 @@ class ArUcoCameraController:
 
             if len(self.buffer) == self.buffer_size:
                 average_pose = self.calculate_average_pose()
-                if self.is_pose_noise(aruco_position, average_pose):
+                if self.is_pose_noise(aruco_pose, average_pose):
                     rospy.loginfo("Pose is too far from average, discarding...")
                     return
                 else:

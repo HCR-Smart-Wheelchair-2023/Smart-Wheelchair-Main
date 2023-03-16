@@ -3,7 +3,7 @@
 import rospy
 from geometry_msgs.msg import PoseStamped, TransformStamped
 from std_msgs.msg import String
-from aruco_msgs import MarkerArray, Marker
+from aruco_msgs.msg import MarkerArray, Marker
 from zed_interfaces.srv import set_pose, set_poseRequest
 import tf
 import numpy as np

@@ -162,7 +162,15 @@ class ArUcoCameraController:
         aruco_position = markerArray.markers[0].pose.pose.position
         print(f"aruco position: {aruco_position}")
         aruco_orientation = markerArray.markers[0].pose.pose.orientation
-        print(f"aruco orientation: {aruco_orientation}")
+        aruco_orientation_euler = tf.transformations.euler_from_quaternion(
+            [
+                aruco_orientation.x,
+                aruco_orientation.y,
+                aruco_orientation.z,
+                aruco_orientation.w,
+            ]
+        )
+        print(f"aruco orientation: {aruco_orientation_euler}")
 
         transform_camera_aruco = tf.transformations.concatenate_matrices(
             tf.transformations.translation_matrix(

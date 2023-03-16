@@ -64,6 +64,7 @@ obstacle_layer:
         clear_on_max_reading: true,
         observation_persistence: 0,
         obstacle_range: 20.0,
+        raytrace_range: 25,
     }
 
 # obstacle_layer:
@@ -101,7 +102,8 @@ plugins:
   - { name: dynamic_layer, type: "costmap_2d::StaticLayer" }
   # - {name: mapping_layer,           type: "costmap_2d::StaticLayer"}
   # - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
-  - { name: obstacle_layer, type: "costmap_2d::VoxelLayer" }
+  # - { name: obstacle_layer, type: "costmap_2d::VoxelLayer" }
+  - { name: obstacle_layer, type: "costmap_2d::RangeSensorLayer" }
 
 
 # RangeSensorLayer

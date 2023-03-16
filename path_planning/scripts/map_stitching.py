@@ -63,6 +63,7 @@ class MapStitcher:
         map_array = np.vectorize(lambda x : 0 if x > 50 else 100)(map_array)
 
         static_array[(x_min+500+x_offset):(x_max+500),(y_min+500+y_offset):(y_max+500)] += map_array
+        static_array = np.vectorize(lambda x : 100 if x > 50 else 0)(static_array)
 
         static_array = static_array.reshape(self.static_map.info.width*self.static_map.info.height)
         # static_array = np.vectorize(lambda x : 255 if x < 10 else 0)(static_array)

@@ -1,5 +1,5 @@
-obstacle_range: 2.0
-raytrace_range: 8
+# obstacle_range: 2.0
+# raytrace_range: 8
 base_local_planner: dwa_local_planner/DWAPlannerROS
 
 # TODO
@@ -63,6 +63,7 @@ obstacle_layer:
         inf_is_valid: true,
         clear_on_max_reading: true,
         observation_persistence: 0,
+        obstacle_range: 20.0,
     }
 
 # obstacle_layer:
@@ -101,3 +102,6 @@ plugins:
   # - {name: mapping_layer,           type: "costmap_2d::StaticLayer"}
   # - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
   - { name: obstacle_layer, type: "costmap_2d::VoxelLayer" }
+
+
+# RangeSensorLayer

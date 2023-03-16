@@ -43,6 +43,7 @@ obstacle_layer:
       max_obstacle_height: 5.0,
       obstacle_range: 5.0,
       raytrace_range: 8.5,
+      observation_persistence: 0.2,
     }
 
 # obstacle_layer:

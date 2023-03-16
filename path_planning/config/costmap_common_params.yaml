@@ -23,7 +23,7 @@ static_layer:
     subscribe_to_updates: true
 
 dynamic_layer:
-  map_topic: /zed/map
+  map_topic: /merged_map
   subscribe_to_updates: true
 
 # mapping_layer:

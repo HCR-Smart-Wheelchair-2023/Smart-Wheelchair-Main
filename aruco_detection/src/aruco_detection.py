@@ -156,7 +156,7 @@ class ArUcoCameraController:
     #     )
 
     def aruco_markerArray_callback(self, markerArray):
-        print("markerArray: ", markerArray)
+        # print("markerArray: ", markerArray)
         print("markerArray id of first marker: ", markerArray.markers[0].id)
 
         aruco_position = markerArray.markers[0].pose.pose.position
@@ -170,7 +170,13 @@ class ArUcoCameraController:
                 aruco_orientation.w,
             ]
         )
-        print(f"aruco orientation: {aruco_orientation_euler}")
+        aruco_orientation_euler_degrees = [
+            aruco_orientation_euler[0] * 180 / math.pi,
+            aruco_orientation_euler[1] * 180 / math.pi,
+            aruco_orientation_euler[2] * 180 / math.pi,
+        ]
+
+        print(f"aruco orientation: {aruco_orientation_euler_degrees}")
 
         transform_camera_aruco = tf.transformations.concatenate_matrices(
             tf.transformations.translation_matrix(
@@ -185,7 +191,7 @@ class ArUcoCameraController:
                 ]
             ),
         )
-        print(f"transform_camera_aruco: {transform_camera_aruco}")
+        # print(f"transform_camera_aruco: {transform_camera_aruco}")
         transform_aruco_camera = tf.transformations.inverse_matrix(
             transform_camera_aruco
         )
@@ -207,7 +213,7 @@ class ArUcoCameraController:
                 ]
             ),
         )
-        print(f"transfrom_world_aruco: {transfrom_world_aruco}")
+        # print(f"transfrom_world_aruco: {transfrom_world_aruco}")
 
         transform_world_camera = tf.transformations.concatenate_matrices(
             transfrom_world_aruco, transform_aruco_camera

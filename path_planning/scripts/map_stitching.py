@@ -13,7 +13,7 @@ class MapStitcher:
         rospy.init_node('map_stitcher')
         self.dynamic_map = None
         self.static_map_array = None
-        # self.sub1 = rospy.Subscriber('/staticmap', OccupancyGrid, self.static_map_callback)
+        self.sub1 = rospy.Subscriber('/staticmap', OccupancyGrid, self.static_map_callback)
         self.sub2 = rospy.Subscriber('/zed/map', OccupancyGrid, self.dynamic_map_callback)
         self.pub = rospy.Publisher('/merged_map', OccupancyGrid, queue_size=1)
         self.static_map = None

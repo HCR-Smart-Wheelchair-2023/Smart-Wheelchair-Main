@@ -101,14 +101,14 @@ obstacle_layer:
 #   unknown_threshold:     15     #voxel height
 #   mark_threshold:        0      #voxel height ...
 
-plugins:
-  - { name: static_layer, type: "costmap_2d::StaticLayer" }
-  - { name: dynamic_layer, type: "costmap_2d::StaticLayer" }
-  # - {name: mapping_layer,           type: "costmap_2d::StaticLayer"}
-  # - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
-  - { name: obstacle_layer, type: "costmap_2d::ObstacleLayer" }
-  - {name: inflater_layer, type: "costmap_2d::InflationLayer"}
-  # - { name: obstacle_layer, type: "costmap_2d::RangeSensorLayer" }
+# plugins:
+#   - { name: static_layer, type: "costmap_2d::StaticLayer" }
+#   - { name: dynamic_layer, type: "costmap_2d::StaticLayer" }
+#   # - {name: mapping_layer,           type: "costmap_2d::StaticLayer"}
+#   # - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
+#   - { name: obstacle_layer, type: "costmap_2d::ObstacleLayer" }
+#   - {name: inflater_layer, type: "costmap_2d::InflationLayer"}
+#   # - { name: obstacle_layer, type: "costmap_2d::RangeSensorLayer" }
 
-# VoxelLayer
-# RangeSensorLayer
+# # VoxelLayer
+# # RangeSensorLayer

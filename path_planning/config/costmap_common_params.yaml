@@ -25,6 +25,10 @@ dynamic_layer:
   map_topic: /merged_map
   subscribe_to_updates: true
 
+inflater_layer:
+  inflation_radius: 0.0
+  cost_scaling_factor: 10.0
+
 # mapping_layer:
 #     map_topic: /zedA/map
 #     subscribe_to_updates: true
@@ -103,6 +107,7 @@ plugins:
   # - {name: mapping_layer,           type: "costmap_2d::StaticLayer"}
   # - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
   - { name: obstacle_layer, type: "costmap_2d::ObstacleLayer" }
+  - {name: inflater_layer, type: "costmap_2d::InflationLayer"}
   # - { name: obstacle_layer, type: "costmap_2d::RangeSensorLayer" }
 
 # VoxelLayer

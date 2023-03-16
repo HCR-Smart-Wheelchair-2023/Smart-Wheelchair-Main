@@ -19,9 +19,9 @@ class ArUcoCameraController:
         #     "/aruco_single/pose", PoseStamped, self.aruco_pose_callback
         # )
 
-        self.aruco_transform_sub = rospy.Subscriber(
-            "/aruco_single/transform", TransformStamped, self.aruco_transform_callback
-        )
+        # self.aruco_transform_sub = rospy.Subscriber(
+        #     "/aruco_single/transform", TransformStamped, self.aruco_transform_callback
+        # )
 
         self.aruco_markerArray_sub = rospy.Subscriber(
             "/aruco_single/markers", MarkerArray, self.aruco_markerArray_callback
@@ -78,12 +78,86 @@ class ArUcoCameraController:
         except rospy.ServiceException as e:
             print("service not working yet")
 
-    def aruco_transform_callback(self, transform_stamped):
-        # Extract the position and orientation of the ArUco marker
+    # def aruco_transform_callback(self, transform_stamped):
+    #     # Extract the position and orientation of the ArUco marker
 
-        aruco_position = transform_stamped.transform.translation
+    #     aruco_position = transform_stamped.transform.translation
+    #     print(f"aruco position: {aruco_position}")
+    #     aruco_orientation = transform_stamped.transform.rotation
+    #     print(f"aruco orientation: {aruco_orientation}")
+
+    #     transform_camera_aruco = tf.transformations.concatenate_matrices(
+    #         tf.transformations.translation_matrix(
+    #             [aruco_position.x, aruco_position.y, aruco_position.z]
+    #         ),
+    #         tf.transformations.quaternion_matrix(
+    #             [
+    #                 aruco_orientation.x,
+    #                 aruco_orientation.y,
+    #                 aruco_orientation.z,
+    #                 aruco_orientation.w,
+    #             ]
+    #         ),
+    #     )
+    #     print(f"transform_camera_aruco: {transform_camera_aruco}")
+    #     transform_aruco_camera = tf.transformations.inverse_matrix(
+    #         transform_camera_aruco
+    #     )
+
+    #     transfrom_world_aruco = tf.transformations.concatenate_matrices(
+    #         tf.transformations.translation_matrix(
+    #             [
+    #                 self.marker_transform.transform.translation.x,
+    #                 self.marker_transform.transform.translation.y,
+    #                 self.marker_transform.transform.translation.z,
+    #             ]
+    #         ),
+    #         tf.transformations.quaternion_matrix(
+    #             [
+    #                 self.marker_transform.transform.rotation.x,
+    #                 self.marker_transform.transform.rotation.y,
+    #                 self.marker_transform.transform.rotation.z,
+    #                 self.marker_transform.transform.rotation.w,
+    #             ]
+    #         ),
+    #     )
+    #     print(f"transfrom_world_aruco: {transfrom_world_aruco}")
+
+    #     transform_world_camera = tf.transformations.concatenate_matrices(
+    #         transfrom_world_aruco, transform_aruco_camera
+    #     )
+
+    #     camera_position = tf.transformations.translation_from_matrix(
+    #         transform_world_camera
+    #     )
+
+    #     camera_orientation = tf.transformations.euler_from_matrix(
+    #         transform_world_camera
+    #     )
+
+    #     print(
+    #         f"camera position: {camera_position[0], camera_position[1], camera_position[2]}"
+    #     )
+    #     print(
+    #         f"camera orientation: {camera_orientation[0], camera_orientation[1], camera_orientation[2]}"
+    #     )
+
+    #     self.set_zedPose(
+    #         camera_position[0],
+    #         camera_position[1],
+    #         camera_position[2],
+    #         camera_orientation[0],
+    #         camera_orientation[1],
+    #         camera_orientation[2],
+    #     )
+
+    def aruco_markerArray_callback(self, markerArray):
+        print("markerArray: ", markerArray)
+        print("markerArray id of first marker: ", markerArray.markers[0].id)
+
+        aruco_position = markerArray.markers[0].pose.position
         print(f"aruco position: {aruco_position}")
-        aruco_orientation = transform_stamped.transform.rotation
+        aruco_orientation = markerArray.markers[0].pose.orientation
         print(f"aruco orientation: {aruco_orientation}")
 
         transform_camera_aruco = tf.transformations.concatenate_matrices(
@@ -151,9 +225,7 @@ class ArUcoCameraController:
         #     camera_orientation[2],
         # )
 
-    def aruco_markerArray_callback(self, markerArray):
-        print("markerArray: ", markerArray)
-        print("markerArray id of first marker: ", markerArray.markers[0].id)
+
 
 if __name__ == "__main__":
     rospy.init_node("aruco_camera_controller")

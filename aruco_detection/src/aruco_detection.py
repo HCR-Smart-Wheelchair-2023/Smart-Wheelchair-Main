@@ -131,10 +131,10 @@ class ArUcoCameraController:
             ),
             tf.transformations.quaternion_matrix(
                 [
-                    aruco_orientation.x,
-                    aruco_orientation.y,
-                    aruco_orientation.z,
-                    aruco_orientation.w,
+                    aruco_orientation[0],
+                    aruco_orientation[1],
+                    aruco_orientation[2],
+                    aruco_orientation[3],
                 ]
             ),
         )

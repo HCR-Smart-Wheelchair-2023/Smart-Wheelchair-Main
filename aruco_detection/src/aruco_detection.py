@@ -156,13 +156,12 @@ class ArUcoCameraController:
     #     )
 
     def aruco_markerArray_callback(self, markerArray):
-        rospy.loginfo("aruco_markerArray_callback")
         print("markerArray: ", markerArray)
         print("markerArray id of first marker: ", markerArray.markers[0].id)
 
-        aruco_position = markerArray.markers[0].pose.position
+        aruco_position = markerArray.markers[0].pose.pose.position
         print(f"aruco position: {aruco_position}")
-        aruco_orientation = markerArray.markers[0].pose.orientation
+        aruco_orientation = markerArray.markers[0].pose.pose.orientation
         print(f"aruco orientation: {aruco_orientation}")
 
         transform_camera_aruco = tf.transformations.concatenate_matrices(
@@ -221,14 +220,14 @@ class ArUcoCameraController:
             f"camera orientation: {camera_orientation[0], camera_orientation[1], camera_orientation[2]}"
         )
 
-        # self.set_zedPose(
-        #     camera_position[0],
-        #     camera_position[1],
-        #     camera_position[2],
-        #     camera_orientation[0],
-        #     camera_orientation[1],
-        #     camera_orientation[2],
-        # )
+        self.set_zedPose(
+            camera_position[0],
+            camera_position[1],
+            camera_position[2],
+            camera_orientation[0],
+            camera_orientation[1],
+            camera_orientation[2],
+        )
 
 
 if __name__ == "__main__":

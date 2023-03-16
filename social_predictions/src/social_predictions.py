@@ -17,7 +17,7 @@ from geometry_msgs.msg import Point
 def threshold_array(arr, threshold):
     below_threshold = arr < threshold
     above_threshold = arr >= threshold
-    arr[below_threshold] = 255
+    arr[below_threshold] = 100
     arr[above_threshold] = 0
     return arr
 
@@ -68,7 +68,7 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     # print("Z: ", Z_scaled)
 
     # Setting values to 0:occupied, 255:free for move_base
-    Z_scaled = threshold_array(Z_scaled, 50)
+    Z_scaled = threshold_array(Z_scaled, 25)
     
     z1_flat = Z_scaled.flatten().tolist()
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
@@ -138,7 +138,7 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     # print("Z: ", Z_scaled)
 
     # Setting values to 0:occupied, 255:free for move_base
-    Z_scaled = threshold_array(Z_scaled, 50)
+    Z_scaled = threshold_array(Z_scaled, 25)
     
     z1_flat = Z_scaled.flatten().tolist()
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
@@ -220,13 +220,13 @@ class MapProcessor:
                 (_, _, theta) = tf.transformations.euler_from_quaternion([person.odom.pose.pose.orientation.x, person.odom.pose.pose.orientation.y, person.odom.pose.pose.orientation.z, person.odom.pose.pose.orientation.w])
                 
                 pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, theta, distribution_scale_factor, gaus_sep)
-                print("stat:",vals)
+                # print("stat:",vals)
                 for (i, pos) in enumerate(pos):
                     adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
 
             else:
                 pos, vals = social_predict_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, distribution_scale_factor, t)
-                print("mov:", vals)
+                # print("mov:", vals)
                 for (i, pos) in enumerate(pos):
                     adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
 

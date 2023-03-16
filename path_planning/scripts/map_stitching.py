@@ -21,10 +21,12 @@ class MapStitcher:
     def static_map_callback(self, map_data):
         self.static_map = map_data
         self.static_array = np.array(self.static_map.data).reshape((self.static_map.info.width,self.static_map.info.height))
+        rospy.loginfo(f'received static')
         if self.known_position and self.dynamic_map is not None:
             rospy.loginfo(f'merging')
             self.merge_maps()
         else:
+            rospy.loginfo(f'sending')
             self.pub.publish(self.static_map)
 
 

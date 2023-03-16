@@ -67,7 +67,7 @@ obstacle_layer:
         inf_is_valid: true,
         clear_on_max_reading: true,
         observation_persistence: 0,
-        obstacle_range: 9.0,
+        obstacle_range: 2.0,
         raytrace_range: 9.9,
     }
 

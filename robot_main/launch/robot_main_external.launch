@@ -112,7 +112,7 @@
     <node pkg="path_planning" type="body_processing.py" name="body_processing" output="screen" />
 
     <!-- Start the aruco_detection node -->
-    <node pkg="aruco_detection" type="aruco_detection.py" name="aruco_detection" output="screen" />
+    <!-- <node pkg="aruco_detection" type="aruco_detection.py" name="aruco_detection" output="screen" /> -->
 
     <!--
     <arg name="markerId"        default="582"/>

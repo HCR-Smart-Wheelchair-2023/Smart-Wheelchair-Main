@@ -24,6 +24,8 @@ class MapStitcher:
         if self.known_position and self.dynamic_map is not None:
             rospy.loginfo(f'merging')
             self.merge_maps()
+        else:
+            self.pub.publish(self.static_map)
 
 
     def dynamic_map_callback(self, map_data):

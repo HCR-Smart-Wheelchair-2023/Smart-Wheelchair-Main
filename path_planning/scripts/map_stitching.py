@@ -59,7 +59,7 @@ class MapStitcher:
 
         map_array = np.vectorize(lambda x : 10 if x > 1 or x < 0 else 0)(map_array)
         rospy.loginfo(f'{map_array}')
-        # static_array = np.vectorize(lambda x : 0 if x > 0 else 127)(static_array)
+        static_array = np.vectorize(lambda x : 0 if x > 50 else 100)(static_array)
         map_array = np.vectorize(lambda x : 0 if x > 100 else 10)(map_array)
 
         # static_array[(x_min+500+x_offset):(x_max+500),(y_min+500+y_offset):(y_max+500)] += map_array

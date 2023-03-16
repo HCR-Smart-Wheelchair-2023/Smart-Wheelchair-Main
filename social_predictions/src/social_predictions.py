@@ -68,7 +68,7 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     # print("Z: ", Z_scaled)
 
     # Setting values to 0:occupied, 255:free for move_base
-    Z_scaled = threshold_array(Z_scaled, 25)
+    Z_scaled = threshold_array(Z_scaled, 3)
     
     z1_flat = Z_scaled.flatten().tolist()
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
@@ -138,7 +138,7 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     # print("Z: ", Z_scaled)
 
     # Setting values to 0:occupied, 255:free for move_base
-    Z_scaled = threshold_array(Z_scaled, 25)
+    Z_scaled = threshold_array(Z_scaled, 3)
     
     z1_flat = Z_scaled.flatten().tolist()
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)

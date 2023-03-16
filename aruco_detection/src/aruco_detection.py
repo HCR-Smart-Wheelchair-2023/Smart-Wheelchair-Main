@@ -69,21 +69,25 @@ class ArUcoCameraController:
         # print("markerArray: ", markerArray)
         print("markerArray id of first marker: ", markerArray.markers[0].id)
 
+        aruco_pose = markerArray.markers[0].pose.pose
+
         aruco_position = markerArray.markers[0].pose.pose.position
         print(f"aruco position: {aruco_position}")
 
         # moving average filter
-        self.buffer.append(aruco_position)
+        self.buffer.append(aruco_pose)
         if len(self.buffer) > self.buffer_size:
             self.buffer.pop(0)
 
             if len(self.buffer) == self.buffer_size:
                 average_pose = self.calculate_average_pose()
-                if self.is_pose_noise(aruco_position, average_pose):
+                if self.is_pose_noise(aruco_pose, average_pose, 0.3):
                     rospy.loginfo("Pose is too far from average, discarding...")
                     return
                 else:
-                    aruco_position = average_pose
+                    aruco_position.x = average_pose.position.x
+                    aruco_position.y = average_pose.position.y
+                    aruco_position.z = average_pose.position.z
 
         aruco_orientation = markerArray.markers[0].pose.pose.orientation
         aruco_orientation_euler = tf.transformations.euler_from_quaternion(
@@ -181,7 +185,7 @@ class ArUcoCameraController:
         average_pose.position.z = z_sum / self.buffer_size
         return average_pose
 
-    def is_pose_noise(self, current_pose, average_pose, threshold=0.1):
+    def is_pose_noise(self, current_pose, average_pose, threshold=0.05):
         if abs(current_pose.position.x - average_pose.position.x) > threshold:
             return True
         if abs(current_pose.position.y - average_pose.position.y) > threshold:

@@ -10,7 +10,7 @@ Follow the [install guide](https://github.com/stereolabs/zed-ros-examples/blob/m
 
 To launch the example, open a terminal and launch:
 
-    $ roslaunch zed_rtabmap_example zed_rtabmap.launch
+    $ roslaunch zed_rtabmap_twocam zed_rtabmap.launch
 
 Example of indoor 3D mapping using RTAB-map and ZED
 

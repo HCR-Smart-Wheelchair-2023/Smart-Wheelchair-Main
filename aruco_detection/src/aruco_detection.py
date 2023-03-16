@@ -185,7 +185,7 @@ class ArUcoCameraController:
         average_pose.position.z = z_sum / self.buffer_size
         return average_pose
 
-    def is_pose_noise(self, current_pose, average_pose, threshold=0.1):
+    def is_pose_noise(self, current_pose, average_pose, threshold=0.05):
         if abs(current_pose.position.x - average_pose.position.x) > threshold:
             return True
         if abs(current_pose.position.y - average_pose.position.y) > threshold:

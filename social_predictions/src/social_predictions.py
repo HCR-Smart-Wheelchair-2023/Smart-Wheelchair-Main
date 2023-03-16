@@ -17,8 +17,8 @@ from geometry_msgs.msg import Point
 def threshold_array(arr, threshold):
     below_threshold = arr < threshold
     above_threshold = arr >= threshold
-    arr[below_threshold] = 100
-    arr[above_threshold] = 0
+    arr[below_threshold] = 0
+    arr[above_threshold] = 100
     return arr
 
 def gaussian2d(x, y, x0, y0, sigma_x, sigma_y, theta):

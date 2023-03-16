@@ -69,11 +69,13 @@ class ArUcoCameraController:
         # print("markerArray: ", markerArray)
         print("markerArray id of first marker: ", markerArray.markers[0].id)
 
+        aruco_pose = markerArray.markers[0].pose.pose
+
         aruco_position = markerArray.markers[0].pose.pose.position
         print(f"aruco position: {aruco_position}")
 
         # moving average filter
-        self.buffer.append(aruco_position)
+        self.buffer.append(aruco_pose)
         if len(self.buffer) > self.buffer_size:
             self.buffer.pop(0)
 

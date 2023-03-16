@@ -13,21 +13,21 @@ class MapStitcher:
         rospy.init_node('map_stitcher')
         self.dynamic_map = None
         self.static_map_array = None
-        self.sub1 = rospy.Subscriber('/staticmap', OccupancyGrid, self.static_map_callback)
+        # self.sub1 = rospy.Subscriber('/staticmap', OccupancyGrid, self.static_map_callback)
         self.sub2 = rospy.Subscriber('/zed/map', OccupancyGrid, self.dynamic_map_callback)
         self.pub = rospy.Publisher('/merged_map', OccupancyGrid, queue_size=1)
         rospy.spin()
 
-    def static_map_callback(self, map_data):
-        self.static_map = map_data
-        self.static_array = np.array(self.static_map.data).reshape((self.static_map.info.width,self.static_map.info.height))
-        rospy.loginfo(f'received static')
-        if self.known_position and self.dynamic_map is not None:
-            rospy.loginfo(f'merging')
-            self.merge_maps()
-        else:
-            rospy.loginfo(f'sending')
-            self.pub.publish(self.static_map)
+    # def static_map_callback(self, map_data):
+    #     self.static_map = map_data
+    #     self.static_array = np.array(self.static_map.data).reshape((self.static_map.info.width,self.static_map.info.height))
+    #     rospy.loginfo(f'received static')
+    #     if self.known_position and self.dynamic_map is not None:
+    #         rospy.loginfo(f'merging')
+    #         self.merge_maps()
+    #     else:
+    #         rospy.loginfo(f'sending')
+    #         self.pub.publish(self.static_map)
 
 
     def dynamic_map_callback(self, map_data):
@@ -35,11 +35,23 @@ class MapStitcher:
         rospy.loginfo(f'received maps')
         # if self.known_position and self.static_map is not None:
         #     rospy.loginfo(f'merging')
-        #     self.merge_maps()
+        self.merge_maps()
         # self.pub.publish(self.dynamic_map)
 
     def merge_maps(self):
+
+
+
+
+
         map_array = np.array(self.dynamic_map.data)
+        map_array = np.vectorize(lambda x : 255 if x > 50 else 0)(map_array)
+        self.dynamic_map.data = np.clip(map_array,0,255)
+        self.pub.publish(self.dynamic_map)
+        rospy.loginfo(f'published')
+        return
+
+
         # map_array = np.add(self.static_map_array, map_array)
         # self.dynamic_map.data = map_array
         map_array = map_array.reshape((self.dynamic_map.info.height, self.dynamic_map.info.width))

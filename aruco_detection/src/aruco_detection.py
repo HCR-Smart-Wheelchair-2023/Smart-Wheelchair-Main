@@ -72,6 +72,12 @@ class ArUcoCameraController:
         aruco_pose = markerArray.markers[0].pose.pose
 
         aruco_position = markerArray.markers[0].pose.pose.position
+
+        aruco_position.x, aruco_position.y, aruco_position.z = (
+            aruco_position.x,
+            aruco_position.z,
+            aruco_position.y,
+        )
         print(f"aruco position: {aruco_position}")
 
         # moving average filter
@@ -86,8 +92,8 @@ class ArUcoCameraController:
                     return
                 else:
                     aruco_position.x = average_pose.position.x
-                    aruco_position.y = average_pose.position.y
-                    aruco_position.z = average_pose.position.z
+                    aruco_position.y = average_pose.position.z
+                    aruco_position.z = average_pose.position.y
 
         aruco_orientation = markerArray.markers[0].pose.pose.orientation
         aruco_orientation_euler = tf.transformations.euler_from_quaternion(
@@ -156,7 +162,7 @@ class ArUcoCameraController:
         )
 
         print(
-            f"camera position: {camera_position[0], camera_position[1], camera_position[2]}"
+            f"camera position: {camera_position[0] , camera_position[1], camera_position[2]}"
         )
         print(
             f"camera orientation: {camera_orientation[0], camera_orientation[1], camera_orientation[2]}"
@@ -185,7 +191,7 @@ class ArUcoCameraController:
         average_pose.position.z = z_sum / self.buffer_size
         return average_pose
 
-    def is_pose_noise(self, current_pose, average_pose, threshold=0.05):
+    def is_pose_noise(self, current_pose, average_pose, threshold=0.1):
         if abs(current_pose.position.x - average_pose.position.x) > threshold:
             return True
         if abs(current_pose.position.y - average_pose.position.y) > threshold:

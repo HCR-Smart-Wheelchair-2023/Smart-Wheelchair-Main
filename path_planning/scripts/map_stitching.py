@@ -17,12 +17,13 @@ class MapStitcher:
         self.sub2 = rospy.Subscriber('/zed/map', OccupancyGrid, self.dynamic_map_callback)
         self.pub = rospy.Publisher('/merged_map', OccupancyGrid, queue_size=1)
         self.static_map = None
+        self.static_array = None
         rospy.spin()
 
     def static_map_callback(self, map_data):
         self.static_map = map_data
         self.static_array = np.array(self.static_map.data).reshape((self.static_map.info.width,self.static_map.info.height))
-    #     rospy.loginfo(f'received static')
+        rospy.loginfo(f'received static')
     #     if self.known_position and self.dynamic_map is not None:
     #         rospy.loginfo(f'merging')
     #         self.merge_maps()

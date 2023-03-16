@@ -106,15 +106,9 @@ class ArUcoCameraController:
         )
 
         # swap angles
-        (
-            aruco_orientation_euler[0],
-            aruco_orientation_euler[1],
-            aruco_orientation_euler[2],
-        ) = (
-            aruco_orientation_euler[2],
-            aruco_orientation_euler[0],
-            aruco_orientation_euler[1],
-        )
+        
+            aruco_orientation_euler[0], aruco_orientation_euler[1], aruco_orientation_euler[2],= aruco_orientation_euler[2], aruco_orientation_euler[0],aruco_orientation_euler[1],
+
 
         aruco_orientation_euler_degrees = [
             aruco_orientation_euler[0] * 180 / math.pi,

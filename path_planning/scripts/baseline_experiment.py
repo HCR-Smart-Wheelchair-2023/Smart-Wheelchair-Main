@@ -33,6 +33,7 @@ class HC():
         time.sleep(2)
         
         data.linear.x = 0*scale
+        data.angular.z = 0*scale
         self.pub.publish(data) 
 
 scale = float(sys.argv[1])

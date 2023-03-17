@@ -88,8 +88,8 @@
     <!-- ACML -->
 
     <!-- Goal Processing -->
-     <include file="$(find path_planning)/launch/goal.launch">
-    </include>
+     <!-- <include file="$(find path_planning)/launch/goal.launch">
+    </include> -->
 
     <!-- <node pkg="amcl" type="amcl" name="amcl" output="screen">
         <remap from="scan" to="scan" />

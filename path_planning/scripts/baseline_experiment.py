@@ -12,7 +12,6 @@ class HC():
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
 
     def start(self, scale=1):
-
         data = Twist()
         data.linear.x = 1*scale
         self.pub.publish(data)
@@ -36,7 +35,7 @@ class HC():
         data.angular.z = 0*scale
         self.pub.publish(data) 
 
+        
 scale = float(sys.argv[1])
-
 hc = HC()
 hc.start(scale)

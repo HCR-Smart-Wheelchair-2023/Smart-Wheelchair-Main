@@ -18,12 +18,12 @@ if __name__ == "__main__":
 
     rate = rospy.Rate(10.0)  # Publish at 10 Hz
 
-    print("test1")
-    time.sleep(2)
-
     # angle is in radians
-    angle = math.pi / 2 + math.pi
-    quaternion = tf.transformations.quaternion_from_euler(0, 0, angle)
+    angle_x = 0 * math.pi / 180
+    angle_y = 0 * math.pi / 180
+    angle_z = 90 * math.pi / 180
+
+    quaternion = tf.transformations.quaternion_from_euler(angle_x, angle_y, angle_z)
     print(quaternion)
     while not rospy.is_shutdown():
         try:

@@ -6,6 +6,7 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
+import dynamic_reconfigure.client
 
 from deepface import DeepFace
 import cv2
@@ -19,10 +20,13 @@ class FER():
         self.bridge = CvBridge()
         # initialize emotion as neutral
         self.emotion = 'neutral'
+        self.emotion_prev = 'neutral'
         # again ideally this would be it own node  
         self.cmdvel_sub = rospy.Subscriber('/cmd_vel', Twist, self.cmdvel_cb)
         self.pub_adj = rospy.Publisher('cmd_vel_adj', Twist, queue_size = 10)
         self.scaling_factor = 1
+        # dynamic parameter reconfiguration 
+        self.client = dynamic_reconfigure.client.Client('TrajectoryPlannerROS')
     
     # ideally this would be its own node, figuring out how to adjust the motion based on not only emotion
     def cmdvel_cb(self,data):
@@ -40,7 +44,17 @@ class FER():
         adj_data.linear.x = adj_data.linear.x * self.scaling_factor
 
         self.pub.publish(adj_data)
-    
+
+    def paramAdj(self):
+        # adjust the incoming linear velocity by simple scaling factor 
+        # use most recent emotion recorded
+        if self.emotion == 'neutral':
+            return { 'max_vel_x' : 3 , 'min_vel_x' : 0.4 }
+        elif self.emotion == 'fear' or 'sad' or 'surprise' or 'disgust':
+            return { 'max_vel_x' : 1 , 'min_vel_x' : 0.2 }
+        elif self.emotion == 'happy' or 'angry':
+            return { 'max_vel_x' : 5 , 'min_vel_x' : 3 }
+            
     def start(self, _img_path):
         rr = rospy.Rate(3)
         while not rospy.is_shutdown():
@@ -52,8 +66,25 @@ class FER():
             except:
                 ...
 
+    def startwDynamicParamters(self, _img_path):
+        rr = rospy.Rate(3)
+        while not rospy.is_shutdown():
+            try:
+                self.emotion_prev = self.emotion
+                objs = DeepFace.analyze(img_path = _img_path , actions = ['emotion'])
+                self.emotion = objs[0]['dominant_emotion']
+
+                if self.emotion_prev != self.emotion:
+                    config = self.client.update_configuration(self.paramAdj())
+                    rospy.loginfo(config)
+
+                rr.sleep()
+
+            except:
+                ...
+
 
 
 img_path = '/root/ros_ws/src/emotion_detection/scripts/image/face.jpg'
 fer = FER()
-fer.start(img_path)
+fer.startwDynamicParamters(img_path)

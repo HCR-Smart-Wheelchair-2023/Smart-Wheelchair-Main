@@ -117,7 +117,7 @@ class ArUcoCameraController:
         aruco_orientation = tf.transformations.quaternion_from_euler(
             aruco_orientation_euler[2],
             aruco_orientation_euler[0],
-            0,
+            aruco_orientation_euler[1],
         )
 
         aruco_orientation_euler_degrees = [

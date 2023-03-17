@@ -39,7 +39,7 @@ if __name__ == "__main__":
     rospy.init_node("aruco_camera_controller")
     posesetter = poseSetter()
     # set camera position
-    camera_position = [0.38, 9, 1.45]
+    camera_position = [0.38, 11.26, 1.45]
 
     # set camera angle
     angle_x = 0 * math.pi / 180

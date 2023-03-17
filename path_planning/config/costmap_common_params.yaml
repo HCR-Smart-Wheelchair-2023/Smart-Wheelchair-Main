@@ -22,9 +22,9 @@ static_layer:
   map_topic: /staticmap
   subscribe_to_updates: true
 
-adjusted_layer:
-  map_topic: /adj_map
-  subscribe_to_updates: true
+# adjusted_layer:
+#   map_topic: /adj_map
+#   subscribe_to_updates: true
 
 dynamic_layer:
   map_topic: /merged_map

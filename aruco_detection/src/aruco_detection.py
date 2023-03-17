@@ -28,7 +28,7 @@ class ArUcoCameraController:
         # angle is in radians
         angle_x = 0 * math.pi / 180
         angle_y = 0 * math.pi / 180
-        angle_z = -90 * math.pi / 180
+        angle_z = 0 * math.pi / 180
 
         quaternion = tf.transformations.quaternion_from_euler(angle_x, angle_y, angle_z)
 

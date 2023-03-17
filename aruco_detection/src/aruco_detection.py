@@ -26,7 +26,7 @@ class ArUcoCameraController:
         self.pub = rospy.Publisher("/my_marker/pose", PoseStamped, queue_size=10)
 
         # angle is in radians
-        angle_x = 0 * math.pi / 180
+        angle_x = 90 * math.pi / 180
         angle_y = 0 * math.pi / 180
         angle_z = -90 * math.pi / 180
 

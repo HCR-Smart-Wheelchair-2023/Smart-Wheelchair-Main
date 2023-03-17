@@ -19,7 +19,7 @@ if __name__ == "__main__":
     rate = rospy.Rate(10.0)  # Publish at 10 Hz
 
     # angle is in radians
-    angle_x = 90 * math.pi / 180
+    angle_x = 0 * math.pi / 180
     angle_y = 0 * math.pi / 180
     angle_z = 0 * math.pi / 180
 
@@ -34,9 +34,9 @@ if __name__ == "__main__":
             marker_pose = PoseStamped()
             marker_pose.header.frame_id = "map"
             marker_pose.header.stamp = rospy.Time.now()
-            marker_pose.pose.position.x = 0.87
-            marker_pose.pose.position.y = 7.74
-            marker_pose.pose.position.z = 1.42
+            marker_pose.pose.position.x = 0
+            marker_pose.pose.position.y = 0
+            marker_pose.pose.position.z = 0
             marker_pose.pose.orientation.x = quaternion[0]
             marker_pose.pose.orientation.y = quaternion[1]
             marker_pose.pose.orientation.z = quaternion[2]

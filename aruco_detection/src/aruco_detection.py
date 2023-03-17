@@ -26,7 +26,7 @@ class ArUcoCameraController:
         self.pub = rospy.Publisher("/my_marker/pose", PoseStamped, queue_size=10)
 
         # angle is in radians
-        angle_x = 90 * math.pi / 180
+        angle_x = 0 * math.pi / 180
         angle_y = 0 * math.pi / 180
         angle_z = 0 * math.pi / 180
 
@@ -36,9 +36,9 @@ class ArUcoCameraController:
         self.marker_transform = TransformStamped()
         self.marker_transform.header.frame_id = "/camera_link"
         self.marker_transform.child_frame_id = "/aruco_marker"
-        self.marker_transform.transform.translation.x = 0.87
-        self.marker_transform.transform.translation.y = 7.74
-        self.marker_transform.transform.translation.z = 1.42
+        self.marker_transform.transform.translation.x = 0
+        self.marker_transform.transform.translation.y = 0
+        self.marker_transform.transform.translation.z = 0
         self.marker_transform.transform.rotation.x = quaternion[0]
         self.marker_transform.transform.rotation.y = quaternion[1]
         self.marker_transform.transform.rotation.z = quaternion[2]

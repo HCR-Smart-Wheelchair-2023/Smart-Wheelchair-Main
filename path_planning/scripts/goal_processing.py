@@ -10,29 +10,36 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 class GoalController:
 
-    GOALS = {
-        'kitchen' : [1126,576],
-        'bathroom' : [1126,1076],
-        'table' : [1126,376],
-        'door' : [1126,176]
-    }
-
     def __init__(self) -> None:
         self.goal_label_sub  = rospy.Subscriber('/goal_dest', String, self.receive_goal_label_sub)
         self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
         self.client.wait_for_server()
+        self.GOALS = {
+        'kitchen' : [-576, 1126],
+        'bathroom' : [-1076, 1126],
+        'table' : [-376, 1126],
+        'door' : [-176, 1126]
+    }
 
     def receive_marker(self, marker):
         ...
 
     def receive_goal_label_sub(self, goal_label):
-        if goal_label == 'kitchen':
-            goal = MoveBaseGoal()
-            goal.target_pose.header.frame_id = "map"
-            goal.target_pose.header.stamp = rospy.Time.now()
-            goal.target_pose.pose.position.x = 1126
-            goal.target_pose.pose.position.y = 576
-            self.client.send_goal(goal)
-            rospy.loginfo('Recieved move to'+goal_label+'command')
-            wait = self.client.wait_for_result()
-            rospy.loginfo(f'{wait}')
+        goal = MoveBaseGoal()
+        goal.target_pose.header.frame_id = "map"
+        goal.target_pose.header.stamp = rospy.Time.now()
+        goal.target_pose.pose.position.x = self.GOALS[goal_label][0]
+        goal.target_pose.pose.position.y = self.GOALS[goal_label][1]
+        self.client.send_goal(goal)
+        rospy.loginfo('Recieved move to'+goal_label+'command')
+        wait = self.client.wait_for_result()
+        rospy.loginfo(f'{wait}')
+
+    def start(self):
+        rr = rospy.Rate(3)
+        while not rospy.is_shutdown():
+            rr.sleep()
+
+gc = GoalController()
+gc.start()
+

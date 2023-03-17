@@ -20,33 +20,21 @@ def index():
 def serve_static(path):
     return send_from_directory('static', path)
 
-
 @app.route('/process-image', methods=['POST'])
 def process_image():
     data = request.get_json()
     image_data = data['image_data']
-    # w = int(data['width'])
-    # h = int(data['heigth'])
-    
-    # Remove the "data:image/png;base64," prefix from the data URL
+
     image_data = image_data.replace('data:image/png;base64,', '')
     image_bytes = base64.b64decode(image_data)
     print(image_bytes)
+
     stream = BytesIO(image_bytes)
     # Convert the base64-encoded data to bytes
     image = Image.open(stream).convert('RGB')
-    # print(image)
     stream.close()
-
-    # image_bytes = (base64.b64decode(image_data))
     print(type(image))
-    # with open("output.png", "wb") as f:
-    #     f.write(image_bytes)
-    # Open the image using PIL
-    # image = Image.open(image_bytes)
     image.save('../../emotion_detection/scripts/image/face.jpg')
-    # Do some processing on the image
-    # ...
 
     # Return a result
     return 'Image processed successfully'
@@ -56,7 +44,7 @@ def get_goal():
     data = request.get_json()
     goal = data['goal']
     print('Goal: '+goal)
-    with open("./goal.txt", "w") as f:
+    with open('/root/ros_ws/src/user_interface/scripts/goal.txt', "w") as f:
         f.write(goal)
     return 'New goal'
 

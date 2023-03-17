@@ -13,6 +13,9 @@ build-jetson:
 run-jetson:
 	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision && sudo -S ./run_ros_container.sh"
 
+start-jetson:
+	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision && sudo -S ./start_ros_container.sh"
+
 
 run-jetson-core:
 	xhost +si:localuser:root

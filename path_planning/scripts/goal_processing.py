@@ -15,10 +15,10 @@ class GoalController:
         self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
         self.client.wait_for_server()
         self.GOALS = {
-        'kitchen' : [576, 1126],
-        'bathroom' : [1076, 1126],
-        'table' : [376, 1126],
-        'door' : [176, 1126]
+        'kitchen' : [-576, 1126],
+        'bathroom' : [-1076, 1126],
+        'table' : [-376, 1126],
+        'door' : [-176, 1126]
     }
 
     def receive_marker(self, marker):

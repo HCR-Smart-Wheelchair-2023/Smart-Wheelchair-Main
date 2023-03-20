@@ -32,7 +32,7 @@ class GoalController:
         goal.target_pose.pose.position.x = self.GOALS[goal_label.data][0]
         goal.target_pose.pose.position.y = self.GOALS[goal_label.data][1]
         self.client.send_goal(goal)
-        rospy.loginfo('Recieved move to'+goal_label+'command')
+        rospy.loginfo('Recieved move to'+goal_label.data+'command')
         wait = self.client.wait_for_result()
         rospy.loginfo(f'{wait}')
 

@@ -77,9 +77,9 @@ class ArUcoCameraController:
         aruco_position = markerArray.markers[0].pose.pose.position
 
         aruco_position.x, aruco_position.y, aruco_position.z = (
+            aruco_position.z,
             aruco_position.x,
             aruco_position.y,
-            aruco_position.z,
         )
 
         print(f"aruco position: {aruco_position}")
@@ -115,9 +115,9 @@ class ArUcoCameraController:
         # aruco_orientation_euler[0], aruco_orientation_euler[1],aruco_orientation_euler[2]= aruco_orientation_euler[2],aruco_orientation_euler[0],aruco_orientation_euler[1]
 
         aruco_orientation = tf.transformations.quaternion_from_euler(
+            aruco_orientation_euler[2],
             aruco_orientation_euler[0],
             aruco_orientation_euler[1],
-            aruco_orientation_euler[2],
         )
 
         aruco_orientation_euler_degrees = [

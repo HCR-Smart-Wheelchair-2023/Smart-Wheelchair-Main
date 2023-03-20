@@ -1,6 +1,6 @@
     body {
-        background-color: #add8e6;
-        /* background-image: linear-gradient(to bottom, #ffffff, #f2f2f2); */
+      background-color: rgb(173, 216, 230);
+      /* background-image: linear-gradient(to bottom, #ffffff, #f2f2f2); */
       }
 
       .button-wrapper {
@@ -8,16 +8,17 @@
       }
       
       .button {
-        background-color: #1d1fa1;
+        background-color: rgb(29, 31, 161);
+        position: relative;
         color: white;
         padding: 10px 20px;
-        border: 15px solid #00054d;
+        border: 15px solid rgb(0, 5, 77);
         border-radius: 5px;
         font-size: 16px;
         cursor: pointer;
         margin-right: 50px;
-        width: 150px;
-        height: 150px;
+        width: 200px;
+        height: 200px;
       }
 
       .button:hover {
@@ -28,6 +29,17 @@
         background-color: #3e8e41;
         box-shadow: 0 5px #666;
         transform: translateY(4px);
+    }
+    .button img {
+    
+      width: 130px;
+      height: 130px;
+      /* border: 1px solid #ccc; */
+      /* background-color: #eee; */
+    }
+    .icon {
+      width: 130px;
+      height: 100px;
     }
 
          /* h1 {

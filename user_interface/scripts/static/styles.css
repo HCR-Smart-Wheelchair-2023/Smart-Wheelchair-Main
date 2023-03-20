@@ -6,6 +6,14 @@
       .button-wrapper {
         text-align: center;
       }
+
+      .textentry {
+        position: absolute;
+        top:       165px;  /* I usually locate relative to top  */
+        left:      30px; /* left corner of container (screen) */
+        width: 1000px;
+        height: 150px;
+      }
       
       .button {
         background-color: rgb(29, 31, 161);
@@ -38,8 +46,11 @@
       /* background-color: #eee; */
     }
     .icon {
-      width: 130px;
-      height: 100px;
+      position: absolute;
+      top:       150px;  /* I usually locate relative to top  */
+      left:      1050px; /* left corner of container (screen) */
+      width: 180px;
+      height: 180px;
     }
 
          /* h1 {

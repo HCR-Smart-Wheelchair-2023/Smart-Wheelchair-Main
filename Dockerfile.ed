@@ -1,4 +1,5 @@
-FROM personalroboticsimperial/prl:ub2004-noetic-openCV420wContrib
+FROM ros:noetic
+# FROM personalroboticsimperial/prl:ub2004-noetic-openCV420wContrib
 # If you have a GPU with an architecture up to Turing (not included), use this to enable CUDA with OpenCV
 # FROM personalroboticsimperial/prl:ub2004-noetic-cu101-openCV420
 
@@ -29,22 +30,26 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -y  && \
 RUN DEBIAN_FRONTEND=noninteractive apt install -y python3-pip && pip install flask
 
 WORKDIR /root/ros_ws/src
+COPY emotion_detection/requirements.txt requirements.txt
+RUN DEBIAN_FRONTEND=noninteractive pip install -r requirements.txt
+RUN DEBIAN_FRONTEND=noninteractive pip install deepface
+
+WORKDIR /root/ros_ws/src
 COPY robot_main robot_main/
 COPY navigation/ navigation/
 COPY user_interface/ user_interface/
 COPY emotion_detection/ emotion_detection/
 
 WORKDIR /root/ros_ws/src
-RUN DEBIAN_FRONTEND=noninteractive pip install -r emotion_detection/requirements.txt
-RUN DEBIAN_FRONTEND=noninteractive pip install deepface
-
-WORKDIR /root/ros_ws/src
-RUN apt-get install ros-noetic-realsense2-camera -y
+# RUN apt-get install ros-noetic-realsense2-camera -y
 
 WORKDIR /root/ros_ws/src
 
 RUN cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build
 
 # CMD cd .. && source /opt/ros/noetic/setup.bash && source ./devel/setup.bash && roscore
-CMD cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build && source ./devel/setup.bash && bash
+WORKDIR /root/ros_ws
+CMD ./src/user_interface/start.sh
+
+# CMD cd .. && source /opt/ros/noetic/setup.bash && catkin init && catkin build && source ./devel/setup.bash && bash
 # CMD source ../devel/setup.bash && roslaunch arnie_main main_external.launch --screen

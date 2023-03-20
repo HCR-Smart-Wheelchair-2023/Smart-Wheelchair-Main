@@ -151,7 +151,7 @@ build-ed:
 	DOCKER_BUILDKIT=1 docker build -t ed:latest \
 	-f Dockerfile.ed .
 
-run-ed-core:
+run-ed:
 	xhost +si:localuser:root
 	docker stop ed || true && docker rm ed || true
 	docker run \

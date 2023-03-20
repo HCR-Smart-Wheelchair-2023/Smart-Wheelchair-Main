@@ -10,7 +10,7 @@ const doorBut = document.getElementById('door');
 const kitchenBut = document.getElementById('kitchen');
 const tableBut = document.getElementById('table');
 const bathroomBut = document.getElementById('bathroom');
-const img = document.getElementById("img");
+const image = document.getElementById("img");
 
 doorBut.addEventListener('click',publishMessage('door'));
 kitchenBut.addEventListener('click',publishMessage('kitchen'));
@@ -38,7 +38,8 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the door';
     window.speechSynthesis.speak(msg);
-    img.src = "static\door.png";
+    img.src = "static/door.png";
+    inputField.value = "Sure, going to the door";
     post_dest('door');
     }
 
@@ -46,7 +47,8 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the kitchen';
     window.speechSynthesis.speak(msg);
-    img.src = "static\kitchen.png";
+    img.src = "static/kitchen.png";
+    inputField.value = "Sure, going to the kitchen";
     post_dest('kitchen');
   }
 
@@ -54,18 +56,21 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the table';
     window.speechSynthesis.speak(msg);
-    img.src = "table.png";
+    img.src = "static/table.png";
+    inputField.value = "Sure, going to the table";
     post_dest('table')
   }
   function bathroom() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the bathroom';
     window.speechSynthesis.speak(msg);
-    img.src = "bathroom.png";
+    img.src = "static/bathroom.png";
+    inputField.value = "Sure, going to the bathroom";
     post_dest('bathroom')
   }
 
   function startListening() {
+    img.src = "static/mic.png";
     const recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;

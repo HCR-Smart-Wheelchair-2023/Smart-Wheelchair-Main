@@ -24,10 +24,10 @@ if __name__ == "__main__":
     angle_z = 0 * math.pi / 180
 
     quaternion = tf.transformations.quaternion_from_euler(angle_x, angle_y, angle_z)
-    print(quaternion)
+    # print(quaternion)
     while not rospy.is_shutdown():
         try:
-            print("test2")
+            # print("test2")
             # Get the current transformation between two frames
 
             # create a PoseStamped message for the marker
@@ -43,7 +43,7 @@ if __name__ == "__main__":
             marker_pose.pose.orientation.w = quaternion[3]
             # Publish the message
             pub.publish(marker_pose)
-            print(marker_pose)
+            # print(marker_pose)
 
         except (
             tf.LookupException,

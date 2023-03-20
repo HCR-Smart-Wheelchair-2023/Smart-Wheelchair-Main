@@ -50,16 +50,16 @@ class rmv_ros_simple:
         #subscriber
         if topic_name == "/joy": topic_name="/cmd_vel"
         self.sub = rospy.Subscriber(topic_name, Twist, self.call_back_twist, queue_size=1)
-        rospy.loginfo("Subscribed to %s", topic_name)
+        #rospy.loginfo("Subscribed to %s", topic_name)
 
     def run(self):
         while not rospy.is_shutdown():
-            #rospy.loginfo("Sending %s, %s", str(self.ang_deg_cmd), str(self.lin_cmd))
+            ##rospy.loginfo("Sending %s, %s", str(self.ang_deg_cmd), str(self.lin_cmd))
             self.socket_send(('x:'+self.dec2hex(self.ang_deg_cmd,2)+'y:'+self.dec2hex(self.lin_cmd,2)+self.cmd_event+'\r'))
             sleep(0.1)
 
     def shutdown(self):
-        rospy.loginfo("Closing Socket")
+        #rospy.loginfo("Closing Socket")
         self.ip_socket.shutdown(socket.SHUT_RDWR)
         self.ip_socket.close()
 
@@ -71,9 +71,9 @@ class rmv_ros_simple:
             rospy.logerr("Failed to create ipsocket")
             sys.exit()
 
-        rospy.loginfo("Joystick over IP server socket created")
+        #rospy.loginfo("Joystick over IP server socket created")
         ipsocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        rospy.loginfo("Attempting connection to "+self.pi_ip+':'+self.pi_port)
+        #rospy.loginfo("Attempting connection to "+self.pi_ip+':'+self.pi_port)
         reconnect = True
 
         while reconnect:
@@ -88,7 +88,7 @@ class rmv_ros_simple:
                     rospy.logwarn("Connection refused... trying again")
                     reconnect = True
 
-        rospy.loginfo("Socket connected to:" + self.pi_ip + ':' + self.pi_port)
+        #rospy.loginfo("Socket connected to:" + self.pi_ip + ':' + self.pi_port)
 
         return(ipsocket)
 
@@ -123,7 +123,7 @@ class rmv_ros_simple:
         	self.lin_cmd = 0
 
     def call_back_twist(self, cmd_msg):
-        # rospy.loginfo(cmd_msg)
+        # #rospy.loginfo(cmd_msg)
         # parse the command signals
         amplifier = 10
         self.ang_deg_cmd = np.clip(cmd_msg.angular.z/1.57*amplifier, -1, 1)
@@ -171,6 +171,6 @@ if __name__ == "__main__":
         rmv.run()
     except KeyboardInterrupt:
         rmv.shutdown()
-        rospy.loginfo("CAN disconnected")
-        rospy.loginfo("Connection Off")
-        rospy.loginfo("Socket down")
+        #rospy.loginfo("CAN disconnected")
+        #rospy.loginfo("Connection Off")
+        #rospy.loginfo("Socket down")

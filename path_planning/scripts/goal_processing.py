@@ -32,14 +32,14 @@ class GoalController:
         goal = MoveBaseGoal()
         goal.target_pose.header.frame_id = "map"
         goal.target_pose.header.stamp = rospy.Time.now()
-        rospy.loginfo(f'{self.__dict__}')
+        #rospy.loginfo(f'{self.__dict__}')
         goal.target_pose.pose.position.x = self.GOALS[goal_label.data][0]
         goal.target_pose.pose.position.y = self.GOALS[goal_label.data][1]
         self.client.send_goal(goal)
-        rospy.loginfo('Recieved move to'+goal_label.data+'command')
-        rospy.loginfo(f'Goal {goal}')
+        #rospy.loginfo('Recieved move to'+goal_label.data+'command')
+        #rospy.loginfo(f'Goal {goal}')
         wait = self.client.wait_for_result()
-        rospy.loginfo(f'{wait}')
+        #rospy.loginfo(f'{wait}')
 
     # def start(self):
     #     rr = rospy.Rate(3)

@@ -19,6 +19,7 @@
     </include>
     <!-- <include file="$(find path_planning)/launch/pose.launch">
     </include> -->
+    <node pkg="path_planning" type="laser_path.py" name="laser_path" output="screen" />
 
     <group if="$(eval arg('mode') == 'sim')">
         <!-- Odom is always correct to no need for correction between odom and maps -->
@@ -115,7 +116,7 @@
     <node pkg="path_planning" type="body_processing.py" name="body_processing" output="screen" />
 
     <!-- Start the aruco_detection node -->
-    <node pkg="aruco_detection" type="aruco_detection.py" name="aruco_detection" output="screen" /> 
+    <node pkg="aruco_detection" type="aruco_detection.py" name="aruco_detection" output="screen" />
     <node pkg="aruco_detection" type="my_pose_publisher.py" name="my_pose_publisher" output="screen" />
 
     <!--

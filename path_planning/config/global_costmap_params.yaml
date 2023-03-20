@@ -9,6 +9,6 @@ global_costmap:
   rolling_window: true
   inflation_radius: 0.1
   resolution: 0.05
-  plugins:
-   - {name: static_layer,        type: "costmap_2d::StaticLayer"}
+  # plugins:
+  #  - {name: static_layer,        type: "costmap_2d::StaticLayer"}
   #  - {name: adjusted_layer,        type: "costmap_2d::StaticLayer"}

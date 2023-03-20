@@ -4,24 +4,24 @@ This Node takes person detection data from the zed, converts it to the world fra
 """
 
 import rospy
-import tf
-import tf2_ros
-import tf2_geometry_msgs
-import sys
-from nav_msgs.msg import PathMessage
-import random
+# import tf
+# import tf2_ros
+# import tf2_geometry_msgs
+# import sys
+from nav_msgs.msg import Path
+# import random
 import numpy
 import numpy as np
-from paho.mqtt import client as mqtt_client
+# from paho.mqtt import client as mqtt_client
 import json
-from json import JSONEncoder
+# from json import JSONEncoder
 import matplotlib.pyplot as mp
 import serial
-import time
-from time import sleep
+# import time
+# from time import sleep
 import serial.tools.list_ports
 import math
-import keyboard
+# import keyboard
 
 matrix = []
 off = numpy.zeros(400, dtype=object)
@@ -29,12 +29,12 @@ off = numpy.zeros(400, dtype=object)
 binary_list = numpy.zeros(400, dtype=object)
 tuple_list = numpy.zeros((400,4), dtype=object)
 
-arduino = serial.Serial(port='/dev/cu.usbserial-14410', baudrate=9600, timeout=0.01)
+arduino = serial.Serial(port='/dev/ttyACM1', baudrate=9600, timeout=0.01)
 
 DIST = 400
 angle = -45
 rotation = numpy.matrix([[math.cos(math.radians(angle)), -math.sin(math.radians(angle))], [math.sin(math.radians(angle)), math.cos(math.radians(angle))]])
-reflection = numpy.matrix([[1, 0],[0, -1]])
+reflection = numpy.matrix([[1, 0],[0, 1]])
 
 
 # {"array": [[1, 1], [40, 120], [150, 250], [180, 350], [400, 400]]}
@@ -69,40 +69,40 @@ def write(x):
 
 class LaserPathController:
 
-    MAX_DISTANCE = 1
+    MAX_DISTANCE = 1000000
 
     def __init__(self) -> None:
-        topic = '/zed/zed_node/obj_det/objects'
-        self.sub = rospy.Subscriber(topic, PathMessage, self.receive_path)
+        topic = '/move_base/TrajectoryPlannerROS/local_plan'
+        self.sub = rospy.Subscriber(topic, Path, self.receive_path)
 
     def receive_path(self, path):
-
+        rospy.loginfo('hello!!!!!!!!!!!!!')
         points = [(pose.pose.position.x, pose.pose.position.y) for pose in path.poses]
         points = [ point for point in points if (
-            ((np.pow(point[0],2)+np.pow(point[1],2) )< np.pow(self.MAX_DISTANCE,2))
+            ((math.pow(point[0],2)+math.pow(point[1],2) )< math.pow(self.MAX_DISTANCE,2))
         )]
         matrix = numpy.asarray(points)
-        matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
-        coeff = numpy.polyfit(matrix[:,0],matrix[:,1],2)
+        # matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
+        coeff = numpy.polyfit(matrix[:,0],matrix[:,1],3)
         inc = 1
-        # xn = numpy.arange(matrix[0,0], (matrix[len(matrix)-1,0]) + inc, inc)
-        xn = numpy.arange(0, 401, 1)
+        xn = numpy.arange(matrix[0,0], (matrix[len(matrix)-1,0]) + inc, inc)
+        # xn = numpy.arange(0, 401, 1)
         yn = numpy.poly1d(coeff)
         mp.plot( xn,yn(xn),matrix[:,0],matrix[:,1],'o')
         mp.show()
         yn_list = numpy.round(yn(xn))
-
+        rospy.loginfo('hello!!!!!!!!!!!!!')
         print(yn_list)
         print("equation= ",yn)
         for i in range(len(xn)):
-            if i <= 400:
+            if i < 400:
                 binary_list[i] = (xn[i], int(yn_list[i]))
                 print(binary_list[i])
 
         final_tuple = []
         for i in range(len(xn)):
             tuple_list[0] = (0, 0, 0, 0)
-            if i <= 400:
+            if i < 400:
                 x_inc = xn[i]-xn[i-1]
                 y_inc = yn_list[i]-yn_list[i-1]
 
@@ -152,5 +152,5 @@ class LaserPathController:
 
 if __name__ == '__main__':
     rospy.init_node('laser_controller')
-    mp = LaserPathController()
+    pathcontroller = LaserPathController()
     rospy.spin()

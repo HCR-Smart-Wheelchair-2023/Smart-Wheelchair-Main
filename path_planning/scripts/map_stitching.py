@@ -23,20 +23,20 @@ class MapStitcher:
     def static_map_callback(self, map_data):
         self.static_map = map_data
         self.static_array = np.array(self.static_map.data).reshape((self.static_map.info.width,self.static_map.info.height))
-        rospy.loginfo(f'received static')
+        # #rospy.loginfo(f'received static')
     #     if self.known_position and self.dynamic_map is not None:
-    #         rospy.loginfo(f'merging')
+    #         #rospy.loginfo(f'merging')
     #         self.merge_maps()
     #     else:
-    #         rospy.loginfo(f'sending')
+    #         #rospy.loginfo(f'sending')
     #         self.pub.publish(self.static_map)
 
 
     def dynamic_map_callback(self, map_data):
         self.dynamic_map = map_data
-        rospy.loginfo(f'received maps')
+        # #rospy.loginfo(f'received maps')
         if self.known_position and self.static_map is not None:
-            rospy.loginfo(f'merging')
+            # #rospy.loginfo(f'merging')
             self.merge_maps()
         else:
             self.pub.publish(self.dynamic_map)
@@ -46,19 +46,19 @@ class MapStitcher:
 
         map_array = np.array(self.dynamic_map.data)
         map_array = map_array.reshape((self.dynamic_map.info.height, self.dynamic_map.info.width))
-        rospy.loginfo(str(self.dynamic_map.info))
+        # #rospy.loginfo(str(self.dynamic_map.info))
         static_array = np.copy(self.static_array)
         x_min = int(float(self.dynamic_map.info.origin.position.y) / 0.05)
         x_max = int(float(self.dynamic_map.info.origin.position.y) / 0.05 + self.dynamic_map.info.height)
         y_min = int(float(self.dynamic_map.info.origin.position.x) / 0.05)
         y_max = int(float(self.dynamic_map.info.origin.position.x) / 0.05 + self.dynamic_map.info.width)
 
-        rospy.loginfo(f'{x_min},{x_max},{y_min},{y_max},{self.dynamic_map.info.height}')
+        # #rospy.loginfo(f'{x_min},{x_max},{y_min},{y_max},{self.dynamic_map.info.height}')
         x_offset = (x_max-x_min) - map_array.shape[0]
         y_offset = (y_max-y_min) - map_array.shape[1]
 
         map_array = np.vectorize(lambda x : 100 if x > 1 or x < 0 else 0)(map_array)
-        rospy.loginfo(f'{map_array}')
+        # #rospy.loginfo(f'{map_array}')
         static_array = np.vectorize(lambda x : 0 if x > 50 else 100)(static_array)
         map_array = np.vectorize(lambda x : 0 if x > 50 else 100)(map_array)
 
@@ -69,7 +69,7 @@ class MapStitcher:
         static_array = np.vectorize(lambda x : 100 if x < 50 else 0)(static_array)
         self.static_map.data = [int(x) for x in static_array]
         self.pub.publish(self.static_map)
-        rospy.loginfo(f'published')
+        # #rospy.loginfo(f'published')
         # map_array = np.pad(map_array, pad_width=((int(self.dynamic_map))))
         # self.static_map_array.reshape((map_data.info.height, map_data.info.width))
         #     padding = max(int(map_data.info.height - self.dynamic_map.info.height), 0)

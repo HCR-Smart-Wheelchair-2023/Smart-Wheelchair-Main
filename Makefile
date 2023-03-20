@@ -130,6 +130,8 @@ run-sim-core:
 		-v $(current_dir)/aruco_detection/:/root/ros_ws/src/aruco_detection \
 		-v $(current_dir)/wheele_sim_control/:/root/ros_ws/src/wheele_sim_control \
 	    --privileged \
+		--device=/dev/ttyACM1 \
+		--device=/dev/ttyACM0 \
 		--network host \
 		--name sim \
 		-it \

@@ -76,7 +76,7 @@ class FER():
 
                 if self.emotion_prev != self.emotion:
                     config = self.client.update_configuration(self.paramAdj())
-                    rospy.loginfo(config)
+                    #rospy.loginfo(config)
 
                 rr.sleep()
 

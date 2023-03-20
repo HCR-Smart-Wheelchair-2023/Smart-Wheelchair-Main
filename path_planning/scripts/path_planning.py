@@ -34,11 +34,11 @@ class PathPlanningNode:
         # Process point cloud data from "/obj_map"
         points = point_cloud2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
         for p in points:
-            rospy.loginfo("Point: (%.2f, %.2f, %.2f)", p[0], p[1], p[2])
+            #rospy.loginfo("Point: (%.2f, %.2f, %.2f)", p[0], p[1], p[2])
 
         # Plan path to target
         if self.target:
-            rospy.loginfo("Target: (%.2f, %.2f, %.2f)", self.target.x, self.target.y, self.target.z)
+            #rospy.loginfo("Target: (%.2f, %.2f, %.2f)", self.target.x, self.target.y, self.target.z)
 
             # Generate and publish Twist message for turtle simulation
             twist = Twist()

@@ -14,15 +14,17 @@
         <img id="photo" alt="The screen capture will appear in this box." />
     </div> -->
     <script src="static/ui_n_video.js"></script>
-    <input type="text" id="inputField">
+    <input type="text" style="font-size:100px" id="inputField" class="textentry">
     <video id="videoElement" autoplay width="640" heigth="640"></video>
+    <img width="100" height="100" id="img" class="icon"/> 
+
     <div class="button-wrapper">
-        <button id="door" class="button" onclick="door()">door</button>
-        <button id="kitchen" class="button" onclick="kitchen()">kitchen</button>
-        <button id="table" class="button" onclick="table()">table</button>
-        <button id="bathroom" class="button" onclick="bathroom()">bathroom</button>
-        <button id="voice_recog" class="button" onclick="startListening()">voice mode</button>
-        <button id="video" class="button" onclick="startCamera()">start camera</button>
+        <button id="door" class="button" onclick="door()"><img src="static\door.png" alt="Button icon"></button>
+        <button id="kitchen" class="button" onclick="kitchen()"><img src="static\kitchen.png" alt="Button icon"></button>
+        <button id="table" class="button" onclick="table()"><img src="static\table.png" alt="Button icon"></button>
+        <button id="bathroom" class="button" onclick="bathroom()"><img src="static\bathroom.png" alt="Button icon"></button>
+        <button id="voice_recog" class="button" onclick="startListening()"><img src="static\mic.png" alt="Button icon"></button>
+        <button id="video" class="button" onclick="startCamera()"><img src="static\camera.png" alt="Button icon"></button>
         <button id="toggle" class="button" onclick="toggleColor()"></button>
 
     </div>

@@ -4,7 +4,8 @@
       }
 
       .button-wrapper {
-        text-align: center;
+        /* text-align: center; */
+        align-items:baseline  ;
       }
 
       .textentry {

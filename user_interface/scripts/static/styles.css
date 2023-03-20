@@ -9,7 +9,7 @@
 
       .textentry {
         position: absolute;
-        top:       165px;  /* I usually locate relative to top  */
+        top:       300px;  /* I usually locate relative to top  */
         left:      30px; /* left corner of container (screen) */
         width: 1000px;
         height: 150px;
@@ -47,7 +47,7 @@
     }
     .icon {
       position: absolute;
-      top:       150px;  /* I usually locate relative to top  */
+      top:       300px;  /* I usually locate relative to top  */
       left:      1050px; /* left corner of container (screen) */
       width: 180px;
       height: 180px;
@@ -67,7 +67,7 @@
       } */
       
       h1 {
-        font-size: 72px;
+        font-size: 100px;
         font-weight: bold;
         font-family:Arial, Helvetica, sans-serif;
         color: #ffcc00;

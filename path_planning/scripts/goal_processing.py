@@ -11,15 +11,17 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 class GoalController:
 
     def __init__(self) -> None:
+        rospy.init_node('goal_processing')
         self.goal_label_sub  = rospy.Subscriber('/goal_dest', String, self.receive_goal_label_sub)
         self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
         self.client.wait_for_server()
         self.GOALS = {
-        'kitchen' : [-576, 1126],
-        'bathroom' : [-1076, 1126],
-        'table' : [-376, 1126],
-        'door' : [-176, 1126]
-    }
+            'kitchen' : [-576, 1126],
+            'bathroom' : [-1076, 1126],
+            'table' : [-376, 1126],
+            'door' : [-176, 1126]
+        }
+        rospy.spin()
 
     def receive_marker(self, marker):
         ...
@@ -42,4 +44,3 @@ class GoalController:
 
 gc = GoalController()
 gc.start()
-

@@ -10,6 +10,7 @@ const doorBut = document.getElementById('door');
 const kitchenBut = document.getElementById('kitchen');
 const tableBut = document.getElementById('table');
 const bathroomBut = document.getElementById('bathroom');
+const img = document.getElementById("img");
 
 doorBut.addEventListener('click',publishMessage('door'));
 kitchenBut.addEventListener('click',publishMessage('kitchen'));
@@ -37,6 +38,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the door';
     window.speechSynthesis.speak(msg);
+    img.src = "static\door.png";
     post_dest('door');
     }
 
@@ -44,6 +46,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the kitchen';
     window.speechSynthesis.speak(msg);
+    img.src = "static\kitchen.png";
     post_dest('kitchen');
   }
 
@@ -51,12 +54,14 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the table';
     window.speechSynthesis.speak(msg);
+    img.src = "table.png";
     post_dest('table')
   }
   function bathroom() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the bathroom';
     window.speechSynthesis.speak(msg);
+    img.src = "bathroom.png";
     post_dest('bathroom')
   }
 

@@ -70,7 +70,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   }
 
   function startListening() {
-    img.src = "static/mic.png";
+    
     const recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;

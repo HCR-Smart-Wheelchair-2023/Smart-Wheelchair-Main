@@ -30,7 +30,7 @@ binary_list = numpy.zeros(400, dtype=object)
 tuple_list = numpy.zeros((400,4), dtype=object)
 port_list = serial.tools.list_ports.comports()
 # print(port_list[2].device)
-arduino = serial.Serial(port=port_list[2].device, baudrate=9600, timeout=0.01)
+arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=0.01)
 
 DIST = 400
 angle = -45
@@ -77,24 +77,24 @@ class LaserPathController:
         self.sub = rospy.Subscriber(topic, Path, self.receive_path)
 
     def receive_path(self, path):
-        rospy.loginfo('hello!!!!!!!!!!!!!')
         points = [(pose.pose.position.x, pose.pose.position.y) for pose in path.poses]
         points = [ point for point in points if (
             ((math.pow(point[0],2)+math.pow(point[1],2) )< math.pow(self.MAX_DISTANCE,2))
         )]
         matrix = numpy.asarray(points)
+        rospy.loginfo(matrix)
         matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
         matrix = matrix - matrix[0,0]
         scale = 400/matrix[len(matrix)-1,0]
         matrix = scale*matrix
         # matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
-        coeff = numpy.polyfit(matrix[:,0],matrix[:,1],3)
+        coeff = numpy.polyfit(matrix[:,0],matrix[:,1],2)
         inc = 1
         xn = numpy.arange(matrix[0,0], (matrix[len(matrix)-1,0]) + inc, inc)
         # xn = numpy.arange(0, 401, 1)
         yn = numpy.poly1d(coeff)
-        mp.plot( xn,yn(xn),matrix[:,0],matrix[:,1],'o')
-        mp.show()
+        # mp.plot( xn,yn(xn),matrix[:,0],matrix[:,1],'o')
+        # mp.show()
         yn_list = numpy.round(yn(xn))
         rospy.loginfo('hello!!!!!!!!!!!!!')
         print(yn_list)

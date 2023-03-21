@@ -11,16 +11,16 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 class GoalController:
 
     def __init__(self) -> None:
-        rospy.init_node('goal_processing')
-        self.goal_label_sub  = rospy.Subscriber('/goal_dest', String, self.receive_goal_label_sub)
-        # self.pub = rospy.Publisher('/move_base/simple/goal', MoveBaseGoal, queue_size=10)
-        self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
         self.GOALS = {
             'kitchen' : [2.58, 1.96],
             'bathroom' : [5.00, 5.00],
             'table' : [3.26,4.10],
             'door' : [1.00, 1.50]
         }
+        rospy.init_node('goal_processing')
+        self.goal_label_sub  = rospy.Subscriber('/goal_dest', String, self.receive_goal_label_sub)
+        # self.pub = rospy.Publisher('/move_base/simple/goal', MoveBaseGoal, queue_size=10)
+        self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
         self.client.wait_for_server()
         rospy.spin()
 

@@ -36,6 +36,9 @@ class GoalController:
         #rospy.loginfo(f'{self.__dict__}')
         goal.target_pose.pose.position.x = self.GOALS[goal_label.data][0]
         goal.target_pose.pose.position.y = self.GOALS[goal_label.data][1]
+
+        goal.target_pose.pose.orientation.z = 0.342
+        goal.target_pose.pose.orientation.w = 0.940
         self.client.send_goal(goal)
         #rospy.loginfo('Recieved move to'+goal_label.data+'command')
         #rospy.loginfo(f'Goal {goal}')

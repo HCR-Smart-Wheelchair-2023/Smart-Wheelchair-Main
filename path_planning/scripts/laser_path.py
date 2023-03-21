@@ -88,7 +88,7 @@ class LaserPathController:
         scale = 400/matrix[len(matrix)-1,0]
         matrix = scale*matrix
         # matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
-        coeff = numpy.polyfit(matrix[:,0],matrix[:,1],3)
+        coeff = numpy.polyfit(matrix[:,0],matrix[:,1],2)
         inc = 1
         xn = numpy.arange(matrix[0,0], (matrix[len(matrix)-1,0]) + inc, inc)
         # xn = numpy.arange(0, 401, 1)

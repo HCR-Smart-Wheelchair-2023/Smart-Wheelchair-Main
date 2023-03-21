@@ -77,12 +77,12 @@ class LaserPathController:
         self.sub = rospy.Subscriber(topic, Path, self.receive_path)
 
     def receive_path(self, path):
-        rospy.loginfo('hello!!!!!!!!!!!!!')
         points = [(pose.pose.position.x, pose.pose.position.y) for pose in path.poses]
         points = [ point for point in points if (
             ((math.pow(point[0],2)+math.pow(point[1],2) )< math.pow(self.MAX_DISTANCE,2))
         )]
         matrix = numpy.asarray(points)
+        rospy.loginfo(matrix)
         matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
         matrix = matrix - matrix[0,0]
         scale = 400/matrix[len(matrix)-1,0]

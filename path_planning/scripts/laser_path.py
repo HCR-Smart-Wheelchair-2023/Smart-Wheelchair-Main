@@ -28,14 +28,15 @@ off = numpy.zeros(400, dtype=object)
 # binary_matrix = numpy.zeros((20,20))
 binary_list = numpy.zeros(400, dtype=object)
 tuple_list = numpy.zeros((400,4), dtype=object)
-
-arduino = serial.Serial(port='/dev/ttyACM1', baudrate=9600, timeout=0.01)
+port_list = serial.tools.list_ports.comports()
+# print(port_list[2].device)
+arduino = serial.Serial(port=port_list[2].device, baudrate=9600, timeout=0.01)
 
 DIST = 400
 angle = -45
 rotation = numpy.matrix([[math.cos(math.radians(angle)), -math.sin(math.radians(angle))], [math.sin(math.radians(angle)), math.cos(math.radians(angle))]])
 reflection = numpy.matrix([[1, 0],[0, 1]])
-
+# reflection = numpy.matrix([[-1, 0],[0, -1]])
 
 # {"array": [[1, 1], [40, 120], [150, 250], [180, 350], [400, 400]]}
 # {"array": [[1, 1], [120, 120], [250, 250], [350, 350], [400, 400]]}
@@ -82,6 +83,10 @@ class LaserPathController:
             ((math.pow(point[0],2)+math.pow(point[1],2) )< math.pow(self.MAX_DISTANCE,2))
         )]
         matrix = numpy.asarray(points)
+        matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
+        matrix = matrix - matrix[0,0]
+        scale = 400/matrix[len(matrix)-1,0]
+        matrix = scale*matrix
         # matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
         coeff = numpy.polyfit(matrix[:,0],matrix[:,1],3)
         inc = 1

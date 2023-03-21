@@ -25,7 +25,7 @@
         position: absolute;
         top:       300px;  /* I usually locate relative to top  */
         left:      30px; /* left corner of container (screen) */
-        width: 1000px;
+        width: 900px;
         height: 150px;
       }
       

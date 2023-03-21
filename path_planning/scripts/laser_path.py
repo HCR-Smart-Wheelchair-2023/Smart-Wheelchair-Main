@@ -30,7 +30,7 @@ binary_list = numpy.zeros(400, dtype=object)
 tuple_list = numpy.zeros((400,4), dtype=object)
 port_list = serial.tools.list_ports.comports()
 # print(port_list[2].device)
-arduino = serial.Serial(port=port_list[2].device, baudrate=9600, timeout=0.01)
+arduino = serial.Serial(port='ttyACM0'.device, baudrate=9600, timeout=0.01)
 
 DIST = 400
 angle = -45

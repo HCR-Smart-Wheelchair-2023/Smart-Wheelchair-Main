@@ -83,22 +83,30 @@ class LaserPathController:
         )]
         matrix = numpy.asarray(points)
         rospy.loginfo(matrix)
-        matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
-        matrix = matrix - matrix[0,0]
-        scale = 400/matrix[len(matrix)-1,0]
-        matrix = scale*matrix
-        # matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
-        coeff = numpy.polyfit(matrix[:,0],matrix[:,1],2)
-        inc = 1
-        xn = numpy.arange(matrix[0,0], (matrix[len(matrix)-1,0]) + inc, inc)
-        # xn = numpy.arange(0, 401, 1)
-        yn = numpy.poly1d(coeff)
-        # mp.plot( xn,yn(xn),matrix[:,0],matrix[:,1],'o')
-        # mp.show()
-        yn_list = numpy.round(yn(xn))
-        rospy.loginfo('hello!!!!!!!!!!!!!')
-        print(yn_list)
-        print("equation= ",yn)
+        if numpy.isclose(matrix[:,0], matrix[:,1], atol=1e-2).all():
+            matrix = numpy.zeros([len(matrix),2])
+            print(matrix)
+            xn = matrix[:,0]
+            yn_list = matrix[:,1]
+        else:
+            matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
+            # print("rotation", rotation)
+            print("before ", matrix)
+            matrix = matrix - matrix[0,0]
+            scale = 400/matrix[len(matrix)-1,0]
+            matrix = scale*matrix
+            print("after", matrix)
+            coeff = numpy.polyfit(matrix[:,0],matrix[:,1],2)
+            # xn = numpy.linspace(matrix[0,0],matrix[len(matrix)-1,0],num = 400, dtype = float)
+            inc = 1
+            xn = numpy.arange(matrix[0,0], (matrix[len(matrix)-1,0]) + inc, inc)
+            # xn = numpy.arange(0, 401, 1)
+            print("xn: ",xn)
+            yn = numpy.poly1d(coeff)
+            mp.plot( xn,yn(xn),matrix[:,0],matrix[:,1],'o')
+            mp.show()
+            yn_list = numpy.round(yn(xn))
+
         for i in range(len(xn)):
             if i < 400:
                 binary_list[i] = (xn[i], int(yn_list[i]))

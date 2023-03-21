@@ -133,15 +133,18 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
 function toggleColor() {
 
   const button = document.getElementById('toggle');
-  const currentColor = button.style.backgroundColor;
-  const newColor = currentColor === 'white' ? 'rgb(29, 31, 161)' : 'white';
-  button.style.backgroundColor = newColor;
-  const currentColor_border = button.style.borderColor;
-  const newColor_border = currentColor_border === 'yellow' ? 'rgb(0, 5, 77)' : 'yellow';
-  button.style.borderColor = newColor_border;
-
+  const currentColor1 = button.style.backgroundColor;
+  const currenttext = button.style.color;
+  const newtext = currenttext === 'red' ? 'white' : 'red';
+  const newColor1 = currentColor1 === 'yellow' ? 'green' : 'yellow';
+  button.style.backgroundColor = newColor1;
+  button.style.color = newtext;
   
   const button1 = document.getElementById('door');
+  const currentColor = button1.style.backgroundColor;
+  const newColor = currentColor === 'white' ? 'rgb(29, 31, 161)' : 'white';
+  const currentColor_border = button1.style.borderColor;
+  const newColor_border = currentColor_border === 'yellow' ? 'rgb(0, 5, 77)' : 'yellow';
   button1.style.backgroundColor = newColor;
   button1.style.borderColor = newColor_border;
 

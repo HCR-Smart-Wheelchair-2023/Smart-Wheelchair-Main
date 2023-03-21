@@ -3,9 +3,22 @@
       /* background-image: linear-gradient(to bottom, #ffffff, #f2f2f2); */
       }
 
+      .toggle {
+        background-color: green;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        position: absolute;
+        top:       10px;  /* I usually locate relative to top  */
+        left:      10px; /* left corner of container (screen) */
+        
+      }
+
       .button-wrapper {
-        /* text-align: center; */
-        align-items:baseline  ;
+        text-align: center; 
+        /* align-items:baseline  ; */
       }
 
       .textentry {

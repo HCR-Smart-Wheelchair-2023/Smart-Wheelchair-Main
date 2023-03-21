@@ -105,8 +105,8 @@ class LaserPathController:
             # xn = numpy.arange(0, 401, 1)
             print("xn: ",xn)
             yn = numpy.poly1d(coeff)
-            mp.plot( xn,yn(xn),matrix[:,0],matrix[:,1],'o')
-            mp.show()
+            # mp.plot( xn,yn(xn),matrix[:,0],matrix[:,1],'o')
+            # mp.show()
             yn_list = numpy.round(yn(xn))
 
         for i in range(len(xn)):

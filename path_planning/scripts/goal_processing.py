@@ -13,6 +13,7 @@ class GoalController:
     def __init__(self) -> None:
         rospy.init_node('goal_processing')
         self.goal_label_sub  = rospy.Subscriber('/goal_dest', String, self.receive_goal_label_sub)
+        # self.pub = rospy.Publisher('/move_base/simple/goal', MoveBaseGoal, queue_size=10)
         self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
         self.GOALS = {
             'kitchen' : [2.58, 1.96],

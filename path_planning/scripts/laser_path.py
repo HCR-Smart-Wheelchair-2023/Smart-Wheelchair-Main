@@ -83,7 +83,8 @@ class LaserPathController:
         )]
         matrix = numpy.asarray(points)
         rospy.loginfo(matrix)
-        if numpy.isclose(matrix[:,0], matrix[:,1], atol=1e-2).all():
+        # if matrix[-1,:] - matrix[1,:]
+        if numpy.isclose(matrix[0,:], matrix[-1,:], atol=1e-2).all():
             matrix = numpy.zeros([len(matrix),2])
             print(matrix)
             xn = matrix[:,0]
@@ -92,8 +93,9 @@ class LaserPathController:
             matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix)))
             # print("rotation", rotation)
             print("before ", matrix)
-            matrix = matrix - matrix[0,0]
+            matrix = matrix - matrix[0,:]
             scale = 400/matrix[len(matrix)-1,0]
+            print("after1", matrix)
             matrix = scale*matrix
             print("after", matrix)
             coeff = numpy.polyfit(matrix[:,0],matrix[:,1],2)

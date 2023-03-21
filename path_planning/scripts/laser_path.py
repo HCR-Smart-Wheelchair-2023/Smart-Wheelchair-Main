@@ -35,7 +35,7 @@ arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=0.01)
 DIST = 400
 angle = -45
 rotation = numpy.matrix([[math.cos(math.radians(angle)), -math.sin(math.radians(angle))], [math.sin(math.radians(angle)), math.cos(math.radians(angle))]])
-reflection = numpy.matrix([[1, 0],[0, 1]])
+reflection = numpy.matrix([[1, 0],[0, -1]])
 # reflection = numpy.matrix([[-1, 0],[0, -1]])
 
 # {"array": [[1, 1], [40, 120], [150, 250], [180, 350], [400, 400]]}

@@ -88,7 +88,7 @@ class LaserPathController:
         self.prev_time = time.time()
 
     def receive_path(self, path):
-        if(time.time() > self.prev_time + 1):
+        if(time.time() > self.prev_time + 2):
             points = [(pose.pose.position.x, pose.pose.position.y) for pose in path.poses]
             points = [ point for point in points if (
                 ((math.pow(point[0],2)+math.pow(point[1],2) )< math.pow(self.MAX_DISTANCE,2))
@@ -152,7 +152,7 @@ class LaserPathController:
                     # mp.plot( xn,yn,matrix[:,0],matrix[:,1],'o')
                     # mp.show()
                     state = 0
-            
+
             if state == 1:
                 rng = len(xn)-1
             if state == 2:
@@ -180,7 +180,7 @@ class LaserPathController:
                         move_xy = move(tuple_list[i,0],tuple_list[i,1],state,0)
                         final_tuple.append((move_xy[0],move_xy[1],dir_xy[0],dir_xy[1]))
                     else:
-                        
+
                         while abs(tuple_list[i,state]) >= 1:
                             dir_xy = direction(tuple_list[i,2],tuple_list[i,3])
                             move_xy = move(tuple_list[i,0],tuple_list[i,1],state,1)

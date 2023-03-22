@@ -28,7 +28,7 @@ class BodyProcessingController:
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         topic = '/zed/zed_node/obj_det/objects'
-        self.sub = rospy.Subscriber(topic, ObjectsStamped, self.receive_objects)
+        self.sub = rospy.Subscriber(topic, ObjectsStamped, self.receive_objects, queue_size=1)
         self.pub = rospy.Publisher('/people', People, queue_size=10)
         self.odom_pub = rospy.Publisher('/people_odom', Odometry, queue_size=10)
 
@@ -36,7 +36,7 @@ class BodyProcessingController:
 
     def receive_objects(self, message : ObjectsStamped):
 
-        
+
         # person = self.process_person(message.objects[0])
         # objects = message.objects
         # print("Number of objects detected: ", len(message.objects))
@@ -63,7 +63,7 @@ class BodyProcessingController:
         return orientation
 
     def process_person(self, person):
-        
+
 
 
         # skeleton = person.skeleton_3d
@@ -73,10 +73,10 @@ class BodyProcessingController:
         # # calculate orientation from velocity
         static = np.linalg.norm([person.velocity[0], person.velocity[1]]) < 0.2
         # if static:
-        #     # To Test: actual orientation 
+        #     # To Test: actual orientation
         #     theta = self.calculate_orientation(skeleton)
         # else:
-        theta = math.atan2(person.velocity[1], person.velocity[0]) 
+        theta = math.atan2(person.velocity[1], person.velocity[0])
 
 
         odom = Odometry()
@@ -92,7 +92,7 @@ class BodyProcessingController:
         v.vector.z = person.velocity[2]
 
         vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
-        
+
         p = PoseStamped()
         p.pose.position.x = person.position[0]
         p.pose.position.y = person.position[1]
@@ -101,11 +101,11 @@ class BodyProcessingController:
 
 
         pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
-        
+
         odom.header.frame_id = "map"
         odom.pose.pose = pose_transformed.pose
         odom.twist.twist.linear = vt.vector
-        
+
         self.odom_pub.publish(odom)
 
         new_person = Person()

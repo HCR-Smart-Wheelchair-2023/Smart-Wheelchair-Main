@@ -193,12 +193,21 @@ class MapProcessor:
         self.map_sub = rospy.Subscriber('/staticmap', OccupancyGrid, self.map_callback_map, queue_size=1)
         self.update_sub = rospy.Subscriber('/people', People, self.map_callback_update, queue_size=1)
         self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=10)
-        self.latest_map = OccupancyGrid()
+        self.latest_map =  None
 
     def map_callback_map(self, data):
         self.latest_map = data
 
     def map_callback_update(self, data):
+        if self.latest_map == None:
+            print("err: no map recived for social prediction")
+            return 0
+        if data.person = []
+            adj_map = OccupancyGrid()       
+            adj_map = self.latest_map
+            self.map_pub.publish(adj_map)
+            return 1
+
         # print("Number of objects detected: ", len(data.person))
         # Params to tune 
         t = 6.0
@@ -213,9 +222,7 @@ class MapProcessor:
         #predict for each detected object
         adjusted_cells = []
         for person in data.person:
-            
-            
-            
+                        
             if person.static.data:
                 (_, _, theta) = tf.transformations.euler_from_quaternion([person.odom.pose.pose.orientation.x, person.odom.pose.pose.orientation.y, person.odom.pose.pose.orientation.z, person.odom.pose.pose.orientation.w])
                 
@@ -239,8 +246,6 @@ class MapProcessor:
                 #     adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
 
                    
-
-
         self.map_pub.publish(adj_map)
 
 if __name__ == '__main__':

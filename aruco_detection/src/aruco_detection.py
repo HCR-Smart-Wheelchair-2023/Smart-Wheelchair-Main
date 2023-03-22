@@ -39,8 +39,8 @@ class ArUcoCameraController:
         self.marker_transform.header.frame_id = "/camera_link"
         self.marker_transform.child_frame_id = "/aruco_marker"
         self.marker_transform.transform.translation.x = 0
-        self.marker_transform.transform.translation.y = 0
-        self.marker_transform.transform.translation.z = 0
+        self.marker_transform.transform.translation.y = 3.83
+        self.marker_transform.transform.translation.z = 1.53
         self.marker_transform.transform.rotation.x = quaternion[0]
         self.marker_transform.transform.rotation.y = quaternion[1]
         self.marker_transform.transform.rotation.z = quaternion[2]

@@ -35,8 +35,8 @@ if __name__ == "__main__":
             marker_pose.header.frame_id = "map"
             marker_pose.header.stamp = rospy.Time.now()
             marker_pose.pose.position.x = 0
-            marker_pose.pose.position.y = 0
-            marker_pose.pose.position.z = 0
+            marker_pose.pose.position.y = 3.83
+            marker_pose.pose.position.z = 1.53
             marker_pose.pose.orientation.x = quaternion[0]
             marker_pose.pose.orientation.y = quaternion[1]
             marker_pose.pose.orientation.z = quaternion[2]

@@ -202,7 +202,7 @@ class MapProcessor:
         if self.latest_map == None:
             print("err: no map recived for social prediction")
             return 0
-        if data.person = []
+        if data.person == []
             adj_map = OccupancyGrid()       
             adj_map = self.latest_map
             self.map_pub.publish(adj_map)

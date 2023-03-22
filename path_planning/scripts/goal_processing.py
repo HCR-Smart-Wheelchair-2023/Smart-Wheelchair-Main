@@ -21,8 +21,8 @@ class GoalController:
         self.goal_label_sub  = rospy.Subscriber('/goal_dest', String, self.receive_goal_label_sub)
         # self.pub = rospy.Publisher('/move_base/simple/goal', MoveBaseGoal, queue_size=10)
         self.client = actionlib.SimpleActionClient('/move_base',MoveBaseAction)
-        self.client.wait_for_server()
-        rospy.spin()
+        cs_wait = self.client.wait_for_server(timeout = rospy.Duration(10))
+        rospy.loginfo(f'Connected to server? {cs_wait} !!!!')
 
     def receive_marker(self, marker):
         ...
@@ -42,8 +42,8 @@ class GoalController:
         self.client.send_goal(goal)
         #rospy.loginfo('Recieved move to'+goal_label.data+'command')
         rospy.loginfo(f'Goal {goal}')
-        wait = self.client.wait_for_result()
-        rospy.loginfo(f'{wait}')
+        wait = self.client.wait_for_result(timeout = rospy.Duration(5))
+        rospy.loginfo(f'Wait for result returned {wait}')
 
     # def start(self):
     #     rr = rospy.Rate(3)
@@ -51,4 +51,5 @@ class GoalController:
     #         rr.sleep()
 
 gc = GoalController()
+rospy.spin()
 # gc.start()

@@ -12,10 +12,10 @@ class GoalController:
 
     def __init__(self) -> None:
         self.GOALS = {
-            'kitchen' : [2.58, 1.96],
-            'bathroom' : [5.00, 5.00],
-            'table' : [3.26,4.10],
-            'door' : [1.00, 1.50]
+            'kitchen' : [2.00, 5],
+            'bathroom' : [4.40, 1.50],
+            'table' : [6.30, 5.40],
+            'door' : [1.40, 0.35]
         }
         rospy.init_node('goal_processing')
         self.goal_label_sub  = rospy.Subscriber('/goal_dest', String, self.receive_goal_label_sub)

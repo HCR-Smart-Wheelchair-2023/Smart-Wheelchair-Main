@@ -33,9 +33,9 @@ class ArUcoCameraController:
         # self.pub.publish(self.marker_pose)
 
     def set_zedPose(self, x, y, z, R, P, Y):
-        print("waiting for set pose service")
+        # print("waiting for set pose service")
         rospy.wait_for_service("/zed/zed_node/set_pose")
-        print("found the set_pose service!")
+        # print("found the set_pose service!")
 
         # publish the marker pose
         # self.pub.publish(self.marker_pose)
@@ -43,18 +43,19 @@ class ArUcoCameraController:
         try:
             setpose = rospy.ServiceProxy("/zed/zed_node/set_pose", Set_Pose)
             resp = setpose(x, y, z, R, P, Y)
-            print("response of the service is: ", resp)
+            # print("response of the service is: ", resp)
 
             return resp
         except rospy.ServiceException as e:
-            print("service not working yet")
+            # print("service not working yet")
+            pass
 
     def aruco_markerArray_callback(self, markerArray):
         if time.time() < self.prev_time + 2.5:
             return
         self.prev_time = time.time()
         # print("markerArray: ", markerArray)
-        print("markerArray id of first marker: ", markerArray.markers[0].id)
+        # print("markerArray id of first marker: ", markerArray.markers[0].id)
 
         # choose the marker
         if markerArray.markers[0].id == 582:
@@ -100,7 +101,8 @@ class ArUcoCameraController:
             self.marker_transform.transform.rotation.w = quaternion[3]
 
         else:
-            rospy.loginfo("no marker found")
+            # rospy.loginfo("no marker found")#
+            pass
 
         aruco_pose = markerArray.markers[0].pose.pose
 
@@ -112,7 +114,7 @@ class ArUcoCameraController:
             aruco_position.y,
         )
 
-        print(f"aruco position: {aruco_position}")
+        # print(f"aruco position: {aruco_position}")
 
         aruco_orientation = markerArray.markers[0].pose.pose.orientation
         aruco_orientation_euler = tf.transformations.euler_from_quaternion(
@@ -141,7 +143,7 @@ class ArUcoCameraController:
             aruco_orientation_euler[2] * 180 / math.pi,
         ]
 
-        print(f"aruco orientation: {aruco_orientation_euler_degrees}")
+        # print(f"aruco orientation: {aruco_orientation_euler_degrees}")
 
         transform_camera_aruco = tf.transformations.concatenate_matrices(
             tf.transformations.translation_matrix(
@@ -192,12 +194,12 @@ class ArUcoCameraController:
             transform_world_camera
         )
 
-        print(
-            f"camera position: {camera_position[0] , camera_position[1], camera_position[2]}"
-        )
-        print(
-            f"camera orientation: {camera_orientation[0], camera_orientation[1], camera_orientation[2]}"
-        )
+        # print(
+        #     f"camera position: {camera_position[0] , camera_position[1], camera_position[2]}"
+        # )
+        # print(
+        #     f"camera orientation: {camera_orientation[0], camera_orientation[1], camera_orientation[2]}"
+        # )
 
         self.set_zedPose(
             camera_position[0],

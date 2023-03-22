@@ -43,7 +43,7 @@ class FER():
 
         adj_data = data
         adj_data.linear.x = adj_data.linear.x * self.scaling_factor
-
+        rospy.loginfo(f'{adj_data}')
         self.pub_adj.publish(adj_data)
 
     def paramAdj(self):

@@ -92,12 +92,12 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
 
     # Mean for first Gaus
-    x_z1 = (velocity.x * t)/2
-    y_z1 = (velocity.y * t)/2
+    x_z1 = ((velocity.x * t)/2)/self.latest_map.resolution
+    y_z1 = ((velocity.y * t)/2)/self.latest_map.resolution
 
     # Predict final position of user after t seconds 
-    x_dest = (velocity.x * t)
-    y_dest = (velocity.y * t)
+    x_dest = ((velocity.x * t))/self.latest_map.resolution
+    y_dest = ((velocity.y * t))/self.latest_map.resolution
 
     # Calulate orientation angle
     theta = math.atan2(velocity.y, velocity.x)
@@ -108,11 +108,11 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
 
     # Parameters TO TUNE 
     speed = np.linalg.norm([velocity.y, velocity.x])
-    sigma1_x = 4 * speed
-    sigma1_y = 2 * speed
+    sigma1_x = 2 * speed
+    sigma1_y = 1 * speed
 
-    sigma2_x = 2 * speed
-    sigma2_y = 2 * speed
+    sigma2_x = 1 * speed
+    sigma2_y = 1 * speed
 
 
     # Create a meshgrid of points to evaluate the normal distributions

@@ -4,10 +4,7 @@ This Node takes person detection data from the zed, converts it to the world fra
 """
 
 import rospy
-# import tf
-# import tf2_ros
-# import tf2_geometry_msgs
-# import sys
+
 from nav_msgs.msg import Path
 # import random
 import numpy
@@ -40,25 +37,9 @@ DIST = 400
 angle = -45
 rotation = numpy.matrix([[math.cos(math.radians(angle)), -math.sin(math.radians(angle))], [math.sin(math.radians(angle)), math.cos(math.radians(angle))]])
 reflection = numpy.matrix([[1, 0],[0, -1]])
-# reflection = numpy.matrix([[-1, 0],[0, -1]])
-
-# {"array": [[1, 1], [40, 120], [150, 250], [180, 350], [400, 400]]}
-# {"array": [[1, 1], [120, 120], [250, 250], [350, 350], [400, 400]]}
-# {"array": [[1, 1], [120, 1], [250, 1], [350, 1], [400, 1]]}
-# {"array": [[1, 1], [50, 1], [100, 50], [200, 100], [400, 400]]}
-
 
 def frameByte(xstep, ystep, xdir, ydir):
     return ((xstep<<3) + (ystep<<2) + (xdir<<1) + ydir)
-
-# def find_arduino(port=None):
-#     """Get the name of the port that is connected to Arduino."""
-#     if port is None:
-#         ports = serial.tools.list_ports.comports()
-#         for p in ports:
-#             if p.manufacturer is not None and "Arduino" in p.manufacturer:
-#                 port = p.device
-#     return port
 
 
 def direction(xdir,ydir):
@@ -99,7 +80,7 @@ class LaserPathController:
             global count
             global matrix_prev
             global frameBuffer_prev
-            if numpy.isclose(matrix[0,:], matrix[-1,:], atol=3e-1).all():
+            if numpy.isclose(matrix[0,:], matrix[-1,:], atol=1e-1).all():
                 matrix = numpy.zeros([len(matrix),2])
                 matrix_original = matrix
                 xn = matrix[:,0]
@@ -116,10 +97,13 @@ class LaserPathController:
                         matrix[i,1] = 0
                 inc = 1
                 print(numpy.isclose(matrix[0,0], matrix[-1,0], atol=1e-1).all())
-                if ~(numpy.isclose(matrix[0,0], matrix[-1,0], atol=1e-1).all()):
+
+                use_y = abs(matrix[0,0] - matrix[-1,0]) < abs(matrix[0,1] - matrix[-1,1])
+                if use_y:
                     print("before ", matrix)
                     matrix = matrix - matrix[0,:]
-                    scale = 400/matrix[-1,:]
+                    scale = min(400/matrix[-1,0], 400/matrix[-1,1])
+                    # scale = 400/matrix[-1,:]
                     matrix = scale*matrix
                     print("after", matrix)
                     coeff = numpy.polyfit(matrix[:,0],matrix[:,1],2)
@@ -161,6 +145,7 @@ class LaserPathController:
             else:
                 rng = len(yn)-1
 
+            rng = len(xn)
             for i in range(rng):
                 binary_list[i] = (int(xn[i]), int(yn_list[i]))
                 print(binary_list[i])
@@ -171,6 +156,7 @@ class LaserPathController:
                 x_inc = xn[i]-xn[i-1]
                 y_inc = yn_list[i]-yn_list[i-1]
                 tuple_list[i,:] = [int(x_inc), int(y_inc), numpy.sign(int(x_inc)), numpy.sign(int(y_inc))]
+
 
             for i in range(len(tuple_list)):
                 # print(tuple_list[i,:])

@@ -73,7 +73,8 @@ class FER():
                 self.emotion_prev = self.emotion
                 objs = DeepFace.analyze(img_path = _img_path , actions = ['emotion'])
                 self.emotion = objs[0]['dominant_emotion']
-
+                self.pub.publish(self.emotion)
+                
                 if self.emotion_prev != self.emotion:
                     config = self.client.update_configuration(self.paramAdj())
                     #rospy.loginfo(config)

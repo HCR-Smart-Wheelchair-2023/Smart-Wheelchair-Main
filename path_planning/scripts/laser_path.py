@@ -106,11 +106,6 @@ class LaserPathController:
             matrix_original = matrix
             matrix = numpy.transpose(numpy.asarray(reflection*numpy.transpose(matrix_original)))
             # print("rotation", rotation)
-            print("before ", matrix)
-            matrix = matrix - matrix[0,:]
-            scale = 400/matrix[-1,:]
-            matrix = scale*matrix
-            print("after", matrix)
             for i in range(len(matrix)):
                 if math.isnan(matrix[i,0]):
                     matrix[i,0] = 0
@@ -119,6 +114,11 @@ class LaserPathController:
             inc = 1
             print(numpy.isclose(matrix[0,0], matrix[-1,0], atol=1e-1).all())
             if ~(numpy.isclose(matrix[0,0], matrix[-1,0], atol=1e-1).all()):
+                print("before ", matrix)
+                matrix = matrix - matrix[0,:]
+                scale = 400/matrix[-1,:]
+                matrix = scale*matrix
+                print("after", matrix)
                 coeff = numpy.polyfit(matrix[:,0],matrix[:,1],2)
                 print("coeff: ", coeff)
                 xn = numpy.arange(matrix[0,0], (matrix[-1,0]) + numpy.sign(matrix[-1,0])*inc, numpy.sign(matrix[-1,0])*inc)
@@ -129,11 +129,16 @@ class LaserPathController:
                 print("yn list before: ", yn_list)
                 yn_list = yn_list - yn_list[0]
                 print("yn list after: ", yn_list)
-                mp.plot( xn,yn_list,matrix[:,0],matrix[:,1],'o')
-                mp.show()
+                # mp.plot( xn,yn_list,matrix[:,0],matrix[:,1],'o')
+                # mp.show()
                 state = 1
 
             else:
+                print("before ", matrix)
+                matrix = matrix - matrix[0,:]
+                scale = 400/matrix[-1,:]
+                matrix = scale*matrix
+                print("after", matrix)
                 coeff = numpy.polyfit(matrix[:,1],matrix[:,0],2)
                 print("coeff: ", coeff)
                 yn = numpy.arange(matrix[0,1], (matrix[-1,1]) + numpy.sign(matrix[-1,1])*inc, numpy.sign(matrix[-1,1])*inc)
@@ -142,8 +147,8 @@ class LaserPathController:
                 yn_list = numpy.round(yn)
                 xn = numpy.round(xn(yn))
                 xn = xn - xn[0]
-                mp.plot( xn,yn,matrix[:,0],matrix[:,1],'o')
-                mp.show()
+                # mp.plot( xn,yn,matrix[:,0],matrix[:,1],'o')
+                # mp.show()
                 state = 0
         
         if state == 1:

@@ -60,7 +60,7 @@ if __name__ == "__main__":
             marker_pose_2 = PoseStamped()
             marker_pose_2.header.frame_id = "map"
             marker_pose_2.header.stamp = rospy.Time.now()
-            marker_pose_2.pose.position.x = 4
+            marker_pose_2.pose.position.x = 6.8
             marker_pose_2.pose.position.y = 3.83
             marker_pose_2.pose.position.z = 1.5
             marker_pose_2.pose.orientation.x = quaternion_2[0]

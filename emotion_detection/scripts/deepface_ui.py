@@ -23,7 +23,7 @@ class FER():
         self.emotion_prev = 'neutral'
         # again ideally this would be it own node
         self.cmdvel_sub = rospy.Subscriber('/cmd_vel', Twist, self.cmdvel_cb)
-        self.pub_adj = rospy.Publisher('cmd_vel_adj', Twist, queue_size = 10)
+        self.pub_adj = rospy.Publisher('/cmd_vel_adj', Twist, queue_size = 10)
         self.scaling_factor = 1
         # dynamic parameter reconfiguration
         # self.client = dynamic_reconfigure.client.Client('/move_base/TrajectoryPlannerROS')

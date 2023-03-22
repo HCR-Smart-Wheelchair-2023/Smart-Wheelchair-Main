@@ -202,8 +202,9 @@ class LaserPathController:
         frameBuffer = [frameByte(final_tuple[i][0], final_tuple[i][1], final_tuple[i][2], final_tuple[i][3]) for i in range(1,DIST-2)]
         # frameBuffer = [frameByte(final[i][0], final[i][1], final[i][2], final[i][3]) for i in range(1,DIST-2)]
         arduino.write(bytearray(frameBuffer))
+
         # port = find_arduino()
-        # print(port)
+        print("sent")
 
 # try:
 #     run()

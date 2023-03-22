@@ -41,9 +41,9 @@ class GoalController:
         goal.target_pose.pose.orientation.w = 0.940
         self.client.send_goal(goal)
         #rospy.loginfo('Recieved move to'+goal_label.data+'command')
-        #rospy.loginfo(f'Goal {goal}')
+        rospy.loginfo(f'Goal {goal}')
         wait = self.client.wait_for_result()
-        #rospy.loginfo(f'{wait}')
+        rospy.loginfo(f'{wait}')
 
     # def start(self):
     #     rr = rospy.Rate(3)

@@ -210,7 +210,7 @@ class MapProcessor:
 
         # print("Number of objects detected: ", len(data.person))
         # Params to tune 
-        t = 6.0
+        t = 2.0
         distribution_scale_factor = 1
         gaus_sep = 2        
 

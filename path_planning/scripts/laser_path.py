@@ -88,7 +88,7 @@ class LaserPathController:
         self.prev_time = time.time()
 
     def receive_path(self, path):
-        if(time.time() > self.prev_time + 0.5):
+        if(time.time() > self.prev_time + 0.1):
             self.prev_time = time.time()
             points = [(pose.pose.position.x, pose.pose.position.y) for pose in path.poses]
             points = [ point for point in points if (

@@ -50,7 +50,7 @@ class ArUcoCameraController:
             print("service not working yet")
 
     def aruco_markerArray_callback(self, markerArray):
-        if time.time() < self.prev_time + 1:
+        if time.time() < self.prev_time + 2.5:
             return
         self.prev_time = time.time()
         # print("markerArray: ", markerArray)

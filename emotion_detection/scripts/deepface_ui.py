@@ -37,9 +37,9 @@ class FER():
         if self.emotion == 'neutral':
             self.scaling_factor = 1
         elif self.emotion == 'fear' or 'sad' or 'surprise' or 'disgust':
-            self.scaling_factor = 0.5
+            self.scaling_factor = 0.05
         elif self.emotion == 'happy' or 'angry':
-            self.scaling_factor = 1.5
+            self.scaling_factor = 4
 
         adj_data = data
         adj_data.linear.x = adj_data.linear.x * self.scaling_factor
@@ -52,7 +52,7 @@ class FER():
         if self.emotion == 'neutral':
             return { 'max_vel_x' : 3 , 'min_vel_x' : 0.4 }
         elif self.emotion == 'fear' or 'sad' or 'surprise' or 'disgust':
-            return { 'max_vel_x' : 0.05 , 'min_vel_x' : 0.05 }
+            return { 'max_vel_x' : 0.6 , 'min_vel_x' : 0.1 }
         elif self.emotion == 'happy' or 'angry':
             return { 'max_vel_x' : 5 , 'min_vel_x' : 1 }
 

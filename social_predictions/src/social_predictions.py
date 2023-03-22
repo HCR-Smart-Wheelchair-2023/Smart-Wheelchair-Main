@@ -92,8 +92,8 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
 
     # Mean for first Gaus
-    x_z1 = ((velocity.x * t)/2)/costmap.info.resolution
-    y_z1 = ((velocity.y * t)/2)/costmap.info.resolution
+    x_z1 = ((velocity.x * t)/1.2)/costmap.info.resolution
+    y_z1 = ((velocity.y * t)/1.2)/costmap.info.resolution
 
     # Predict final position of user after t seconds 
     x_dest = ((velocity.x * t))/costmap.info.resolution

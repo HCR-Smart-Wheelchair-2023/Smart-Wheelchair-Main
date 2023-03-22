@@ -26,7 +26,7 @@ class FER():
         self.pub_adj = rospy.Publisher('cmd_vel_adj', Twist, queue_size = 10)
         self.scaling_factor = 1
         # dynamic parameter reconfiguration
-        self.client = dynamic_reconfigure.client.Client('TrajectoryPlannerROS')
+        self.client = dynamic_reconfigure.client.Client('/move_base/TrajectoryPlannerROS')
 
     # ideally this would be its own node, figuring out how to adjust the motion based on not only emotion
     def cmdvel_cb(self,data):
@@ -74,7 +74,7 @@ class FER():
                 objs = DeepFace.analyze(img_path = _img_path , actions = ['emotion'])
                 self.emotion = objs[0]['dominant_emotion']
                 self.pub.publish(self.emotion)
-                
+
                 if self.emotion_prev != self.emotion:
                     config = self.client.update_configuration(self.paramAdj())
                     #rospy.loginfo(config)

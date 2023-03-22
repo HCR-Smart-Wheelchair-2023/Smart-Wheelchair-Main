@@ -103,7 +103,7 @@ class ArUcoCameraController:
 
         else:
             # rospy.loginfo("no marker found")#
-            pass
+            return
 
         aruco_pose = markerArray.markers[0].pose.pose
 

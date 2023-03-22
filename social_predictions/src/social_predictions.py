@@ -116,7 +116,7 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
 
 
     # Create a meshgrid of points to evaluate the normal distributions
-    x, y = np.mgrid[-30:30:1, -30:30:1]
+    x, y = np.mgrid[-50:50:1, -50:50:1]
     pos = np.empty(x.shape + (2,))
     pos[:, :, 0] = x; pos[:, :, 1] = y
 

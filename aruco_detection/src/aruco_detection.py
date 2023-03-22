@@ -8,7 +8,7 @@ from zed_interfaces.srv import set_pose, set_poseRequest
 import tf
 import numpy as np
 import math
-
+import time
 
 # WORKING VERSION! DO NOT CHANGE!
 
@@ -26,6 +26,8 @@ class ArUcoCameraController:
         self.set_pose_service = rospy.ServiceProxy("/zed/zed_node/set_pose", set_pose)
 
         self.pub = rospy.Publisher("/my_marker/pose", PoseStamped, queue_size=10)
+
+        self.prev_time = 0
 
         # # publish the marker pose
         # self.pub.publish(self.marker_pose)
@@ -48,6 +50,9 @@ class ArUcoCameraController:
             print("service not working yet")
 
     def aruco_markerArray_callback(self, markerArray):
+        if time.time() < self.prev_time + 1:
+            return
+        self.prev_time = time.time()
         # print("markerArray: ", markerArray)
         print("markerArray id of first marker: ", markerArray.markers[0].id)
 

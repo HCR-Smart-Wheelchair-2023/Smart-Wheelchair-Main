@@ -27,29 +27,6 @@ class ArUcoCameraController:
 
         self.pub = rospy.Publisher("/my_marker/pose", PoseStamped, queue_size=10)
 
-        # angle is in radians
-        angle_x = 0 * math.pi / 180
-        angle_y = 0 * math.pi / 180
-        angle_z = 0 * math.pi / 180
-
-        quaternion = tf.transformations.quaternion_from_euler(angle_x, angle_y, angle_z)
-
-        # create a TransformStamped message for the marker
-        self.marker_transform = TransformStamped()
-        self.marker_transform.header.frame_id = "/camera_link"
-        self.marker_transform.child_frame_id = "/aruco_marker"
-        self.marker_transform.transform.translation.x = 0
-        self.marker_transform.transform.translation.y = 3.83
-        self.marker_transform.transform.translation.z = 1.53
-        self.marker_transform.transform.rotation.x = quaternion[0]
-        self.marker_transform.transform.rotation.y = quaternion[1]
-        self.marker_transform.transform.rotation.z = quaternion[2]
-        self.marker_transform.transform.rotation.w = quaternion[3]
-
-        # initialize buffer for moving average filter
-        self.buffer = []
-        self.buffer_size = 10
-
         # # publish the marker pose
         # self.pub.publish(self.marker_pose)
 
@@ -74,6 +51,52 @@ class ArUcoCameraController:
         # print("markerArray: ", markerArray)
         print("markerArray id of first marker: ", markerArray.markers[0].id)
 
+        # choose the marker
+        if markerArray.markers[0].id == 582:
+            # angle is in radians
+            angle_x = 0 * math.pi / 180
+            angle_y = 0 * math.pi / 180
+            angle_z = 0 * math.pi / 180
+
+            quaternion = tf.transformations.quaternion_from_euler(
+                angle_x, angle_y, angle_z
+            )
+            # create a TransformStamped message for the marker
+            self.marker_transform = TransformStamped()
+            self.marker_transform.header.frame_id = "/camera_link"
+            self.marker_transform.child_frame_id = "/aruco_marker"
+            self.marker_transform.transform.translation.x = 0
+            self.marker_transform.transform.translation.y = 3.83
+            self.marker_transform.transform.translation.z = 1.53
+            self.marker_transform.transform.rotation.x = quaternion[0]
+            self.marker_transform.transform.rotation.y = quaternion[1]
+            self.marker_transform.transform.rotation.z = quaternion[2]
+            self.marker_transform.transform.rotation.w = quaternion[3]
+
+        elif markerArray.markers[0].id == 26:
+            # angle is in radians
+            angle_x = 0 * math.pi / 180
+            angle_y = 0 * math.pi / 180
+            angle_z = 180 * math.pi / 180
+
+            quaternion = tf.transformations.quaternion_from_euler(
+                angle_x, angle_y, angle_z
+            )
+            # create a TransformStamped message for the marker
+            self.marker_transform = TransformStamped()
+            self.marker_transform.header.frame_id = "/camera_link"
+            self.marker_transform.child_frame_id = "/aruco_marker"
+            self.marker_transform.transform.translation.x = 4
+            self.marker_transform.transform.translation.y = 3.83
+            self.marker_transform.transform.translation.z = 1.53
+            self.marker_transform.transform.rotation.x = quaternion[0]
+            self.marker_transform.transform.rotation.y = quaternion[1]
+            self.marker_transform.transform.rotation.z = quaternion[2]
+            self.marker_transform.transform.rotation.w = quaternion[3]
+
+        else:
+            rospy.loginfo("no marker found")
+
         aruco_pose = markerArray.markers[0].pose.pose
 
         aruco_position = markerArray.markers[0].pose.pose.position
@@ -85,21 +108,6 @@ class ArUcoCameraController:
         )
 
         print(f"aruco position: {aruco_position}")
-
-        # moving average filter
-        # self.buffer.append(aruco_pose)
-        # if len(self.buffer) > self.buffer_size:
-        #     self.buffer.pop(0)
-
-        #     if len(self.buffer) == self.buffer_size:
-        #         average_pose = self.calculate_average_pose()
-        #         if self.is_pose_noise(aruco_pose, average_pose, 0.3):
-        #             #rospy.loginfo("Pose is too far from average, discarding...")
-        #             return
-        #         else:
-        #             aruco_position.x = average_pose.position.x
-        #             aruco_position.y = average_pose.position.z
-        #             aruco_position.z = average_pose.position.y
 
         aruco_orientation = markerArray.markers[0].pose.pose.orientation
         aruco_orientation_euler = tf.transformations.euler_from_quaternion(
@@ -194,29 +202,6 @@ class ArUcoCameraController:
             camera_orientation[1],
             camera_orientation[2],
         )
-
-    def calculate_average_pose(self):
-        x_sum = 0.0
-        y_sum = 0.0
-        z_sum = 0.0
-        for pose in self.buffer:
-            x_sum += pose.position.x
-            y_sum += pose.position.y
-            z_sum += pose.position.z
-        average_pose = Pose()
-        average_pose.position.x = x_sum / self.buffer_size
-        average_pose.position.y = y_sum / self.buffer_size
-        average_pose.position.z = z_sum / self.buffer_size
-        return average_pose
-
-    def is_pose_noise(self, current_pose, average_pose, threshold=0.1):
-        if abs(current_pose.position.x - average_pose.position.x) > threshold:
-            return True
-        if abs(current_pose.position.y - average_pose.position.y) > threshold:
-            return True
-        if abs(current_pose.position.z - average_pose.position.z) > threshold:
-            return True
-        return False
 
 
 if __name__ == "__main__":

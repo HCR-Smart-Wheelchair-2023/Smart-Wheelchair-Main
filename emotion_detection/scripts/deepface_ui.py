@@ -41,10 +41,10 @@ class FER():
         elif self.emotion == 'happy' or 'angry':
             self.scaling_factor = 1.5
 
-        adj_data = data.data
+        adj_data = data
         adj_data.linear.x = adj_data.linear.x * self.scaling_factor
 
-        self.pub.publish(adj_data)
+        self.pub_adj.publish(adj_data)
 
     def paramAdj(self):
         # adjust the incoming linear velocity by simple scaling factor

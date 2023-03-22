@@ -84,11 +84,11 @@ class LaserPathController:
 
     def __init__(self) -> None:
         topic = '/move_base/TrajectoryPlannerROS/local_plan'
-        self.sub = rospy.Subscriber(topic, Path, self.receive_path)
+        self.sub = rospy.Subscriber(topic, Path, self.receive_path, queue_size=1)
         self.prev_time = time.time()
 
     def receive_path(self, path):
-        if(time.time() > self.prev_time + 2):
+        if(time.time() > self.prev_time + 0.5):
             self.prev_time = time.time()
             points = [(pose.pose.position.x, pose.pose.position.y) for pose in path.poses]
             points = [ point for point in points if (

@@ -92,12 +92,12 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
 
     # Mean for first Gaus
-    x_z1 = ((velocity.x * t)/2)/costmap.latest_map.resolution
-    y_z1 = ((velocity.y * t)/2)/costmap.latest_map.resolution
+    x_z1 = ((velocity.x * t)/2)/costmap.resolution
+    y_z1 = ((velocity.y * t)/2)/costmap.resolution
 
     # Predict final position of user after t seconds 
-    x_dest = ((velocity.x * t))/costmap.latest_map.resolution
-    y_dest = ((velocity.y * t))/costmap.latest_map.resolution
+    x_dest = ((velocity.x * t))/costmap.resolution
+    y_dest = ((velocity.y * t))/costmap.resolution
 
     # Calulate orientation angle
     theta = math.atan2(velocity.y, velocity.x)

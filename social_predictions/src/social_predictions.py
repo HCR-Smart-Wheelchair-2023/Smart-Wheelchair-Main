@@ -199,54 +199,59 @@ class MapProcessor:
         self.latest_map = data
 
     def map_callback_update(self, data):
-        if self.latest_map == None:
-            print("err: no map recived for social prediction")
-            return 0
-        if len(data.person) == 0:
+        try: 
+            if self.latest_map == None:
+                print("err: no map recived for social prediction")
+                return 0
+            if len(data.person) == 0:
+                adj_map = OccupancyGrid()       
+                adj_map = self.latest_map
+                self.map_pub.publish(adj_map)
+                return 1
+
+            # print("Number of objects detected: ", len(data.person))
+            # Params to tune 
+            t = 3.0
+            distribution_scale_factor = 1
+            gaus_sep = 2        
+
             adj_map = OccupancyGrid()       
-            adj_map = self.latest_map
+            adj_map.header = self.latest_map.header
+            adj_map.info = self.latest_map.info
+            adj_map.data = list(self.latest_map.data)
+
+            #predict for each detected object
+            adjusted_cells = []
+            for person in data.person:
+                            
+                if person.static.data:
+                    (_, _, theta) = tf.transformations.euler_from_quaternion([person.odom.pose.pose.orientation.x, person.odom.pose.pose.orientation.y, person.odom.pose.pose.orientation.z, person.odom.pose.pose.orientation.w])
+                    
+                    pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, theta, distribution_scale_factor, gaus_sep)
+                    # print("stat:",vals)
+                    for (i, pos) in enumerate(pos):
+                        if (vals[i] != 0):
+                            adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
+
+                else:
+                    pos, vals = social_predict_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, distribution_scale_factor, t)
+                    # print("mov:", vals)
+                    for (i, pos) in enumerate(pos):
+                        if (vals[i] != 0):
+                            adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
+
+
+                    # adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, 5)
+                    
+                    # for i in adjusted_cells:
+                    #     adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
+
+                    
             self.map_pub.publish(adj_map)
-            return 1
+        except: 
+            adj_map = OccupancyGrid()       
+            self.map_pub.publish(adj_map)
 
-        # print("Number of objects detected: ", len(data.person))
-        # Params to tune 
-        t = 3.0
-        distribution_scale_factor = 1
-        gaus_sep = 2        
-
-        adj_map = OccupancyGrid()       
-        adj_map.header = self.latest_map.header
-        adj_map.info = self.latest_map.info
-        adj_map.data = list(self.latest_map.data)
-
-        #predict for each detected object
-        adjusted_cells = []
-        for person in data.person:
-                        
-            if person.static.data:
-                (_, _, theta) = tf.transformations.euler_from_quaternion([person.odom.pose.pose.orientation.x, person.odom.pose.pose.orientation.y, person.odom.pose.pose.orientation.z, person.odom.pose.pose.orientation.w])
-                
-                pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, theta, distribution_scale_factor, gaus_sep)
-                # print("stat:",vals)
-                for (i, pos) in enumerate(pos):
-                    if (vals[i] != 0):
-                        adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
-
-            else:
-                pos, vals = social_predict_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, distribution_scale_factor, t)
-                # print("mov:", vals)
-                for (i, pos) in enumerate(pos):
-                    if (vals[i] != 0):
-                        adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
-
-
-                # adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, 5)
-                
-                # for i in adjusted_cells:
-                #     adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
-
-                   
-        self.map_pub.publish(adj_map)
 
 if __name__ == '__main__':
     rospy.init_node('map_processor')

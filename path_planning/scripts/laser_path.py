@@ -89,6 +89,7 @@ class LaserPathController:
 
     def receive_path(self, path):
         if(time.time() > self.prev_time + 2):
+            self.prev_time = time.time()
             points = [(pose.pose.position.x, pose.pose.position.y) for pose in path.poses]
             points = [ point for point in points if (
                 ((math.pow(point[0],2)+math.pow(point[1],2) )< math.pow(self.MAX_DISTANCE,2))
@@ -212,7 +213,6 @@ class LaserPathController:
 
             # port = find_arduino()
             print("sent")
-            self.prev_time = time.time()
 
 # try:
 #     run()

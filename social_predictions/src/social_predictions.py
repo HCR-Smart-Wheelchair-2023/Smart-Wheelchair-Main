@@ -42,7 +42,7 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     sigma2_y = 1 * distribution_scale_factor
 
     # Create a meshgrid of points to evaluate the normal distributions
-    x, y = np.mgrid[-10:10:1, -10:10:1]
+    x, y = np.mgrid[-25:25:1, -25:25:1]
     pos = np.empty(x.shape + (2,))
     pos[:, :, 0] = x; pos[:, :, 1] = y
 

@@ -20,7 +20,7 @@
     <!-- <include file="$(find wheele_description)/launch/display.launch"></include> -->
     <!-- <include file="$(find path_planning)/launch/pose.launch">
     </include> -->
-    <node pkg="path_planning" type="laser_path.py" name="laser_path" output="screen" />
+    <!-- <node pkg="path_planning" type="laser_path.py" name="laser_path" output="screen" /> -->
 
     <group if="$(eval arg('mode') == 'sim')">
         <!-- Odom is always correct to no need for correction between odom and maps -->
@@ -107,6 +107,7 @@
         <param name="initial_pose_y" value="3" />
         <param name="initial_pose_a" value="1.57" />
     </node> -->
+
 
     <!-- Start Rviz -->
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robot_main)/rviz/config.rviz" />

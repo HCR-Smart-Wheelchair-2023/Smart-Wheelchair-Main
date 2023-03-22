@@ -5,7 +5,7 @@ catkin build
 source ./devel/setup.bash
 
 cd src/user_interface/scripts
-python3 connect.py 2> /dev/null &
+python3 connect.py &
 echo "Running Stuff"
 rosrun user_interface get_goal.py &
 cd ../../emotion_detection/scripts

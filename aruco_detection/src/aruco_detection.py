@@ -144,9 +144,9 @@ class ArUcoCameraController:
             aruco_orientation_euler[2] * 180 / math.pi,
         ]
 
-        # do not update if the angle is too small
-        if abs(aruco_orientation_euler_degrees[2]) < 25:
-            return
+        # # do not update if the angle is too small
+        # if abs(aruco_orientation_euler_degrees[2]) < 25:
+        #     return
 
         # print(f"aruco orientation: {aruco_orientation_euler_degrees}")
 

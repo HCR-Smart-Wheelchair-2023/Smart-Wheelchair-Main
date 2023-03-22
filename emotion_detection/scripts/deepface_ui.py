@@ -26,18 +26,19 @@ class FER():
         self.pub_adj = rospy.Publisher('cmd_vel_adj', Twist, queue_size = 10)
         self.scaling_factor = 1
         # dynamic parameter reconfiguration
-        self.client = dynamic_reconfigure.client.Client('TrajectoryPlannerROS')
+        # self.client = dynamic_reconfigure.client.Client('/move_base/TrajectoryPlannerROS')
 
     # ideally this would be its own node, figuring out how to adjust the motion based on not only emotion
     def cmdvel_cb(self,data):
 
         # adjust the incoming linear velocity by simple scaling factor
         # use most recent emotion recorded
+        # self.scaling_factor = 1
         if self.emotion == 'neutral':
             self.scaling_factor = 1
-        elif self.emotion == 'fear':
+        elif self.emotion == 'fear' or 'sad' or 'surprise' or 'disgust':
             self.scaling_factor = 0.5
-        elif self.emotion == 'happy':
+        elif self.emotion == 'happy' or 'angry':
             self.scaling_factor = 1.5
 
         adj_data = data.data
@@ -70,11 +71,12 @@ class FER():
         rr = rospy.Rate(3)
         while not rospy.is_shutdown():
             try:
+                rospy.loginfo('Photo!!!!!!')
                 self.emotion_prev = self.emotion
                 objs = DeepFace.analyze(img_path = _img_path , actions = ['emotion'])
                 self.emotion = objs[0]['dominant_emotion']
                 self.pub.publish(self.emotion)
-                
+
                 if self.emotion_prev != self.emotion:
                     config = self.client.update_configuration(self.paramAdj())
                     #rospy.loginfo(config)
@@ -88,4 +90,4 @@ class FER():
 
 img_path = '/root/ros_ws/src/emotion_detection/scripts/image/face.jpg'
 fer = FER()
-fer.startwDynamicParamters(img_path)
+fer.start(img_path)

@@ -17,6 +17,7 @@
     <!-- Publish messages on the odom topic to the odom frame -->
     <include file="$(find path_planning)/launch/odom.launch">
     </include>
+    <!-- <include file="$(find wheele_description)/launch/display.launch"></include> -->
     <!-- <include file="$(find path_planning)/launch/pose.launch">
     </include> -->
     <node pkg="path_planning" type="laser_path.py" name="laser_path" output="screen" />

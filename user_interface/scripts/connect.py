@@ -27,13 +27,13 @@ def process_image():
 
     image_data = image_data.replace('data:image/png;base64,', '')
     image_bytes = base64.b64decode(image_data)
-    print(image_bytes)
+    # print(image_bytes)
 
     stream = BytesIO(image_bytes)
     # Convert the base64-encoded data to bytes
     image = Image.open(stream).convert('RGB')
     stream.close()
-    print(type(image))
+    # print(type(image))
     image.save('../../emotion_detection/scripts/image/face.jpg')
 
     # Return a result
@@ -43,10 +43,10 @@ def process_image():
 def get_goal():
     data = request.get_json()
     goal = data['goal']
-    print('Goal: '+goal)
+    # print('Goal: '+goal)
     with open('/root/ros_ws/src/user_interface/scripts/goal.txt', "w") as f:
         f.write(goal)
     return 'New goal'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', ssl_context='adhoc',debug=True)
+    app.run(host='0.0.0.0', ssl_context='adhoc',debug=False)

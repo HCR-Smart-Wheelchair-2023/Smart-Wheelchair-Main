@@ -48,7 +48,7 @@ class rmv_ros_simple:
         self.invert_factor = -1
 
         #subscriber
-        if topic_name == "/joy": topic_name="/cmd_vel"
+        if topic_name == "/joy": topic_name="/cmd_vel_adj"
         self.sub = rospy.Subscriber(topic_name, Twist, self.call_back_twist, queue_size=1)
         #rospy.loginfo("Subscribed to %s", topic_name)
 

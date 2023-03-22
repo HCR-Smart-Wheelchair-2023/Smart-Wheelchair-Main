@@ -236,8 +236,8 @@ class MapProcessor:
                 pos, vals = social_predict_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, distribution_scale_factor, t)
                 # print("mov:", vals)
                 for (i, pos) in enumerate(pos):
-                    if (vals[i] != 0):
-                        adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
+                    # if (vals[i] != 0):
+                    adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
 
 
                 # adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, 5)

@@ -29,7 +29,7 @@ class GoalController:
         ...
 
     def receive_goal_label_sub(self, goal_label):
-
+        rospy.loginfo(f'alsjkdvbaivbalkvbalkvb')
         if goal_label.data not in self.GOALS:
             return
         goal = PoseStamped()

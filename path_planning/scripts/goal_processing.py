@@ -35,18 +35,18 @@ class GoalController:
         if goal_label.data not in self.GOALS:
             return
         goal = PoseStamped()
-        goal.target_pose.header.frame_id = "map"
-        goal.target_pose.header.stamp = rospy.Time.now()
+        goal.header.frame_id = "map"
+        goal.header.stamp = rospy.Time.now()
         #rospy.loginfo(f'{self.__dict__}')
-        goal.target_pose.pose.position.x = self.GOALS[goal_label.data][0]
-        goal.target_pose.pose.position.y = self.GOALS[goal_label.data][1]
+        goal.pose.position.x = self.GOALS[goal_label.data][0]
+        goal.pose.position.y = self.GOALS[goal_label.data][1]
 
-        goal.target_pose.pose.orientation.z = 0.342
-        goal.target_pose.pose.orientation.w = 0.940
-        self.pub.publish(goal.target_pose)
+        goal.pose.orientation.z = 0.342
+        goal.pose.orientation.w = 0.940
+        self.pub.publish(goal)
         #self.client.send_goal(goal)
         #rospy.loginfo('Recieved move to'+goal_label.data+'command')
-        rospy.loginfo(f'Goal {goal.target_pose}')
+        rospy.loginfo(f'Goal {goal}')
         #wait = self.client.wait_for_result()
         #rospy.loginfo(f'{wait}')
 

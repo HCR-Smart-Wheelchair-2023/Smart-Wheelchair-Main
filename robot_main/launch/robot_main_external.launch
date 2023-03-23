@@ -17,8 +17,10 @@
     <!-- Publish messages on the odom topic to the odom frame -->
     <include file="$(find path_planning)/launch/odom.launch">
     </include>
+    <!-- <include file="$(find wheele_description)/launch/display.launch"></include> -->
     <!-- <include file="$(find path_planning)/launch/pose.launch">
     </include> -->
+    <node pkg="path_planning" type="laser_path.py" name="laser_path" output="screen" />
 
     <group if="$(eval arg('mode') == 'sim')">
         <!-- Odom is always correct to no need for correction between odom and maps -->
@@ -28,16 +30,21 @@
             args="0.38 0 0.48 1.57 3.14 1.57 base_link camera_link 100" />
     </group>
     <group if="$(eval arg('mode') == 'robot')">
-        <!-- <node pkg="path_planning" type="map_stitching.py" name="map_stitching" output="screen" /> -->
         <!-- No need to publish Odom -->
         <!-- Set the coordinate of the camera from the base_link -->
+        <!-- <node pkg="tf" type="static_transform_publisher" name="camera_link"
+            args="0.7 -0.27 0.77 0 0 3.14 base_link camera_link 100" /> -->
         <node pkg="tf" type="static_transform_publisher" name="camera_link"
-            args="0.5 0 0.6 0 0 0 base_link camera_link 100" />
-        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster" args=".0.5 0 0.6 0 0 1 zed2i_base_link zed_camera_center 100"/>
-        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster2" args="0 0 0 0 0 1 base_link zed2i_base_link 100" />
-
-        <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster" args=".0.5 0 0.6 0 0 0 1 base_link zed2i_camera_center 100" />
-        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster" args=".0.5 0 0.6 0 0 0 1 base_link zed_camera_center 100" /> -->
+        args="0.0 0 1.5 0 0 0 base_link camera_link 100" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster" args="0.0 0 1.5 0 0 0 base_link zed_camera_center 100"/>
+        <node pkg="path_planning" type="map_stitching.py" name="map_stitching" output="screen" />
+        <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster" args="0.0 0 1.5 0 0  3.14 zed2i_base_link zed_camera_center 100"/>
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster7" args="0.0 0 1.5 0 0  3.14 base_link zed_base_link 100"/>
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster2" args="0.0 0 1.5 0 0  3.14 base_link zed2i_base_link 100" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster3" args="0.0 0 1.5 0 0  3.14 base_link zed2i_camera_center 100" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster4" args="0.0 0 1.5 0 0 3.14 base_link zed_camera_center 100" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster5" args="0.0 0 1.5 0 0 3.14 base_link zedA_camera_center 100" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="zed_broadcaster6" args="0.0 0 1.5 0 0 3.14 base_link zedA_camera_center 100" /> -->
     </group>
     <include file="$(find path_planning)/launch/goal.launch"></include>
 
@@ -49,12 +56,15 @@
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan_node">
         <remap from="cloud_in" to="cloud" />
         <rosparam>
-            target_frame: map
+            target_frame: base_link
             min_height: 0.3
+            max_height: 2
             angle_increment: 0.006038462
+            scan_time: 0.1
             use_inf: true
             linearUpdate: 0.1
-            occ_thresh: 0.1
+            range_min: 0.45
+            range_max: 4.0
         </rosparam>
     </node>
 
@@ -79,6 +89,10 @@
 
     <!-- ACML -->
 
+    <!-- Goal Processing -->
+     <!-- <include file="$(find path_planning)/launch/goal.launch">
+    </include> -->
+
     <!-- <node pkg="amcl" type="amcl" name="amcl" output="screen">
         <remap from="scan" to="scan" />
         <param name="odom_frame_id" value="odom" />
@@ -94,6 +108,7 @@
         <param name="initial_pose_a" value="1.57" />
     </node> -->
 
+
     <!-- Start Rviz -->
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robot_main)/rviz/config.rviz" />
     <!-- <node pkg="rqt_tf_tree" type="rqt_tf_tree" name="rqt_tf_tree" /> -->
@@ -102,12 +117,55 @@
     <node pkg="social_predictions" type="social_predictions.py" name="social_predictions" output="screen" />
     <node pkg="path_planning" type="body_processing.py" name="body_processing" output="screen" />
 
+    <!-- Start the aruco_detection node -->
+    <node pkg="aruco_detection" type="aruco_detection.py" name="aruco_detection" output="screen" />
+    <node pkg="aruco_detection" type="my_pose_publisher.py" name="my_pose_publisher" output="screen" />
+
+    <!--
+    <arg name="markerId"        default="582"/>
+    <arg name="markerSize"      default="0.17"/>
+    <arg name="eye"             default="left"/>
+    <arg name="marker_frame"    default="aruco_marker_frame"/>
+    <arg name="ref_frame"       default=""/>   leave empty and the pose will be published wrt param parent_name
+    <arg name="corner_refinement" default="LINES" />
+
+
+    <node pkg="aruco_ros" type="single" name="aruco_single">
+        <remap from="/camera_info" to="/zed/zed_node/left/camera_info" />
+        <remap from="/image" to="/zed/zed_node/left/image_rect_color" />
+        <param name="image_is_rectified" value="True"/>
+        <param name="marker_size"        value="$(arg markerSize)"/>
+        <param name="marker_id"          value="$(arg markerId)"/>
+        <param name="reference_frame"    value="$(arg ref_frame)"/>
+        <param name="camera_frame"       value="camera_link"/>
+        <param name="marker_frame"       value="$(arg marker_frame)" />
+        <param name="corner_refinement"  value="$(arg corner_refinement)" />
+    </node>
+
+    -->
+
+
+    <arg name="markerSize"      default="0.17"/>    <!-- in m -->
+    <arg name="side"             default="left"/>
+    <arg name="ref_frame"       default=""/>  <!-- leave empty and the pose will be published wrt param parent_name -->
+
+
+    <node pkg="aruco_ros" type="marker_publisher" name="aruco_marker_publisher">
+        <remap from="/camera_info" to="/zed/zed_node/left/camera_info" />
+        <remap from="/image" to="/zed/zed_node/left/image_rect_color" />
+        <param name="image_is_rectified" value="True"/>
+        <param name="marker_size"        value="$(arg markerSize)"/>
+        <param name="reference_frame"    value="$(arg ref_frame)"/>   <!-- frame in which the marker pose will be refered -->
+        <param name="camera_frame"       value="camera_link"/>
+    </node>
+
+
     <!-- /zed/zed_node/point_cloud/cloud_registered, -->
     <group if="$(eval arg('mode') == 'robot')">
         <!-- Listen to the /cmd_vel topic and send the commands to the PI -->
-        <!-- <include file="$(find navigation)/launch/pi_interface.launch">
+        <include file="$(find navigation)/launch/pi_interface.launch">
 
-        </include> -->
+        </include>
 
         <!-- <include file="$(find user_interface)/launch/user_interface.launch">
 

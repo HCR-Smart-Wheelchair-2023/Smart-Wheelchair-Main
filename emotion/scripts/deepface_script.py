@@ -29,7 +29,7 @@ class FER():
 
 
     def img_cb(self,data):
-        rospy.loginfo('Recieved image')
+        #rospy.loginfo('Recieved image')
         # ros img to opencv
         cv_image = self.bridge.imgmsg_to_cv2(data)
         cv2.imwrite('/root/ros_ws/src/emotion/scripts/image/img1.jpg', cv_image)

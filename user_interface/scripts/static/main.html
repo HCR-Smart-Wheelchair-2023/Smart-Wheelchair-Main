@@ -6,27 +6,27 @@
     <link rel="stylesheet" href="static/styles.css">
     <script src="static/three.js"></script>
     <script src="static/webcam.js"></script>
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin = "anonymous" referrerpolicy = "no-referrer"> </script>
-
 </head>
 <body>
     <h1>Wheel-e</h1>
     <canvas id="canvas"></canvas>
-    <div class="output">
+    <!-- <div class="output">
         <img id="photo" alt="The screen capture will appear in this box." />
-    </div>x
+    </div> -->
     <script src="static/ui_n_video.js"></script>
-    <!-- <script src="static/utils/jeelizFaceFilter.module.js"></script> -->
-    <input type="text" id="inputField">
+    <input type="text" style="font-size:70px" id="inputField" class="textentry">
     <video id="videoElement" autoplay width="640" heigth="640"></video>
+    <img width="100" height="100" id="img" class="icon"/> 
+
     <div class="button-wrapper">
-        <button id="door" class="button" onclick="door()">door</button>
-        <button id="kitchen" class="button" onclick="kitchen()">kitchen</button>
-        <button id="table" class="button" onclick="table()">table</button>
-        <button id="bathroom" class="button" onclick="bathroom()">bathroom</button>
-        <button id="voice_recog" class="button" onclick="startListening()">voice mode</button>
-        <button id="video" class="button" onclick="startCamera()">start camera</button>
+        <button id="door" class="button" onclick="door()"><img src="static\door.png" alt="Button icon"></button>
+        <button id="kitchen" class="button" onclick="kitchen()"><img src="static\kitchen.png" alt="Button icon"></button>
+        <button id="table" class="button" onclick="table()"><img src="static\table.png" alt="Button icon"></button>
+        <button id="bathroom" class="button" onclick="bathroom()"><img src="static\bathroom.png" alt="Button icon"></button>
+        <button id="voice_recog" class="button" onclick="startListening()"><img src="static\mic.png" alt="Button icon"></button>
+        <button id="video" class="button" onclick="startCamera()"><img src="static\camera.png" alt="Button icon"></button>
     </div>
+    <button id="toggle" class="toggle" onclick="toggleColor()">Toggle contrast</button>
 
    <script>
       const inputField = document.getElementById('inputField');

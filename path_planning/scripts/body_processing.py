@@ -28,14 +28,17 @@ class BodyProcessingController:
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
         topic = '/zed/zed_node/obj_det/objects'
-        self.sub = rospy.Subscriber(topic, ObjectsStamped, self.receive_objects)
+        self.sub = rospy.Subscriber(topic, ObjectsStamped, self.receive_objects, queue_size=1)
         self.pub = rospy.Publisher('/people', People, queue_size=10)
-        # self.odom_pub = rospy.Publisher('/people_odom', Odometry, queue_size=10)
+        self.odom_pub = rospy.Publisher('/people_odom', Odometry, queue_size=10)
 
 
 
     def receive_objects(self, message : ObjectsStamped):
-        objects = message.objects
+
+
+        # person = self.process_person(message.objects[0])
+        # objects = message.objects
         # print("Number of objects detected: ", len(message.objects))
         people = [self.process_person(person) for person in message.objects]
         people_msg = People()
@@ -45,8 +48,8 @@ class BodyProcessingController:
         # print("Number of People: ", len(people_msg.person))
         self.pub.publish(people_msg)
 
-        rate = rospy.Rate(2.5) # 2.5 Hz (same as global map update)
-        rate.sleep()
+        # rate = rospy.Rate(2.5) # 2.5 Hz (same as global map update)
+        # rate.sleep()
 
 
     def calculate_orientation(self, skeleton) -> float:
@@ -60,25 +63,28 @@ class BodyProcessingController:
         return orientation
 
     def process_person(self, person):
-        skeleton = person.skeleton_3d
-        position = np.array(person.position)
-        velocity = np.array(person.velocity)
 
-        # calculate orientation from velocity
-        static = np.linalg.norm(velocity) < 0.2
-        if static:
-            # To Test: actual orientation 
-            theta = self.calculate_orientation(skeleton)
-        else:
-            theta = math.atan2(velocity[1], velocity[0]) 
+
+
+        # skeleton = person.skeleton_3d
+        # position = np.array(person.position)
+        # velocity = np.array(person.velocity)
+
+        # # calculate orientation from velocity
+        static = np.linalg.norm([person.velocity[0], person.velocity[1]]) < 0.2
+        # if static:
+        #     # To Test: actual orientation
+        #     theta = self.calculate_orientation(skeleton)
+        # else:
+        theta = math.atan2(person.velocity[1], person.velocity[0])
 
 
         odom = Odometry()
         odom.header.stamp = rospy.Time.now()
-        odom.header.frame_id = "map"
-        odom.child_frame_id = "map"
+        # odom.header.frame_id = "map"
+        # odom.child_frame_id = "map"
 
-        transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(0.2))
+        transform =  self.tf_buffer.lookup_transform('map', 'camera_link', rospy.Time.now(), rospy.Duration(1))
 
         v = Vector3Stamped()
         v.vector.x = person.velocity[0]
@@ -88,18 +94,19 @@ class BodyProcessingController:
         vt = tf2_geometry_msgs.do_transform_vector3(v, transform)
 
         p = PoseStamped()
-        p.pose.position.x = position[0]
-        p.pose.position.y = position[1]
-        p.pose.position.z = position[2]
+        p.pose.position.x = person.position[0]
+        p.pose.position.y = person.position[1]
+        p.pose.position.z = person.position[2]
         (p.pose.orientation.x, p.pose.orientation.y, p.pose.orientation.z, p.pose.orientation.w) = tf.transformations.quaternion_from_euler(0, 0, theta, 'ryxz')
 
 
         pose_transformed = tf2_geometry_msgs.do_transform_pose(p, transform)
 
+        odom.header.frame_id = "map"
         odom.pose.pose = pose_transformed.pose
         odom.twist.twist.linear = vt.vector
-        
-        # self.odom_pub.publish(odom)
+
+        self.odom_pub.publish(odom)
 
         new_person = Person()
         new_person.header.frame_id = "map"

@@ -8,8 +8,8 @@ from geometry_msgs.msg import Twist
 def path_planning_callback(msg_target, msg_map):
     # This function is called every time a message is received on the "/target" or "/map" topics
     # In this example, we simply print the messages to the console
-    rospy.loginfo("Received target message: %s", msg_target)
-    rospy.loginfo("Received map message: %s", msg_map)
+    #rospy.loginfo("Received target message: %s", msg_target)
+    #rospy.loginfo("Received map message: %s", msg_map)
 
     # Perform path planning logic here to determine the desired linear and angular velocities
     # In this example, we simply set the linear and angular velocities to 0.0 (for simplicity)
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     # Create a subscriber to the "/target" topic
     target_sub = rospy.Subscriber('/target', Point, queue_size=10)
-    
+
     # Create a subscriber to the "/map" topic
     map_sub = rospy.Subscriber('/map', OccupancyGrid, queue_size=10)
 

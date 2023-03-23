@@ -14,6 +14,13 @@ from nav_msgs.msg import OccupancyGrid
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
 
+def threshold_array(arr, threshold):
+    below_threshold = arr < threshold
+    above_threshold = arr >= threshold
+    arr[below_threshold] = 0
+    arr[above_threshold] = 100
+    return arr
+
 def gaussian2d(x, y, x0, y0, sigma_x, sigma_y, theta):
     a = np.cos(theta)**2/(2*sigma_x**2) + np.sin(theta)**2/(2*sigma_y**2)
     b = -np.sin(2*theta)/(4*sigma_x**2) + np.sin(2*theta)/(4*sigma_y**2)
@@ -27,7 +34,7 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     mu1_y = 0
 
 
-    # Parameters TO TUNE 
+    # Parameters TO TUNE
     sigma1_x = 1 * distribution_scale_factor
     sigma1_y = 1 * distribution_scale_factor
 
@@ -35,7 +42,7 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     sigma2_y = 1 * distribution_scale_factor
 
     # Create a meshgrid of points to evaluate the normal distributions
-    x, y = np.mgrid[-10:10:1, -10:10:1]
+    x, y = np.mgrid[-25:25:1, -25:25:1]
     pos = np.empty(x.shape + (2,))
     pos[:, :, 0] = x; pos[:, :, 1] = y
 
@@ -51,22 +58,25 @@ def draw_Gaussian(costmap, object_pos, orientation, distribution_scale_factor = 
     # Superposition of Gaussians
     Z = Z1+Z2
 
-    # Scaling the array 
+    # Scaling the array
     # Find the minimum and maximum values in the array
     min_val = np.min(Z)
     max_val = np.max(Z)
-    
+
     # Scale the array to the range between 0 and 100
     Z_scaled = ((Z - min_val) * 100 / (max_val - min_val)).astype(int)
     # print("Z: ", Z_scaled)
-    
+
+    # Setting values to 0:occupied, 255:free for move_base
+    Z_scaled = threshold_array(Z_scaled, 3)
+
     z1_flat = Z_scaled.flatten().tolist()
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
     grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
     # print(z1_flat)
     relative_pos = []
 
-    for i in pos: 
+    for i in pos:
         for j in i:
             x_relative = grid_x + int(j[0])
             y_relative = grid_y + int(j[1])
@@ -82,31 +92,31 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
 
     # Mean for first Gaus
-    x_z1 = (velocity.x * t)/2
-    y_z1 = (velocity.y * t)/2
+    x_z1 = ((velocity.x * t)/1.2)/costmap.info.resolution
+    y_z1 = ((velocity.y * t)/1.2)/costmap.info.resolution
 
-    # Predict final position of user after t seconds 
-    x_dest = (velocity.x * t)
-    y_dest = (velocity.y * t)
+    # Predict final position of user after t seconds
+    x_dest = ((velocity.x * t))/costmap.info.resolution
+    y_dest = ((velocity.y * t))/costmap.info.resolution
 
     # Calulate orientation angle
     theta = math.atan2(velocity.y, velocity.x)
 
-    # Central position of original gaussian 
+    # Central position of original gaussian
     mu1_x = 0
     mu1_y = 0
 
-    # Parameters TO TUNE 
+    # Parameters TO TUNE
     speed = np.linalg.norm([velocity.y, velocity.x])
-    sigma1_x = 2 * speed
-    sigma1_y = 0.5 * speed
+    sigma1_x = 4 * speed
+    sigma1_y = 2 * speed
 
-    sigma2_x = 0.7 * speed
-    sigma2_y = 0.7 * speed
+    sigma2_x = 2 * speed
+    sigma2_y = 2 * speed
 
 
     # Create a meshgrid of points to evaluate the normal distributions
-    x, y = np.mgrid[-30:30:1, -30:30:1]
+    x, y = np.mgrid[-50:50:1, -50:50:1]
     pos = np.empty(x.shape + (2,))
     pos[:, :, 0] = x; pos[:, :, 1] = y
 
@@ -118,22 +128,25 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
     # Superposition of Gaussians
     Z = Z1+Z2
 
-    # Scaling the array 
+    # Scaling the array
     # Find the minimum and maximum values in the array
     min_val = np.min(Z)
     max_val = np.max(Z)
-    
+
     # Scale the array to the range between 0 and 100
     Z_scaled = ((Z - min_val) * 100 / (max_val - min_val)).astype(int)
     # print("Z: ", Z_scaled)
-    
+
+    # Setting values to 0:occupied, 255:free for move_base
+    Z_scaled = threshold_array(Z_scaled, 3)
+
     z1_flat = Z_scaled.flatten().tolist()
     grid_x = int((object_pos.x - costmap.info.origin.position.x) / costmap.info.resolution)
     grid_y = int((object_pos.y - costmap.info.origin.position.y) / costmap.info.resolution)
     # print(z1_flat)
     relative_pos = []
 
-    for i in pos: 
+    for i in pos:
         for j in i:
             x_relative = grid_x + int(j[0])
             y_relative = grid_y + int(j[1])
@@ -142,7 +155,7 @@ def social_predict_Gaussian(costmap, object_pos, velocity, distribution_scale_fa
 
 
     return relative_pos, z1_flat
-    
+
 
 
 
@@ -179,20 +192,29 @@ class MapProcessor:
     def __init__(self):
         self.map_sub = rospy.Subscriber('/staticmap', OccupancyGrid, self.map_callback_map, queue_size=1)
         self.update_sub = rospy.Subscriber('/people', People, self.map_callback_update, queue_size=1)
-        self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=10)
-        self.latest_map = OccupancyGrid()
+        self.map_pub = rospy.Publisher('/adj_map', OccupancyGrid, queue_size=2)
+        self.latest_map =  None
 
     def map_callback_map(self, data):
         self.latest_map = data
 
     def map_callback_update(self, data):
-        # print("Number of objects detected: ", len(data.person))
-        # Params to tune 
-        t = 4.0
-        distribution_scale_factor = 1
-        gaus_sep = 2        
+        if self.latest_map == None:
+            print("err: no map recived for social prediction")
+            return 0
+        if len(data.person) == 0:
+            adj_map = OccupancyGrid()
+            adj_map = self.latest_map
+            self.map_pub.publish(adj_map)
+            return 1
 
-        adj_map = OccupancyGrid()       
+        # print("Number of objects detected: ", len(data.person))
+        # Params to tune
+        t = 3.0
+        distribution_scale_factor = 1
+        gaus_sep = 2
+
+        adj_map = OccupancyGrid()
         adj_map.header = self.latest_map.header
         adj_map.info = self.latest_map.info
         adj_map.data = list(self.latest_map.data)
@@ -200,30 +222,28 @@ class MapProcessor:
         #predict for each detected object
         adjusted_cells = []
         for person in data.person:
-            
-            
-            
+
             if person.static.data:
                 (_, _, theta) = tf.transformations.euler_from_quaternion([person.odom.pose.pose.orientation.x, person.odom.pose.pose.orientation.y, person.odom.pose.pose.orientation.z, person.odom.pose.pose.orientation.w])
-                
+
                 pos, vals = draw_Gaussian(self.latest_map, person.odom.pose.pose.position, theta, distribution_scale_factor, gaus_sep)
+                # print("stat:",vals)
                 for (i, pos) in enumerate(pos):
-                    if vals[i] != 0:
-                        adj_map.data[pos] = min(100, vals[i]+ adj_map.data[pos])
+                    if (vals[i] != 0):
+                        adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
 
             else:
                 pos, vals = social_predict_Gaussian(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, distribution_scale_factor, t)
+                # print("mov:", vals)
                 for (i, pos) in enumerate(pos):
-                    if vals[i] != 0:
-                        adj_map.data[pos] = min(100, vals[i]+ adj_map.data[pos])
+                    if (vals[i] != 0):
+                        adj_map.data[pos] = vals[i] #min(100, vals[i]+ adj_map.data[pos])
 
 
                 # adjusted_cells += social_predict(self.latest_map, person.odom.pose.pose.position, person.odom.twist.twist.linear, 5)
-                
+
                 # for i in adjusted_cells:
                 #     adj_map.data[i] = 30 #min(100, 30 + adj_map.data[i])
-
-                   
 
 
         self.map_pub.publish(adj_map)

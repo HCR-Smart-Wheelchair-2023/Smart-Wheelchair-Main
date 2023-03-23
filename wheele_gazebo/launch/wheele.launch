@@ -2,7 +2,7 @@
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find wheele_gazebo)/worlds/wheele.world"/>
-    <arg name="gui" value="false"/>
+    <arg name="gui" value="true"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="paused" value="false"/>
     <!-- more default parameters can be changed here -->
@@ -14,8 +14,8 @@
   </rosparam>
 
   <!-- Spawn the room model -->
-  <node name="spawn_room" pkg="gazebo_ros" type="spawn_model" args="-file $(find room_description)/urdf/room_1.urdf -urdf -z 0 -x 4 -y 4.3
-  -Y -1.57 -model room_description" />
+  <!-- <node name="spawn_room" pkg="gazebo_ros" type="spawn_model" args="-file $(find room_description)/urdf/room_1.urdf -urdf -z 0 -x 4 -y 4.3
+  -Y -1.57 -model room_description" /> -->
 
   <!-- Load the URDF wheele model desciption -->
   <param name="wheele/robot_description"

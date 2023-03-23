@@ -8,14 +8,13 @@ build-external:
 	DOCKER_BUILDKIT=1 docker build -t amiga_base_external:latest -f Dockerfile.external .
 
 build-jetson:
-	DOCKER_BUILDKIT=1 docker build -t jetson_base:latest -f Dockerfile.jetson .
+	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision/docker && sudo -S ./build-ros-desktop-image.sh"
 
 run-jetson:
-	docker run \
-		-it \
-		--name jetson \
-		--gpus all \
-		jetson_base:latest
+	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision && sudo -S ./run_ros_container.sh"
+
+start-jetson:
+	ssh prl@192.168.50.102 "cd /home/prl/Smart-Wheelchair-Main/vision && sudo -S ./start_ros_container.sh"
 
 
 run-jetson-core:
@@ -66,6 +65,8 @@ run-external-core:
 		-v $(current_dir)/people_msg/:/root/ros_ws/src/people_msg \
 		-v $(current_dir)/zed_dummy/:/root/ros_ws/src/zed_dummy \
 		-v $(current_dir)/aruco_detection/:/root/ros_ws/src/aruco_detection \
+		--device=/dev/ttyACM1 \
+		--device=/dev/ttyACM0 \
 	    --privileged \
 		--network host \
 		--name external \
@@ -131,6 +132,8 @@ run-sim-core:
 		-v $(current_dir)/aruco_detection/:/root/ros_ws/src/aruco_detection \
 		-v $(current_dir)/wheele_sim_control/:/root/ros_ws/src/wheele_sim_control \
 	    --privileged \
+		--device=/dev/ttyACM1 \
+		--device=/dev/ttyACM0 \
 		--network host \
 		--name sim \
 		-it \
@@ -152,7 +155,7 @@ build-ed:
 	DOCKER_BUILDKIT=1 docker build -t ed:latest \
 	-f Dockerfile.ed .
 
-run-ed-core:
+run-ed:
 	xhost +si:localuser:root
 	docker stop ed || true && docker rm ed || true
 	docker run \

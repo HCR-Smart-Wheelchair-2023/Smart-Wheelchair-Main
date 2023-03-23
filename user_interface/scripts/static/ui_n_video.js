@@ -10,6 +10,7 @@ const doorBut = document.getElementById('door');
 const kitchenBut = document.getElementById('kitchen');
 const tableBut = document.getElementById('table');
 const bathroomBut = document.getElementById('bathroom');
+const image = document.getElementById("img");
 
 doorBut.addEventListener('click',publishMessage('door'));
 kitchenBut.addEventListener('click',publishMessage('kitchen'));
@@ -19,19 +20,6 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
 
 //--------------------------------------------------------speech functions------------------------------------------------------
 
-
-  // const button1 = document.getElementById('button1');
-  // // Add event listeners to each button
-  // button1.addEventListener('click', () => {
-  //   speak('Hello, this is button 1.');
-  // });
-
-  // // Function to speak the message using the browser's SpeechSynthesis API
-  // function speak(message) {
-  //   const speech = new SpeechSynthesisUtterance();
-  //   speech.text = message;
-  //   window.speechSynthesis.speak(speech);
-  // }
   function post_dest(_goal){
     fetch('/goal_dest', {
       method: 'POST',
@@ -50,6 +38,8 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the door';
     window.speechSynthesis.speak(msg);
+    img.src = "static/door.png";
+    inputField.value = "Sure, going to the door";
     post_dest('door');
     }
 
@@ -57,6 +47,8 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the kitchen';
     window.speechSynthesis.speak(msg);
+    img.src = "static/kitchen.png";
+    inputField.value = "Sure, going to the kitchen";
     post_dest('kitchen');
   }
 
@@ -64,62 +56,21 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the table';
     window.speechSynthesis.speak(msg);
+    img.src = "static/table.png";
+    inputField.value = "Sure, going to the table";
     post_dest('table')
   }
   function bathroom() {
     const msg = new SpeechSynthesisUtterance();
     msg.text = 'Going to the bathroom';
     window.speechSynthesis.speak(msg);
+    img.src = "static/bathroom.png";
+    inputField.value = "Sure, going to the bathroom";
     post_dest('bathroom')
   }
 
-  //------------------------------------------- code to do speech to text might be useful after---------------------------
-  // function startListening() {
-  //   const recognition = new webkitSpeechRecognition();
-  //   recognition.continuous = true;
-  //   recognition.interimResults = true;
-  //   recognition.lang = 'en-UK';
-  //   recognition.maxAlternatives = 1;
-
-  //   recognition.start();
-
-  //   recognition.addEventListener('result', event => {
-  //     const transcript = event.results[0][0].transcript;
-  //     // inputField.value = transcript;
-  //     // Perform action with transcript
-  //   });
-  //   recognition.onresult = function(event) {
-  //     const result = event.results[event.results.length - 1][0].transcript;
-  //     //inputField.value = result;
-  //     const keyword1 = "door";
-  //     const keyword2 = "bathroom";
-  //     const keyword3 = "table";
-  //     const keyword4 = "kitchen";
-  //     if (result.includes("chair")){
-  //       if (result.includes(keyword1)) {
-  //         console.log(`The string contains the keyword '${keyword1}'`);
-  //         inputField.value = "door " 
-  //       door()
-  //       }
-  //       else if (result.includes(keyword2)){
-  //         inputField.value = "bathroom " 
-  //         bathroom()
-  //     }
-  //       else if (result.includes(keyword3)){
-  //         inputField.value = "table" 
-  //         table()
-  //     }
-  //        else if (result.includes(keyword4)){
-  //         inputField.value = "kitchen" 
-  //         kitchen()
-  //     }
-  //       else {
-  //         inputField.value = "error" 
-  //     }
-  //    }
-  //   };
-  // }
   function startListening() {
+    
     const recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
@@ -129,24 +80,44 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     recognition.onresult = function(event) {
       const transcript = event.results[event.results.length - 1][0].transcript;
       
-      if (transcript.includes("hello") && (transcript.includes("door"))) {
-        inputField.value = "go to door";
+      // if (transcript.includes("hello") && (transcript.includes("door"))) {
+      //   inputField.value = "go to door";
+      //   door();}
+      // else if (transcript.includes("hello") && (transcript.includes("kitchen"))){
+      //   inputField.value = "go to kitchen";
+      //   kitchen();
+      // }
+      // else if (transcript.includes("hello") && (transcript.includes("table"))){
+      //   inputField.value = "go to table";
+      //   table();
+      // }
+      // else if (transcript.includes("hello") && (transcript.includes("bathroom"))){
+      //   inputField.value = "go to bathroom";
+      //   bathroom();
+      // }
+      // else {
+      //   inputField.value = "error";
+      // }
+      if (transcript.includes("hello")&&transcript.includes("chair")&&transcript.includes("door")){
+        inputField.value = "door";
         door();}
-      else if (transcript.includes("hello") && (transcript.includes("kitchen"))){
-        inputField.value = "go to kitchen";
-        kitchen();
-      }
-      else if (transcript.includes("hello") && (transcript.includes("table"))){
-        inputField.value = "go to table";
-        table();
-      }
-      else if (transcript.includes("hello") && (transcript.includes("bathroom"))){
-        inputField.value = "go to bathroom";
-        bathroom();
-      }
-      else {
-        inputField.value = "error";
-      }
+
+       else if (transcript.includes("hello")&&transcript.includes("chair") && (transcript.includes("kitchen"))){
+         inputField.value = "go to kitchen";
+         kitchen();
+       }
+       else if (transcript.includes("hello")&&transcript.includes("chair") && (transcript.includes("table"))){
+         inputField.value = "go to table";
+         table();
+       }
+       else if (transcript.includes("hello")&&transcript.includes("chair") && (transcript.includes("bathroom"))){
+         inputField.value = "go to bathroom";
+         bathroom();
+       }
+       else {
+         inputField.value = "error";
+       }
+
     };
     
     recognition.onend = function() {
@@ -158,8 +129,56 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
           recognition.stop();
         });
   }
+//---------------------------------------------------code for toggle-------------------------------------------------------
+function toggleColor() {
 
+  const button = document.getElementById('toggle');
+  const currentColor1 = button.style.backgroundColor;
+  const currenttext = button.style.color;
+  const newtext = currenttext === 'red' ? 'white' : 'red';
+  const newColor1 = currentColor1 === 'yellow' ? 'green' : 'yellow';
+  button.style.backgroundColor = newColor1;
+  button.style.color = newtext;
+  
+  const button1 = document.getElementById('door');
+  const currentColor = button1.style.backgroundColor;
+  const newColor = currentColor === 'white' ? 'rgb(29, 31, 161)' : 'white';
+  const currentColor_border = button1.style.borderColor;
+  const newColor_border = currentColor_border === 'yellow' ? 'rgb(0, 5, 77)' : 'yellow';
+  button1.style.backgroundColor = newColor;
+  button1.style.borderColor = newColor_border;
 
+  const button2 = document.getElementById('bathroom');
+  button2.style.backgroundColor = newColor;
+  button2.style.borderColor = newColor_border;
+
+  const button3 = document.getElementById('kitchen');
+  button3.style.backgroundColor = newColor;
+  button3.style.borderColor = newColor_border;
+
+  const button4 = document.getElementById('table');
+  button4.style.backgroundColor = newColor;
+  button4.style.borderColor = newColor_border;
+
+  const button5 = document.getElementById('voice_recog');
+  button5.style.backgroundColor = newColor;
+  button5.style.borderColor = newColor_border;
+
+  const button6 = document.getElementById('video');
+  button6.style.backgroundColor = newColor;
+  button6.style.borderColor = newColor_border;
+
+  const body = document.querySelector("body");
+  const currentColor_back = body.style.backgroundColor;
+  const newColor_back = currentColor_back === 'black' ? 'rgb(173, 216, 230)' : 'black';
+	body.style.backgroundColor = newColor_back;
+
+  const title = document.querySelector("h1");
+  const currentColor_h1 = h1.style.colour;
+  const newColor_h1 = currentColor_h1 === 'black' ? 'rgb(173, 216, 230)' : 'black';
+	h1.style.Color = newColor_h1;
+
+}
   // -----------------------------------------------code to use camera---------------------------------------------------
   // Get the video element
   let video = null
@@ -197,10 +216,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
   function startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
-        //videoElement.srcObject = stream;
-        //video.play();
 
-        //var data_uri = Webcam.snap();
         console.log(videoElement)
         Webcam.set({
           width: videoElement.videoWidth,

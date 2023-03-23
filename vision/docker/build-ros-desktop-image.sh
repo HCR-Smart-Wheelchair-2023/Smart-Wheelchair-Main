@@ -13,4 +13,4 @@ docker build --build-arg ZED_SDK_MAJOR=${ZED_SDK_MAJOR} \
 
 echo "Building '${TAG_STAGE_2}'"
 
-docker build --build-arg BASE_IMAGE="${TAG_STAGE_1}" -t "${TAG_STAGE_2}" -f "${DOCKERFILE_STAGE_2}" .
+docker build --no-cache --build-arg BASE_IMAGE="${TAG_STAGE_1}" -t "${TAG_STAGE_2}" -f "${DOCKERFILE_STAGE_2}" .

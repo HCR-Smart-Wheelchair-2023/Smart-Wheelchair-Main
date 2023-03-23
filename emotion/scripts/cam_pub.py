@@ -18,7 +18,7 @@ if not (cap.isOpened()):
 rr = rospy.Rate(1)
 bridge = CvBridge()
 while not rospy.is_shutdown():
-    rospy.loginfo('Publishing')
+    #rospy.loginfo('Publishing')
     _, frame = cap.read()
     pub.publish(bridge.cv2_to_imgmsg(frame))
     rr.sleep()

@@ -18,15 +18,17 @@
 
       .button-wrapper {
         text-align: center; 
-        /* align-items:baseline  ; */
+        position:absolute;
+        top: 400px;
+     
       }
 
       .textentry {
         position: absolute;
-        top:       300px;  /* I usually locate relative to top  */
+        top:       200px;  /* I usually locate relative to top  */
         left:      30px; /* left corner of container (screen) */
         width: 900px;
-        height: 150px;
+        height: 100px;
       }
       
       .button {
@@ -61,7 +63,7 @@
     }
     .icon {
       position: absolute;
-      top:       300px;  /* I usually locate relative to top  */
+      top:       200px;  /* I usually locate relative to top  */
       left:      1050px; /* left corner of container (screen) */
       width: 180px;
       height: 180px;

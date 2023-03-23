@@ -80,38 +80,20 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     recognition.onresult = function(event) {
       const transcript = event.results[event.results.length - 1][0].transcript;
       
-      // if (transcript.includes("hello") && (transcript.includes("door"))) {
-      //   inputField.value = "go to door";
-      //   door();}
-      // else if (transcript.includes("hello") && (transcript.includes("kitchen"))){
-      //   inputField.value = "go to kitchen";
-      //   kitchen();
-      // }
-      // else if (transcript.includes("hello") && (transcript.includes("table"))){
-      //   inputField.value = "go to table";
-      //   table();
-      // }
-      // else if (transcript.includes("hello") && (transcript.includes("bathroom"))){
-      //   inputField.value = "go to bathroom";
-      //   bathroom();
-      // }
-      // else {
-      //   inputField.value = "error";
-      // }
       if (transcript.includes("hello")&&transcript.includes("chair")&&transcript.includes("door")){
-        inputField.value = "door";
-        door();}
+        door();
+        }
 
        else if (transcript.includes("hello")&&transcript.includes("chair") && (transcript.includes("kitchen"))){
-         inputField.value = "go to kitchen";
+         
          kitchen();
        }
        else if (transcript.includes("hello")&&transcript.includes("chair") && (transcript.includes("table"))){
-         inputField.value = "go to table";
+         
          table();
        }
        else if (transcript.includes("hello")&&transcript.includes("chair") && (transcript.includes("bathroom"))){
-         inputField.value = "go to bathroom";
+         
          bathroom();
        }
        else {
@@ -121,7 +103,7 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     };
     
     recognition.onend = function() {
-      startRecognition();// start again when the recognition ends
+      startListening();// start again when the recognition ends
     };
   
     recognition.start();

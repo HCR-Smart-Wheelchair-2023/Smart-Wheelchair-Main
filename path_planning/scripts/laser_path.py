@@ -102,8 +102,8 @@ class LaserPathController:
                 if use_y:
                     print("before ", matrix)
                     matrix = matrix - matrix[0,:]
-                    # scale = min(400/matrix[-1,0], 400/matrix[-1,1])
-                    scale = 400/matrix[-1,:]
+                    scale = min(400/matrix[-1,0], 400/matrix[-1,1])
+                    # scale = 400/matrix[-1,:]
                     matrix = scale*matrix
                     print("after", matrix)
                     coeff = numpy.polyfit(matrix[:,0],matrix[:,1],2)
@@ -123,7 +123,8 @@ class LaserPathController:
                 else:
                     print("before ", matrix)
                     matrix = matrix - matrix[0,:]
-                    scale = 400/matrix[-1,:]
+                    scale = min(400/matrix[-1,0], 400/matrix[-1,1])
+                    # scale = 400/matrix[-1,:]
                     matrix = scale*matrix
                     print("after", matrix)
                     coeff = numpy.polyfit(matrix[:,1],matrix[:,0],2)

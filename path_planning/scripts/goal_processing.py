@@ -5,7 +5,7 @@ import rospy
 from std_msgs.msg import String
 import actionlib
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-from geometry_msgs.msgs import PoseStamped
+from geometry_msgs.msg import PoseStamped
 # sub to the topic that subscribes to marker positions
 
 

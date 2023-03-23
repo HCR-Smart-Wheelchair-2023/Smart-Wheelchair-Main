@@ -115,7 +115,7 @@
 
     <!-- Start Social navigation aspects -->
     <node pkg="social_predictions" type="social_predictions.py" name="social_predictions" output="screen" />
-    <!-- <node pkg="path_planning" type="body_processing.py" name="body_processing" output="screen" /> -->
+    <node pkg="path_planning" type="body_processing.py" name="body_processing" output="screen" />
 
     <!-- Start the aruco_detection node -->
     <node pkg="aruco_detection" type="aruco_detection.py" name="aruco_detection" output="screen" />

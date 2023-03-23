@@ -21,7 +21,7 @@ class GoalController:
         rospy.init_node('goal_processing')
         rospy.loginfo(f'initign node')
         self.goal_label_sub  = rospy.Subscriber('/goal_dest', String, self.receive_goal_label_sub)
-        self.pub = rospy.Publisher('/move_base_simple/goal', MoveBaseGoal, queue_size=10)
+        self.pub = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=2)
         rospy.loginfo(f'initided pub')
         #self.client = actionlib.SimpleActionClient('/move_base',MoveBaseAction)
         #self.client.wait_for_server()

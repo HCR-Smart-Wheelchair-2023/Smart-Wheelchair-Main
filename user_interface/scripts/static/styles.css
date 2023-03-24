@@ -17,11 +17,13 @@
       }
 
       .button-wrapper {
-        text-align: center; 
+      
+        align-items: center;
         position:absolute;
-        top: 400px;
-     
+        top: 350px;
       }
+    
+
 
       .textentry {
         position: absolute;

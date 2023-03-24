@@ -80,19 +80,19 @@ bathroomBut.addEventListener('click',publishMessage('bathroom'));
     recognition.onresult = function(event) {
       const transcript = event.results[event.results.length - 1][0].transcript;
       
-      if (transcript.includes("hello")&&transcript.includes("chair")&&transcript.includes("door")){
+      if (transcript.includes("door")){
         door();
         }
 
-       else if (transcript.includes("hello")&&transcript.includes("chair") && (transcript.includes("kitchen"))){
+       else if ((transcript.includes("kitchen"))){
          
          kitchen();
        }
-       else if (transcript.includes("hello")&&transcript.includes("chair") && (transcript.includes("table"))){
+       else if ((transcript.includes("table"))){
          
          table();
        }
-       else if (transcript.includes("hello")&&transcript.includes("chair") && (transcript.includes("bathroom"))){
+       else if ((transcript.includes("bathroom"))){
          
          bathroom();
        }

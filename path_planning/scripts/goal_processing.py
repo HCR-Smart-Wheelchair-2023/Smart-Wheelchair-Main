@@ -15,7 +15,7 @@ class GoalController:
         self.GOALS = {
             'kitchen' : [2.00, 5],
             'bathroom' : [4.40, 1.50],
-            'table' : [6.30, 5.40],
+            'table' : [4.40, 5.0],
             'door' : [1.40, 0.35]
         }
         rospy.init_node('goal_processing')

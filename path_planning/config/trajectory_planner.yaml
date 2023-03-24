@@ -14,5 +14,5 @@ TrajectoryPlannerROS:
   meter_scoring: true
 
   xy_goal_tolerance: 0.4
-  yaw_goal_tolerance: 0.5
+  yaw_goal_tolerance: 3
   oscillation_reset_dist: 0.1

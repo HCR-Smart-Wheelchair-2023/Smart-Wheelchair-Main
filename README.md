@@ -80,7 +80,7 @@ make run-external-bash
 
 ## Launching the simulation
 
-First, checkout to the `nav_sim` git branch.
+First, checkout to the `simulation` git branch.
 
 Then, if not already done, install the required ROS packages:
 ```

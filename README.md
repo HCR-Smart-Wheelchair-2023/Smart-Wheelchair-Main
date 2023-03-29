@@ -1,8 +1,12 @@
 # Information
 
-This repository contains the basic setup needed to be able to drive the wheelchair. Currently only a "cmd_vel" topic is setup from which a subscriber sends commands to the raspberry pi to move the robot.
+This repository contains the basic setup needed to be able to drive the wheelchair. Currently only a `/cmd_vel` ROS topic is setup from which a subscriber sends commands to the Raspberry Pi to move the robot.
 
-# Running on wheel chair (13/03/2023)
+
+</br>
+
+## Running on wheel chair (13/03/2023)
+
 1. Power wheelchair on
 2. Start roscore 
 ```bash
@@ -19,7 +23,10 @@ make run-jetson
 cd ~/wheelchair
 make run-external-main
 ```
-# RNET Wheelchair base setup
+
+</br>
+
+## RNET Wheelchair base setup
 
 - Clone the repository
 ```bash
@@ -35,8 +42,9 @@ vim .env
 
 - If using the robot not simulation set the MODE environment variable to 'robot'
 
-## On the Raspberry PI
-- SSH into the PI with user "hpr" and then run the following to start the serve
+### On the Raspberry PI
+
+- SSH into the PI with user "hpr" and then run the following to start the server.
 
 - TODO this start shell script still needs to be made, currently the PI is started using a python script in a directory I can't remember. Eventually this should be set up as a make command that SSHs into the PI and starts this script. (Potentially this could be part of the start up sequence of the script that communicates with the PI?)
 
@@ -44,7 +52,8 @@ vim .env
 ./start
 ```
 
-## On the main computer
+### On the main computer
+
 Build the docker image:
 ```bash
 make build-external
@@ -62,32 +71,38 @@ To access a terminal in laptop core ros container
 make run-external-bash
 ```
 
-## Driving the Robot
+### Driving the Robot
 
-- Once "make run-external-core" and "make run-external-main" are running it should be possible to publish to "/cmd_vel" to drive the robot
+- Once `make run-external-core` and `make run-external-main` are running it should be possible to publish to the `/cmd_vel` ROS topic to drive the robot
 
 
+</br>
 
-## Starting Simulation for Sim Development
+## Launching the simulation
 
-If not already done, install the required ROS packages:
+First, checkout to the `nav_sim` git branch.
+
+Then, if not already done, install the required ROS packages:
 ```
 sudo apt-get install ros-noetic-ros-control ros-noetic-ros-controllers
 ```
 
-Then, start the simulation (world, model and controllers) with the following command:
-
+Now, you can start the simulation (world, model, controllers and actors) with the following command:
 ```
-roslaunch wheele_gazebo wheele.launch
+roslaunch robot_main robot_main_external.launch --screen
 ```
 
+</br>
+</br>
+</br>
+
+## Misc. development notes
 
 
 - Set the odom-base_link from the odom topic for the zed
 - Set the map-odom to make the map-base equal pose from pose topic
 
 - Set up a topic that allows setting of the current pose
--
 
 
 - PI  prl@192.168.50.100 password: HCRrnet1
@@ -134,4 +149,5 @@ sudo ./start_docker....
         <!-- ICP parameters -->
         <param name="Icp/VoxelSize"                 type="string" value="0.05"/>
         <param name="Icp/MaxCorrespondenceDistance" type="string" value="0.1"/>
-  </node> -->
+    </node>
+-->
